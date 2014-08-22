@@ -10,3 +10,6 @@
 * Todor Viagov ([@ TodorVyagov](https://github.com/TodorVyagov))
 * Krum Tuikenov ([@ flextry](https://github.com/flextry))
 * Ivaylo Botusharov ([@ encounter12](https://github.com/encounter12))
+
+## Project Diagram:
+![screenshot](https://raw.githubusercontent.com/Team-Zealot-Databases/Databases-Teamwork-2014/master/Teamwork%20-%20Assignment/database-requirements.png)
