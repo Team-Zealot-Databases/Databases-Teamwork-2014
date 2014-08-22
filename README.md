@@ -2,9 +2,9 @@
 
 ---
 
-#Databases <br/> – Team Projects – August/September, 2014 <br/>
+# Databases – Team Projects  <br/>  – August/September, 2014 <br/>
 
-##Contributors:
+## Contributors:
 * Martin Nikolov ([@ flextry](https://github.com/flextry))
 * Ianko Vanov ([@ flextry](https://github.com/IankoVanov))
 * Todor Viagov ([@ flextry](https://github.com/TodorVyagov))
