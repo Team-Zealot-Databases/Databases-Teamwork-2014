@@ -6,7 +6,7 @@
 
 ## Contributors:
 * Martin Nikolov ([@ flextry](https://github.com/flextry))
-* Ianko Vanov ([@ flextry](https://github.com/IankoVanov))
-* Todor Viagov ([@ flextry](https://github.com/TodorVyagov))
+* Ianko Vanov ([@ IankoVanov](https://github.com/IankoVanov))
+* Todor Viagov ([@ TodorVyagov](https://github.com/TodorVyagov))
 * Krum Tuikenov ([@ flextry](https://github.com/flextry))
-* Ivaylo Botusharov ([@ flextry](https://github.com/encounter12))
+* Ivaylo Botusharov ([@ encounter12](https://github.com/encounter12))
