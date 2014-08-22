@@ -2,7 +2,7 @@
 
 ---
 
-# Databases – Team Projects  <br/>  – August/September, 2014 <br/>
+# Databases – Team Projects  <br/> August/September, 2014 <br/>
 
 ## Contributors:
 * Martin Nikolov ([@ flextry](https://github.com/flextry))
