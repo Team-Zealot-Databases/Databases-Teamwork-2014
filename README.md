@@ -11,5 +11,11 @@
 * Krum Tuikenov ([@ digitalbeas7](https://github.com/digitalbeas7))
 * Ivaylo Botusharov ([@ encounter12](https://github.com/encounter12))
 
+## Project Description
+
+Your assignment is to design, develop and test a C# application for importing Excel reports from a ZIP file and the product data from MongoDB into SQL Server, generate XML reports and PDF reports, create reports as JSON documents and also load them into MySQL, load additional information by your choice from XML file, read other information by your choice from SQLite and calculate aggregated results and write them into Excel file.
+
+All reports should be different from each other and are by your choice. They can be sales reports, taxes reports, vendor reports, etc. Try to use real-world example.
+
 ## Project Diagram:
 ![screenshot](https://raw.githubusercontent.com/Team-Zealot-Databases/Databases-Teamwork-2014/master/Teamwork%20-%20Assignment/database-requirements.png)
