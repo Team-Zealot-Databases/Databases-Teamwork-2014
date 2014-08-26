@@ -23,12 +23,12 @@
 
         public decimal Price { get; set; }
 
-        [ForeignKey("ProductTypes")]
+        [ForeignKey("ProductType")]
         public int ProductTypeId { get; set; }
 
         public virtual ProductType ProductType { get; set; }
 
-        [ForeignKey("Manufacturers")]
+        [ForeignKey("Manufacturer")]
         public int ManufacturerId { get; set; }
 
         public virtual Manufacturer Manufacturer { get; set; }

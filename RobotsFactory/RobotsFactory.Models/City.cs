@@ -13,7 +13,7 @@
         [Required]
         public string Name { get; set; }
 
-        [ForeignKey("Countries")]
+        [ForeignKey("Country")]
         public int CountryId { get; set; }
 
         public virtual Country Country { get; set; }
