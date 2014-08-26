@@ -16,6 +16,12 @@
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<RobotsFactoryContext, Configuration>());
         }
 
+        public RobotsFactoryContext(string connectionString)
+            : this()
+        {
+            this.Database.Connection.ConnectionString = connectionString;
+        }
+
         public DbSet<Product> Products { get; set; }
 
         public DbSet<ProductType> ProductTypes { get; set; }
