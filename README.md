@@ -17,5 +17,7 @@ Your assignment is to design, develop and test a C# application for importing Ex
 
 All reports should be different from each other and are by your choice. They can be sales reports, taxes reports, vendor reports, etc. Try to use real-world example.
 
+[***Read more...***](https://github.com/Team-Zealot-Databases/Databases-Teamwork-2014/blob/master/Teamwork%20-%20Assignment/Readme.md)
+
 ## Project Diagram:
 ![screenshot](https://raw.githubusercontent.com/Team-Zealot-Databases/Databases-Teamwork-2014/master/Teamwork%20-%20Assignment/database-requirements.png)
