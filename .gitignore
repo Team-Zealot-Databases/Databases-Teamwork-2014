@@ -6,3 +6,5 @@ RobotsFactory/RobotsFactory.ConsoleClient/bin/
 RobotsFactory/RobotsFactory.ConsoleClient/obj/
 RobotsFactory/RobotsFactory.Data/obj/
 RobotsFactory/RobotsFactory.Models/obj/
+bin
+packages
