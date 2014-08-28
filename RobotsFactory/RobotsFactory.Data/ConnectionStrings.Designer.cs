@@ -23,15 +23,21 @@ namespace RobotsFactory.Data {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Provider=Microsoft.ACE.OLEDB.12.0;Extended Properties=\'Excel 12.0 xml;HDR=Yes;\';")]
         public string ExcelConnectionString {
             get {
                 return ((string)(this["ExcelConnectionString"]));
             }
-            set {
-                this["ExcelConnectionString"] = value;
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("mongodb://zealot:telerik@ds063879.mongolab.com:63879/robotsfactorydata")]
+        public string MongoDbCloudDatabase {
+            get {
+                return ((string)(this["MongoDbCloudDatabase"]));
             }
         }
     }

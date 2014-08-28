@@ -4,7 +4,6 @@
     using System.IO;
     using System.Linq;
     using System.Text.RegularExpressions;
-    using MongoDB.Driver;
     using RobotsFactory.Data;
     using RobotsFactory.Models;
 
@@ -17,25 +16,12 @@
 
         public static void Main()
         {
-            ReadDataFromMongoDbCloud();
+            var mongoDatabase = new MongoDbCloudDatabase();
+            mongoDatabase.PrintCollectionItems("Countries");
+            mongoDatabase.PrintCollectionItems("ProductTypes");
+
             //ExtractZipFileAndReadExcelFiles();
             //ConnectAndLoadDataFromMsSql();
-        }
-
-        private static void ReadDataFromMongoDbCloud()
-        {
-            Console.WriteLine("Loading data from MongoDB Cloud Database...\n");
-
-            var mongoClient = new MongoClient("mongodb://zealot:telerik@ds063879.mongolab.com:63879/robotsfactorydata");
-            var mongoServer = mongoClient.GetServer();
-            var countriesDatabase = mongoServer.GetDatabase("robotsfactorydata");
-
-            var countries = countriesDatabase.GetCollection("Countries");
-
-            foreach (var country in countries.FindAll())
-            {
-                Console.WriteLine(country["Name"]);
-            }
         }
 
         private static void ExtractZipFileAndReadExcelFiles()
