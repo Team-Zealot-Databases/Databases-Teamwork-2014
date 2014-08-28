@@ -5,7 +5,6 @@
     using System.Linq;
     using System.Text.RegularExpressions;
     using RobotsFactory.Data;
-    using RobotsFactory.Models;
 
     public class RobotsFactoryConsoleClient
     {
@@ -16,12 +15,12 @@
 
         public static void Main()
         {
-            var mongoDatabase = new MongoDbCloudDatabase();
-            mongoDatabase.PrintCollectionItems("Countries");
-            mongoDatabase.PrintCollectionItems("ProductTypes");
+            //var mongoDatabase = new MongoDbCloudDatabase();
+            //mongoDatabase.PrintCollectionItems("Countries");
+            //mongoDatabase.PrintCollectionItems("ProductTypes");
 
             //ExtractZipFileAndReadExcelFiles();
-            //ConnectAndLoadDataFromMsSql();
+            ConnectAndLoadDataFromMsSql();
         }
 
         private static void ExtractZipFileAndReadExcelFiles()
@@ -48,27 +47,45 @@
  
         private static void ConnectAndLoadDataFromMsSql()
         {
-            Console.Write("Loading...");
+            Console.WriteLine("Loading data from MongoDB Cloud Database and seed it in SQL Server...\n");
 
             try
             {
                 using (var robotsFactoryContext = new RobotsFactoryContext())
                 {
                     robotsFactoryContext.Database.Initialize(true);
-                    robotsFactoryContext.Database.CommandTimeout = 5;
-                    robotsFactoryContext.Countries.Add(new Country() { Name = "TestCountry" });
-                    robotsFactoryContext.SaveChanges();
-                    Console.Write("\r");
-                    foreach (var country in robotsFactoryContext.Countries.ToList())
-                    {
-                        Console.WriteLine(country.Name);   
-                    }
+                    PrintCountries(robotsFactoryContext);
+                    PrintCities(robotsFactoryContext);
                 }
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
             }
+        }
+ 
+        private static void PrintCountries(RobotsFactoryContext robotsFactoryContext)
+        {
+            Console.WriteLine("--------- Countries (from SQL Server): ");
+
+            foreach (var country in robotsFactoryContext.Countries.ToList())
+            {
+                Console.WriteLine(country.Name);   
+            }
+
+            Console.WriteLine();
+        }
+
+        private static void PrintCities(RobotsFactoryContext robotsFactoryContext)
+        {
+            Console.WriteLine("--------- Cities (from SQL Server): ");
+
+            foreach (var city in robotsFactoryContext.Cities.ToList())
+            {
+                Console.WriteLine(city.Name);
+            }
+
+            Console.WriteLine();
         }
     }
 }
