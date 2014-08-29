@@ -37,5 +37,7 @@
         public DbSet<SalesReport> SalesReports { get; set; }
 
         public DbSet<SalesReportEntry> SalesReportEntries { get; set; }
+
+        public DbSet<Store> Stores { get; set; }
     }
 }

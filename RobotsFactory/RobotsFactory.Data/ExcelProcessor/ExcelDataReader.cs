@@ -9,21 +9,18 @@
 
     public class ExcelDataReader
     {
-        public void ReadData(string dataSourcePath)
+        public IList<string> ReadSaleReportsData(string dataSourcePath)
         {
             var dataSourceFormat = "Data Source=" + dataSourcePath;
-            var excelConnection = new OleDbConnection(ConnectionStrings.Default.ExcelConnectionString + dataSourceFormat);
-            excelConnection.Open();
+            var dataRowsAsStrings = new List<string>();
 
-            DataTable excelSchema = excelConnection.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, null);
-            string sheetName = excelSchema.Rows[0]["TABLE_NAME"].ToString();
-
-            OleDbCommand excelCommand = new OleDbCommand(@"SELECT * FROM [" + sheetName + "]", excelConnection);
-
-            var data = new List<string>();
-
-            using (excelConnection)
+            using (var excelConnection = new OleDbConnection(ConnectionStrings.Default.ExcelConnectionString + dataSourceFormat))
             {
+                excelConnection.Open();
+
+                string sheetName = this.GetSheetName(excelConnection);
+                var excelCommand = this.GetOleDbCommand(sheetName, excelConnection);
+
                 using (OleDbDataAdapter oleDbDataAdapter = new OleDbDataAdapter(excelCommand))
                 {
                     DataSet dataSet = new DataSet();
@@ -33,7 +30,7 @@
                     {
                         if (reader.Read())
                         {
-                            data.Add(reader[0].ToString()); // Factory name
+                            dataRowsAsStrings.Add(reader[0].ToString()); // Factory name
                         }
 
                         reader.Read(); // Skip column names
@@ -44,7 +41,7 @@
                             {
                                 if (!string.IsNullOrEmpty(reader[i].ToString()))
                                 {
-                                    data.Add(reader[i].ToString());
+                                    dataRowsAsStrings.Add(reader[i].ToString());
                                 }
                             }
                         }
@@ -52,7 +49,20 @@
                 }
             }
 
-            Console.WriteLine(string.Join(" ", data));
+            return dataRowsAsStrings;
+        }
+ 
+        private string GetSheetName(OleDbConnection excelConnection)
+        {
+            DataTable excelSchema = excelConnection.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, null);
+            string sheetName = excelSchema.Rows[0]["TABLE_NAME"].ToString();
+            return sheetName;
+        }
+
+        private OleDbCommand GetOleDbCommand(string sheetName, OleDbConnection excelConnection)
+        {
+            OleDbCommand oleDbCommand = new OleDbCommand(@"SELECT * FROM [" + sheetName + "]", excelConnection);
+            return oleDbCommand;
         }
     }
 }

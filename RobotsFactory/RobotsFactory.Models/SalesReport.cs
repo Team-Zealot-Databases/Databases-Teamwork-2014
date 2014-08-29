@@ -22,10 +22,10 @@
 
         public decimal TotalSum { get; set; }
 
-        [ForeignKey("Manufacturer")]
-        public int ManufacturerId { get; set; }
+        [ForeignKey("Store")]
+        public int StoreId { get; set; }
 
-        public virtual Manufacturer Manufacturer { get; set; }
+        public virtual Store Store { get; set; }
 
         public virtual ICollection<SalesReportEntry> SalesReportEntries
         {
