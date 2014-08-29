@@ -16,9 +16,9 @@ namespace RobotsFactory.Data.Migrations
 
         protected override void Seed(RobotsFactoryContext context)
         {
-            var mongoDb = new MongoDbCloudDatabase();
-            this.AddCountries(context, mongoDb);
-            this.AddCities(context, mongoDb);
+            //var mongoDb = new MongoDbCloudDatabase();
+            //this.AddCountries(context, mongoDb);
+            //this.AddCities(context, mongoDb);
         }
  
         private void AddCountries(RobotsFactoryContext context, MongoDbCloudDatabase mongoDb)

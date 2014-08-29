@@ -4,11 +4,13 @@
     using System.IO;
     using System.Linq;
     using System.Text.RegularExpressions;
+    using RobotsFactory.Common;
     using RobotsFactory.Data;
+    using RobotsFactory.Data.ExcelProcessor;
 
     public class RobotsFactoryConsoleClient
     {
-        private const string SampleReportsPath = "../../../../Reports/Sample-Sales-Reports.zip";
+        private const string SampleReportsPath = "../../../../Reports/Sales-Reports.zip";
         private const string ExtractedReportsPath = @"../../../../Reports/Extracted_Reports";
         private const string DateTimeNowFormat = "mmssffff";
         private const string DirectorySearchRegexPattern = @"\d{1,2}-\w{2,3}-\d{4}";

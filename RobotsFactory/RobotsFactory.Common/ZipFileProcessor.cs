@@ -1,4 +1,4 @@
-﻿namespace RobotsFactory.Data
+﻿namespace RobotsFactory.Common
 {
     using System;
     using System.Linq;

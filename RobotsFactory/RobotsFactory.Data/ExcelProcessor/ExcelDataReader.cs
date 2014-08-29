@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.OleDb;
-using System.Linq;
-
-namespace RobotsFactory.Data
+﻿namespace RobotsFactory.Data.ExcelProcessor
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Data.OleDb;
+    using System.Linq;
+    using RobotsFactory.Data;
+
     public class ExcelDataReader
     {
         public void ReadData(string dataSourcePath)

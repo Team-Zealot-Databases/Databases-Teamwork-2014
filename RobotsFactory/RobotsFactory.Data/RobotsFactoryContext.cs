@@ -33,5 +33,9 @@
         public DbSet<City> Cities { get; set; }
 
         public DbSet<Country> Countries { get; set; }
+
+        public DbSet<SalesReport> SalesReports { get; set; }
+
+        public DbSet<SalesReportEntry> SalesReportEntries { get; set; }
     }
 }
