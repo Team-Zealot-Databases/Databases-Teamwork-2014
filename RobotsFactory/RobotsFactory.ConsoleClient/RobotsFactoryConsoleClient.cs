@@ -20,7 +20,6 @@
             //var mongoDatabase = new MongoDbCloudDatabase();
             //mongoDatabase.PrintCollectionItems("Countries");
             //mongoDatabase.PrintCollectionItems("ProductTypes");
-
             //ExtractZipFileAndReadExcelFiles();
             ConnectAndLoadDataFromMsSql();
         }
@@ -56,8 +55,15 @@
                 using (var robotsFactoryContext = new RobotsFactoryContext())
                 {
                     robotsFactoryContext.Database.Initialize(true);
+                    var mongoDbSeeder = new MongoDbSeeder(robotsFactoryContext);
+                    mongoDbSeeder.Seed();
+
                     PrintCountries(robotsFactoryContext);
                     PrintCities(robotsFactoryContext);
+                    PrintAddresses(robotsFactoryContext);
+                    PrintManufacturers(robotsFactoryContext);
+                    PrintProductTypes(robotsFactoryContext);
+                    PrintProducts(robotsFactoryContext);
                 }
             }
             catch (Exception e)
@@ -85,6 +91,54 @@
             foreach (var city in robotsFactoryContext.Cities.ToList())
             {
                 Console.WriteLine(city.Name);
+            }
+
+            Console.WriteLine();
+        }
+
+        private static void PrintAddresses(RobotsFactoryContext robotsFactoryContext)
+        {
+            Console.WriteLine("--------- Addresses (from SQL Server): ");
+
+            foreach (var address in robotsFactoryContext.Addresses.ToList())
+            {
+                Console.WriteLine(address.AddressText);
+            }
+
+            Console.WriteLine();
+        }
+
+        private static void PrintManufacturers(RobotsFactoryContext robotsFactoryContext)
+        {
+            Console.WriteLine("--------- Manufacturers (from SQL Server): ");
+
+            foreach (var manufacturer in robotsFactoryContext.Manufacturers.ToList())
+            {
+                Console.WriteLine(manufacturer.Name);
+            }
+
+            Console.WriteLine();
+        }
+
+        private static void PrintProductTypes(RobotsFactoryContext robotsFactoryContext)
+        {
+            Console.WriteLine("--------- ProductTypes (from SQL Server): ");
+
+            foreach (var productType in robotsFactoryContext.ProductTypes.ToList())
+            {
+                Console.WriteLine(productType.Name);
+            }
+
+            Console.WriteLine();
+        }
+
+        private static void PrintProducts(RobotsFactoryContext robotsFactoryContext)
+        {
+            Console.WriteLine("--------- Products (from SQL Server): ");
+
+            foreach (var product in robotsFactoryContext.Products.ToList())
+            {
+                Console.WriteLine(product.Name);
             }
 
             Console.WriteLine();
