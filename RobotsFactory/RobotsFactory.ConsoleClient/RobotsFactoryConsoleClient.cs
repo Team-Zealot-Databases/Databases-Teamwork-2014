@@ -7,6 +7,7 @@
     using RobotsFactory.Common;
     using RobotsFactory.Data;
     using RobotsFactory.Data.ExcelProcessor;
+    using RobotsFactory.Data.MongoDb;
 
     public class RobotsFactoryConsoleClient
     {

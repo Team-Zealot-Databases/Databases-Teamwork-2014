@@ -1,7 +1,9 @@
-﻿namespace RobotsFactory.Data
+﻿namespace RobotsFactory.Data.MongoDb
 {
     using System;
     using System.Linq;
+    using RobotsFactory.Data;
+    using RobotsFactory.Data.MongoDb;
     using RobotsFactory.Models;
 
     public class MongoDbSeeder : CentralDatabaseSeeder

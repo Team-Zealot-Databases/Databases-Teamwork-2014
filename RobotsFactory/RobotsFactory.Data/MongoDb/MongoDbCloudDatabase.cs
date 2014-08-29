@@ -1,10 +1,11 @@
-﻿namespace RobotsFactory.Data
+﻿namespace RobotsFactory.Data.MongoDb
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using MongoDB.Bson;
     using MongoDB.Driver;
+    using RobotsFactory.Data;
 
     public class MongoDbCloudDatabase
     {

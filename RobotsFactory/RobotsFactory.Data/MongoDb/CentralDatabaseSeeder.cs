@@ -1,4 +1,4 @@
-﻿namespace RobotsFactory.Data
+﻿namespace RobotsFactory.Data.MongoDb
 {
     using System;
     using System.Linq;
