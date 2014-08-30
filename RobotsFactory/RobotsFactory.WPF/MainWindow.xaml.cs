@@ -74,15 +74,27 @@
 
             try
             {
-                var salesReportToPdfFactory = new PdfExportFactoryFromMsSqlDatabase(this.robotsFactoryContext);
-                salesReportToPdfFactory.ExportSalesEntriesToPdf();
+                var startDate = this.GetDateTimeAsString(this.startDateTimePicker.Text);
+                var endDate = this.GetDateTimeAsString(this.endDateTimePicker.Text);
 
+                var salesReportToPdfFactory = new PdfExportFactoryFromMsSqlDatabase(this.robotsFactoryContext);
+                salesReportToPdfFactory.ExportSalesEntriesToPdf(startDate, endDate);
                 this.ShowMessage("Sales Report was successfully exported to PDF...");
             }
             catch (Exception)
             {
                 this.ShowMessage("Error! Cannot export sales reports to Pdf file...");
             }
+        }
+
+        private string GetDateTimeAsString(string text)
+        {
+            if (string.IsNullOrEmpty(text))
+            {
+                return DateTime.Now.ToString("dd.MM.yyyy");
+            }
+
+            return DateTime.Parse(text).ToString("dd.MM.yyyy");
         }
 
         private void ReadExcelFilesAndCreateSalesReports(IEnumerable<DirectoryInfo> matchedDirectories)

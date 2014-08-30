@@ -7,7 +7,7 @@
         Icon="Images/favicon.jpg"
         ResizeMode="NoResize"
         Closing="OnWindowFormClosing"
-        Closed="OnWindowFormClosed">
+        Closed="OnWindowFormClosed" ShowInTaskbar="False">
     <Grid>
         <Image Margin="183,44,11,27" 
                Source="Images/robot.png" 
@@ -26,7 +26,7 @@
                 Name="readExcelReportsButton"
                 HorizontalAlignment="Left"
                 HorizontalContentAlignment="Center"
-                Margin="10,154,0,0" 
+                Margin="10,140,0,0" 
                 VerticalAlignment="Top" 
                 Width="181" 
                 Height="36" Click="OnReadSaleReportsFromExcelButtonClick"/>
@@ -35,7 +35,7 @@
                 Name="generatePdfReportsButton"
                 HorizontalAlignment="Left"
                 HorizontalContentAlignment="Center"
-                Margin="10,209,0,0" 
+                Margin="10,268,0,0" 
                 VerticalAlignment="Top" 
                 Width="181" 
                 Height="36" Click="ExportAggregatedSalesReportToPdfButtonClick"/>
@@ -50,6 +50,8 @@
                    Width="574"
                    FontFamily="Consolas" 
                    FontSize="22"/>
-
+        
+        <DatePicker Name="startDateTimePicker" Text="05.05.2013" HorizontalAlignment="Left" Margin="10,210,0,0" VerticalAlignment="Top" Width="181"/>
+        <DatePicker Name="endDateTimePicker" Text="30.08.2014" HorizontalAlignment="Left" Margin="10,239,0,0" VerticalAlignment="Top" Width="181"/>
     </Grid>
 </Window>

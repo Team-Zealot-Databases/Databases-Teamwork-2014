@@ -61,7 +61,7 @@
             Console.WriteLine("3) Exporting Sales Report to PDF...\n");
 
             var salesReportToPdfFactory = new PdfExportFactoryFromMsSqlDatabase(robotsFactoryContext);
-            salesReportToPdfFactory.ExportSalesEntriesToPdf();
+            salesReportToPdfFactory.ExportSalesEntriesToPdf("20.07.2013", "22.07.2013");
         }
 
         private static void ReadExcelFilesAndCreateSalesReports(RobotsFactoryContext robotsFactoryContext, IEnumerable<DirectoryInfo> matchedDirectories)
