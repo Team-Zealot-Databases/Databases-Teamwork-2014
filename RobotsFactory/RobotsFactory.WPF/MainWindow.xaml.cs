@@ -9,6 +9,8 @@
     using RobotsFactory.Data;
     using RobotsFactory.Data.ExcelProcessor;
     using RobotsFactory.Data.MongoDb;
+    using RobotsFactory.Data.PdfProcessor;
+    using RobotsFactory.Data.XmlProcessor;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -16,7 +18,10 @@
     public partial class MainWindow : Window
     {
         private const string SampleReportsZipFilePath = "../../../../Reports/Sales-Reports.zip";
-        private const string ExtractedReportsPath = @"../../../../Reports/Extracted_Reports";
+        private const string AggregatedSaleReportPdfPath = "../../../../Reports/Robots-Factory-Aggrerated-Sales-Report.pdf";
+        private const string ExtractedExcelReportsPath = @"../../../../Reports/Excel_Reports/";
+        private const string ExtractedXmlReportsPath = @"../../../../Reports/XML_Reports/";
+        private const string XmlReportName = @"xml-report.xml";
 
         private RobotsFactoryContext robotsFactoryContext;
 
@@ -55,9 +60,9 @@
             try
             {
                 var zipFileProcessor = new ZipFileProcessor();
-                zipFileProcessor.Extract(SampleReportsZipFilePath, ExtractedReportsPath);
+                zipFileProcessor.Extract(SampleReportsZipFilePath, ExtractedExcelReportsPath);
 
-                var matchedDirectories = Utility.GetDirectoriesByPattern(ExtractedReportsPath);
+                var matchedDirectories = Utility.GetDirectoriesByPattern(ExtractedExcelReportsPath);
                 this.ParseExcelDataAndExportItInSqlServer(matchedDirectories);
 
                 this.ShowMessage("Sales reports from Excel files were successfully imported to MSSQL...");
@@ -68,17 +73,17 @@
             }
         }
 
-        private void ExportAggregatedSalesReportToPdfButtonClick(object sender, RoutedEventArgs e)
+        private void OnExportAggregatedSalesReportToPdfButtonClick(object sender, RoutedEventArgs e)
         {
             this.InitializeDatabaseConnectionIfNecessary();
+            var startDate = this.GetSelectedDateOrDefault(this.startDateTimePicker.Text, DateTime.MinValue);
+            var endDate = this.GetSelectedDateOrDefault(this.endDateTimePicker.Text, DateTime.Now);
 
             try
             {
-                var startDate = this.GetDateTimeAsString(this.startDateTimePicker.Text);
-                var endDate = this.GetDateTimeAsString(this.endDateTimePicker.Text);
-
                 var salesReportToPdfFactory = new PdfExportFactoryFromMsSqlDatabase(this.robotsFactoryContext);
-                salesReportToPdfFactory.ExportSalesEntriesToPdf(startDate, endDate);
+                salesReportToPdfFactory.ExportSalesEntriesToPdf(AggregatedSaleReportPdfPath, startDate, endDate);
+
                 this.ShowMessage("Sales Report was successfully exported to PDF...");
             }
             catch (Exception)
@@ -87,14 +92,33 @@
             }
         }
 
-        private string GetDateTimeAsString(string text)
+        private void OnGenerateXmlReportButtonClick(object sender, RoutedEventArgs e)
+        {
+            this.InitializeDatabaseConnectionIfNecessary();
+            var startDate = this.GetSelectedDateOrDefault(this.startDateTimePicker.Text, DateTime.MinValue);
+            var endDate = this.GetSelectedDateOrDefault(this.endDateTimePicker.Text, DateTime.Now);
+
+            try
+            {
+                var xmlGenerator = new XmlReportGenerator(this.robotsFactoryContext);
+                xmlGenerator.GenerateXml(ExtractedXmlReportsPath, XmlReportName, startDate, endDate);
+
+                this.ShowMessage("Sales reports were successfully exported as XML file...");
+            }
+            catch (Exception)
+            {
+                this.ShowMessage("Error! Cannot export reports as XML file...");
+            }
+        }
+
+        private DateTime GetSelectedDateOrDefault(string text, DateTime defaultValue)
         {
             if (string.IsNullOrEmpty(text))
             {
-                return DateTime.Now.ToString("dd.MM.yyyy");
+                return defaultValue;
             }
 
-            return DateTime.Parse(text).ToString("dd.MM.yyyy");
+            return DateTime.Parse(text);
         }
 
         private void ParseExcelDataAndExportItInSqlServer(IEnumerable<DirectoryInfo> matchedDirectories)

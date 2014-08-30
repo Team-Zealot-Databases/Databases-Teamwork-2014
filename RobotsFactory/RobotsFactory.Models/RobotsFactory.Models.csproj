@@ -48,6 +48,7 @@
     <Compile Include="Address.cs" />
     <Compile Include="Country.cs" />
     <Compile Include="Manufacturer.cs" />
+    <Compile Include="PdfSaleReportEntry.cs" />
     <Compile Include="Product.cs" />
     <Compile Include="ProductType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -1,81 +1,91 @@
-﻿using System;
-using System.Data;
-using System.Data.SqlClient;
-namespace RobotsFactory.Data
+﻿namespace RobotsFactory.Data.XmlProcessor
 {
-    using System.Collections.Generic;
+    using System;
+    using System.IO;
     using System.Linq;
     using System.Text;
     using System.Xml;
+    using RobotsFactory.Data;
 
     public class XmlReportGenerator
     {
-        public void GenerateXml(RobotsFactoryContext context)
+        private const string DateTimeFormatInXml = "dd-MMM-yyyy";
+        private const string EncodingType = "utf-8";
+
+        private readonly RobotsFactoryContext robotsFactoryContext;
+
+        public XmlReportGenerator(RobotsFactoryContext robotsFactoryContext)
         {
+            this.robotsFactoryContext = robotsFactoryContext;
+        }
 
-            var reportsData = context.SalesReports.Select(s =>
-                new
-                {
-                    Vendor = s.Store.Name,
-                    Date = s.ReportDate,
-                    TotalSum = s.TotalSum
-                })
-                .OrderBy(d => d.Date)
-                .GroupBy(v => v.Vendor);
+        public void GenerateXml(string pathToSave, string xmlReportName, DateTime startDate, DateTime endDate)
+        {
+            var encoding = Encoding.GetEncoding(EncodingType);
 
-            string fileName = "../../sales-report.xml";
-            Encoding encoding = Encoding.GetEncoding("utf-8");
-            using (XmlTextWriter writer = new XmlTextWriter(fileName, encoding))
+            if (!Directory.Exists(pathToSave))
             {
-                writer.Formatting = Formatting.Indented;
-                writer.IndentChar = '\t';
-                writer.Indentation = 1;
+                Directory.CreateDirectory(pathToSave);
+            }
 
-                writer.WriteStartDocument();
-                writer.WriteStartElement("sales");
-                writer.WriteAttributeString("name", "Sales Report");
+            using (var writer = new XmlTextWriter(pathToSave + xmlReportName, encoding))
+            {
+                this.SetHeader(writer);
+    
+                var manufacturerData = (from m in this.robotsFactoryContext.Manufacturers
+                                        join p in this.robotsFactoryContext.Products on m.ManufacturerId equals p.ManufacturerId
+                                        join s in this.robotsFactoryContext.SalesReportEntries on p.ProductId equals s.ProductId
+                                        join l in this.robotsFactoryContext.SalesReports on s.SalesReportId equals l.SalesReportId
+                                        where l.ReportDate >= startDate && l.ReportDate <= endDate
+                                        select new
+                                        {
+                                            Date = l.ReportDate,
+                                            Name = m.Name,
+                                            Sum = s.Sum
+                                        })
+                                          .GroupBy(a => new { a.Name, a.Date })
+                                          .GroupBy(a => new { Name = a.Key.Name })
+                                          .Select(a => new
+                                          {
+                                              Name = a.Key.Name,
+                                              Reports = a
+                                          });
 
-                var data = (from m in context.Manufacturers
-                            join p in context.Products on m.ManufacturerId equals p.ManufacturerId
-                            join s in context.SalesReportEntries on p.ProductId equals s.ProductId
-                            join l in context.SalesReports on s.SalesReportId equals l.SalesReportId
-                            select new
-                            {
-                                Date = l.ReportDate,
-                                Name = m.Name,
-                                Sum = s.Sum
-                            })
-                           .GroupBy(a => new { a.Name, a.Date })
-                           .GroupBy(a => new { Name = a.Key.Name })
-                           .Select(a => new
-                           {
-                               Name = a.Key.Name,
-                               Reports = a
-                           })
-                           .ToList();
-
-                foreach (var manufacturer in data)
+                foreach (var manufacturer in manufacturerData)
                 {
-                    Console.WriteLine(manufacturer.Name);
-                    writer.WriteStartElement("sale");
-                    writer.WriteAttributeString("vendor", manufacturer.Name);
+                    this.SetTitle(writer, manufacturer.Name);
 
                     foreach (var report in manufacturer.Reports)
                     {
-                        Console.WriteLine(report.Key.Date + " " + report.Sum(a => a.Sum));
-                        WriteSummaryToSale(writer, report.Key.Date.ToString("dd-MMM-yyyy"), report.Sum(s => s.Sum));
+                        this.WriteSummaryToSale(writer, report.Key.Date, report.Sum(s => s.Sum));
                     }
 
                     writer.WriteEndElement();
-                    Console.WriteLine();
                 }
             }
         }
+ 
+        private void SetHeader(XmlTextWriter writer)
+        {
+            writer.Formatting = Formatting.Indented;
+            writer.IndentChar = '\t';
+            writer.Indentation = 1;
 
-        private static void WriteSummaryToSale(XmlTextWriter writer, string date, decimal totalSum)
+            writer.WriteStartDocument();
+            writer.WriteStartElement("sales");
+            writer.WriteAttributeString("name", "Sales Report");
+        }
+ 
+        private void SetTitle(XmlTextWriter writer, string vendorName)
+        {
+            writer.WriteStartElement("sale");
+            writer.WriteAttributeString("vendor", vendorName);
+        }
+ 
+        private void WriteSummaryToSale(XmlTextWriter writer, DateTime date, decimal totalSum)
         {
             writer.WriteStartElement("summary");
-            writer.WriteAttributeString("date", date);
+            writer.WriteAttributeString("date", date.ToString(DateTimeFormatInXml));
             writer.WriteAttributeString("total-sum", totalSum.ToString());
             writer.WriteEndElement();
         }

@@ -8,11 +8,15 @@
     using RobotsFactory.Data;
     using RobotsFactory.Data.ExcelProcessor;
     using RobotsFactory.Data.MongoDb;
+    using RobotsFactory.Data.PdfProcessor;
 
     public class RobotsFactoryConsoleClient
     {
         private const string SampleReportsZipFilePath = "../../../../Reports/Sales-Reports.zip";
-        private const string ExtractedReportsPath = @"../../../../Reports/Extracted_Reports";
+        private const string AggregatedSaleReportPdfPath = "../../../../Reports/Robots-Factory-Aggrerated-Sales-Report.pdf";
+        private const string ExtractedExcelReportsPath = @"../../../../Reports/Extracted_Reports";
+        private const string ExtractedXmlReportsPath = @"../../../../Reports";
+        private const string XmlReportName = @"xml-report.xml";
 
         public static void Main()
         {
@@ -24,15 +28,14 @@
             using (var robotsFactoryContext = new RobotsFactoryContext())
             {
                 robotsFactoryContext.Database.Initialize(true);
-                var xmlGen = new XmlReportGenerator();
-                xmlGen.GenerateXml(robotsFactoryContext);
+                //var xmlGen = new XmlReportGenerator(robotsFactoryContext);
+                //xmlGen.GenerateXml(ExtractedXmlReportsPath, XmlReportName, "01.01.2012", "01.01.2015");
                 //SeedDataFromMongoDB(robotsFactoryContext);
                 //ExtractZipAndReadSalesReportExcelFiles(robotsFactoryContext);
                 //ExportAggregatedSalesReportToPdf(robotsFactoryContext);
             }
             try
             {
-                
             }
             catch (Exception e)
             {
@@ -53,9 +56,9 @@
             Console.WriteLine("2) Extracting files from .zip and reading Excel data...\n");
 
             var zipFileProcessor = new ZipFileProcessor();
-            zipFileProcessor.Extract(SampleReportsZipFilePath, ExtractedReportsPath);
+            zipFileProcessor.Extract(SampleReportsZipFilePath, ExtractedExcelReportsPath);
 
-            var matchedDirectories = Utility.GetDirectoriesByPattern(ExtractedReportsPath);
+            var matchedDirectories = Utility.GetDirectoriesByPattern(ExtractedExcelReportsPath);
             ReadExcelFilesAndCreateSalesReports(robotsFactoryContext, matchedDirectories);
         }
  
@@ -64,7 +67,7 @@
             Console.WriteLine("3) Exporting Sales Report to PDF...\n");
 
             var salesReportToPdfFactory = new PdfExportFactoryFromMsSqlDatabase(robotsFactoryContext);
-            salesReportToPdfFactory.ExportSalesEntriesToPdf("20.07.2013", "22.07.2013");
+            salesReportToPdfFactory.ExportSalesEntriesToPdf(AggregatedSaleReportPdfPath, new DateTime(2012, 1, 1), new DateTime(2014, 1, 1));
         }
 
         private static void ReadExcelFilesAndCreateSalesReports(RobotsFactoryContext robotsFactoryContext, IEnumerable<DirectoryInfo> matchedDirectories)
@@ -80,6 +83,16 @@
                     salesReportFactory.CreateSalesReport(excelData, dir.Name);
                 }
             }
+        }
+
+        private static string GetDateTimeAsString(string text, DateTime defaultValue)
+        {
+            if (string.IsNullOrEmpty(text))
+            {
+                return defaultValue.ToString("dd.MM.yyyy");
+            }
+
+            return DateTime.Parse(text).ToString("dd.MM.yyyy");
         }
     }
 }

@@ -35,10 +35,10 @@
                 Name="generatePdfReportsButton"
                 HorizontalAlignment="Left"
                 HorizontalContentAlignment="Center"
-                Margin="10,268,0,0" 
+                Margin="10,270,0,0" 
                 VerticalAlignment="Top" 
                 Width="181" 
-                Height="36" Click="ExportAggregatedSalesReportToPdfButtonClick"/>
+                Height="36" Click="OnExportAggregatedSalesReportToPdfButtonClick"/>
 
         <TextBlock HorizontalAlignment="Left" 
                    Name="messageBox"
@@ -47,11 +47,21 @@
                    VerticalAlignment="Top"
                    TextAlignment="Center"
                    Height="57"
-                   Width="574"
+                   Width="573"
                    FontFamily="Consolas" 
                    FontSize="22"/>
-        
-        <DatePicker Name="startDateTimePicker" Text="05.05.2013" HorizontalAlignment="Left" Margin="10,210,0,0" VerticalAlignment="Top" Width="181"/>
-        <DatePicker Name="endDateTimePicker" Text="30.08.2014" HorizontalAlignment="Left" Margin="10,239,0,0" VerticalAlignment="Top" Width="181"/>
+
+        <DatePicker Name="startDateTimePicker" Text="05.05.2013" HorizontalAlignment="Left" Margin="10,212,0,0" VerticalAlignment="Top" Width="181"/>
+        <DatePicker Name="endDateTimePicker" Text="30.08.2014" HorizontalAlignment="Left" Margin="10,241,0,0" VerticalAlignment="Top" Width="181"/>
+
+        <Button Content="Generate XML Report" 
+        	x:Name="generateXmlReport"
+        	HorizontalAlignment="Left"
+        	HorizontalContentAlignment="Center"
+        	Margin="10,311,0,0" 
+        	VerticalAlignment="Top" 
+        	Width="181" 
+        	Height="36" 
+            Click="OnGenerateXmlReportButtonClick"/>
     </Grid>
 </Window>

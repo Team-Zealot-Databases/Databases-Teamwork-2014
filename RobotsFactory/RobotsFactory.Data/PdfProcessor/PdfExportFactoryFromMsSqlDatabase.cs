@@ -1,0 +1,163 @@
+﻿namespace RobotsFactory.Data.PdfProcessor
+{
+    using System;
+    using System.IO;
+    using System.Linq;
+    using RobotsFactory.Data;
+    using RobotsFactory.Models;
+    using iTextSharp.text;
+    using iTextSharp.text.pdf;
+
+    public class PdfExportFactoryFromMsSqlDatabase
+    {
+        private const string OpenSansRecularTtfPath = "../../../RobotsFactory.Data/OpenSans-Regular.ttf";
+        private const string DateTimeFormat = "dd.MM.yyyy";
+        private const int TableColumnsNumber = 6;
+
+        private readonly RobotsFactoryContext robotsFactoryContext;
+
+        public PdfExportFactoryFromMsSqlDatabase(RobotsFactoryContext robotsFactoryContext)
+        {
+            this.robotsFactoryContext = robotsFactoryContext;
+        }
+
+        public void ExportSalesEntriesToPdf(string pathToSave, DateTime startDate, DateTime endDate)
+        {
+            using (var db = this.robotsFactoryContext)
+            {
+                using (var doc = this.InitializePdfDocument(pathToSave))
+                {
+                    var table = this.InitializePdfTable(TableColumnsNumber);
+
+                    // Set fonts
+                    var bfTimes = BaseFont.CreateFont(OpenSansRecularTtfPath, BaseFont.CP1252, false);
+                    var normalFont = new Font(bfTimes, 10);
+                    var boldFont = new Font(bfTimes, 11, Font.BOLD);
+
+                    this.SetTableTitle(table, boldFont, TableColumnsNumber, startDate, endDate);
+                    this.SetTableColumnHeaders(table, normalFont);
+
+                    var salesReportEntries = this.MakeQuery(db, startDate, endDate);
+                    this.FillPdfTableBody(salesReportEntries, table, normalFont);
+
+                    decimal totalSum = salesReportEntries.Sum(x => x.Sum);
+                    this.SetTableFooter(table, totalSum, boldFont, TableColumnsNumber);
+
+                    doc.Add(table);
+                }
+            }
+        }
+ 
+        /// <summary>
+        // Fill pdf table body with the data queried from the database
+        /// </summary>
+        private void FillPdfTableBody(IQueryable<PdfSaleReportEntry> salesReportEntries, PdfPTable table, Font normalFont)
+        {
+            foreach (var salesEntry in salesReportEntries)
+            {
+                this.AddTableCell(table, normalFont, null, salesEntry.Name);
+                this.AddTableCell(table, normalFont, null, salesEntry.Quantity.ToString());
+                this.AddTableCell(table, normalFont, null, salesEntry.UnitPrice.ToString());
+                this.AddTableCell(table, normalFont, null, salesEntry.Location);
+                this.AddTableCell(table, normalFont, null, salesEntry.Sum.ToString());
+                this.AddTableCell(table, normalFont, null, salesEntry.Date.ToString(DateTimeFormat));
+            }
+        }
+ 
+        /// <summary>
+        // Query for getting all sold items information (product name, quantity, unit price, sum, date)
+        /// </summary>
+        private IQueryable<PdfSaleReportEntry> MakeQuery(RobotsFactoryContext db, DateTime startDate, DateTime endDate)
+        {
+            var salesReportEntries = from sre in db.SalesReportEntries
+                                     join pro in db.Products on sre.ProductId equals pro.ProductId
+                                     join sl in db.SalesReports on sre.SalesReportId equals sl.SalesReportId
+                                     where sl.ReportDate >= startDate && sl.ReportDate <= endDate
+                                     orderby sl.ReportDate
+                                     select new PdfSaleReportEntry
+                                     {
+                                         Name = pro.Name,
+                                         Quantity = sre.Quantity,
+                                         Date = sl.ReportDate,
+                                         UnitPrice = sre.UnitPrice,
+                                         Location = sl.Store.Name,
+                                         Sum = sre.Sum
+                                     };
+
+            return salesReportEntries;
+        }
+
+        private Document InitializePdfDocument(string pathToSave)
+        {
+            var doc = new Document();
+            var file = File.Create(pathToSave);
+            PdfWriter.GetInstance(doc, file);
+            doc.Open();
+            return doc;
+        }
+
+        private PdfPTable InitializePdfTable(int columnsNumber)
+        {
+            var table = new PdfPTable(columnsNumber);
+            table.TotalWidth = 500f;
+            table.LockedWidth = true;
+            float[] widths = new float[] { 100f, 100, 100f, 100f, 100f, 100f };
+            table.SetWidths(widths);
+            return table;
+        }
+
+        private void SetTableTitle(PdfPTable table, Font font, int tableColumnsNumber, DateTime startDate, DateTime endDate)
+        {
+            var cell = new PdfPCell(new Phrase(string.Format("Robots Factory - Sales Report ({0} - {1})",
+                startDate.ToString(DateTimeFormat), endDate.ToString(DateTimeFormat)), font));
+
+            cell.Colspan = tableColumnsNumber;
+            cell.HorizontalAlignment = 1;
+            cell.BackgroundColor = new BaseColor(189, 215, 238);
+            cell.PaddingTop = 10f;
+            cell.PaddingBottom = 10f;
+            table.AddCell(cell);
+        }
+
+        private void SetTableFooter(PdfPTable table, decimal totalSum, Font font, int tableColumnsNumber)
+        {
+            var cell = new PdfPCell(new Phrase("Total Sum: $ " + totalSum.ToString(), font));
+            cell.Colspan = tableColumnsNumber - 1;
+            cell.HorizontalAlignment = 2;
+            cell.BackgroundColor = new BaseColor(150, 206, 163);
+            cell.PaddingBottom = 5f;
+            cell.PaddingRight = 35f;
+            cell.BorderWidthRight = 0;
+            table.AddCell(cell);
+
+            cell = new PdfPCell(new Phrase(""));
+            cell.Colspan = 1;
+            cell.BackgroundColor = new BaseColor(150, 206, 163);
+            cell.BorderWidthLeft = 0;
+            table.AddCell(cell);
+        }
+
+        private void SetTableColumnHeaders(PdfPTable table, Font font)
+        {
+            var baseColor = new BaseColor(221, 235, 247);
+
+            this.AddTableCell(table, font, baseColor, "Product");
+            this.AddTableCell(table, font, baseColor, "Quantity");
+            this.AddTableCell(table, font, baseColor, "Unit Price");
+            this.AddTableCell(table, font, baseColor, "Location");
+            this.AddTableCell(table, font, baseColor, "Sum");
+            this.AddTableCell(table, font, baseColor, "Date");
+        }
+
+        private void AddTableCell(PdfPTable table, Font font, BaseColor baseColor, string phraseName)
+        {
+            var cell = new PdfPCell(new Phrase(phraseName, font));
+            cell.Colspan = 1;
+            cell.HorizontalAlignment = 1;
+            cell.BackgroundColor = baseColor;
+            cell.PaddingBottom = 5f;
+            cell.PaddingLeft = 5f;
+            table.AddCell(cell);
+        }
+    }
+}

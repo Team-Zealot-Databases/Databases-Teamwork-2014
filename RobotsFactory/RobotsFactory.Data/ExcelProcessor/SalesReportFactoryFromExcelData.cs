@@ -1,8 +1,9 @@
-﻿namespace RobotsFactory.Data
+﻿namespace RobotsFactory.Data.ExcelProcessor
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using RobotsFactory.Data;
     using RobotsFactory.Models;
 
     public class SalesReportFactoryFromExcelData
