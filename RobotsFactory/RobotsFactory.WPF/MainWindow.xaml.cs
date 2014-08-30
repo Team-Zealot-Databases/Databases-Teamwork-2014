@@ -58,7 +58,7 @@
                 zipFileProcessor.Extract(SampleReportsZipFilePath, ExtractedReportsPath);
 
                 var matchedDirectories = Utility.GetDirectoriesByPattern(ExtractedReportsPath);
-                this.ReadExcelFilesAndCreateSalesReports(matchedDirectories);
+                this.ParseExcelDataAndExportItInSqlServer(matchedDirectories);
 
                 this.ShowMessage("Sales reports from Excel files were successfully imported to MSSQL...");
             }
@@ -97,11 +97,8 @@
             return DateTime.Parse(text).ToString("dd.MM.yyyy");
         }
 
-        private void ReadExcelFilesAndCreateSalesReports(IEnumerable<DirectoryInfo> matchedDirectories)
+        private void ParseExcelDataAndExportItInSqlServer(IEnumerable<DirectoryInfo> matchedDirectories)
         {
-            var zipFileProcessor = new ZipFileProcessor();
-            zipFileProcessor.Extract(SampleReportsZipFilePath, ExtractedReportsPath);
-
             var salesReportFactory = new SalesReportFactoryFromExcelData(this.robotsFactoryContext);
             var excelDataReader = new ExcelDataReader();
 
