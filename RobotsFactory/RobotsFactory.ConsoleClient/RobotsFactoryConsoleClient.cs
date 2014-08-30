@@ -32,7 +32,7 @@
                 //ExtractZipAndReadSalesReportExcelFiles(robotsFactoryContext);
                 //ExportAggregatedSalesReportToPdf(robotsFactoryContext);
 
-                XmlRead(robotsFactoryContext);
+                ReadXmlFileAndAddReport(robotsFactoryContext);
             }
             try
             {
@@ -44,17 +44,16 @@
             }
         }
 
-        private static void XmlRead(RobotsFactoryContext robotsFactoryContext)
+        private static void ReadXmlFileAndAddReport(RobotsFactoryContext robotsFactoryContext)
         {
+            var expensesFactory = new ExpensesReportFactoryFromXmlData(robotsFactoryContext);
             var xmlReader = new XmlDataReader();
             var xmlData = xmlReader.ReadXmlReportsData(XmlFilePath);
 
-            var expensesFactory = new ExpensesReportFactoryFromXmlData(robotsFactoryContext);
-
-            foreach (var item in xmlData)
+            foreach (var expenseLog in xmlData)
             {
-                expensesFactory.CreateExpensesReport(item);
-                Console.WriteLine(item); // displays the data (can be removed)
+                expensesFactory.CreateExpensesReport(expenseLog);
+                Console.WriteLine(expenseLog); // displays the data (can be removed)
             }
         }
 
