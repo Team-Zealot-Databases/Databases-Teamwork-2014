@@ -9,7 +9,7 @@
     public class PdfExportFactoryFromMsSqlDatabase
     {
         private readonly RobotsFactoryContext robotsFactoryContext;
-        private readonly int tableColumnsNumber = 4;
+        private readonly int tableColumnsNumber = 5;
 
         public PdfExportFactoryFromMsSqlDatabase(RobotsFactoryContext robotsFactoryContext)
         {
@@ -30,19 +30,21 @@
                 Font normalFont = new Font(bfTimes, 10);
                 Font boldFont = new Font(bfTimes, 11, Font.BOLD);
 
-                SetTableTitle(table, cell, boldFont);
+                SetTableTitle(table, cell, boldFont, tableColumnsNumber);
                 SetTableColumnHeaders(table, cell, normalFont);
 
                 // execute query for getting all sold items information (product name, quantity, unit price, sum)
                 var salesReportEntries =
                     from sre in db.SalesReportEntries
                     join pro in db.Products on sre.ProductId equals pro.ProductId
+                    join sl in db.SalesReports on sre.SalesReportEntryId equals sl.SalesReportId
                     select new
                     {
                         Name = pro.Name,
                         Quantity = sre.Quantity,
                         UnitPrice = sre.UnitPrice,
                         Sum = sre.Sum,
+                        Date = sl.ReportDate
                     };
 
                 // fill pdf table with the data queried from the database
@@ -76,6 +78,13 @@
                     cell.PaddingBottom = 5f;
                     cell.PaddingLeft = 5f;
                     table.AddCell(cell);
+
+                    cell = new PdfPCell(new Phrase(salesEntry.Date.ToString("dd.MM.yyyy"), normalFont));
+                    cell.Colspan = 1;
+                    cell.HorizontalAlignment = 1;
+                    cell.PaddingBottom = 5f;
+                    cell.PaddingLeft = 5f;
+                    table.AddCell(cell);
                 }
 
                 doc.Add(table);
@@ -95,17 +104,17 @@
         private static PdfPTable InitializePdfTable(int columnsNumber)
         {
             PdfPTable table = new PdfPTable(columnsNumber);
-            table.TotalWidth = 440f;
+            table.TotalWidth = 500f;
             table.LockedWidth = true;
-            float[] widths = new float[] { 140f, 100f, 80f, 70f };
+            float[] widths = new float[] { 100f, 90f, 70f, 70f, 70f };
             table.SetWidths(widths);
             return table;
         }
 
-        private static void SetTableTitle(PdfPTable table, PdfPCell cell, Font font)
+        private static void SetTableTitle(PdfPTable table, PdfPCell cell, Font font, int tableColumnsNumber)
         {
             cell = new PdfPCell(new Phrase("Robots Factory Sales Report", font));
-            cell.Colspan = 4;
+            cell.Colspan = tableColumnsNumber;
             cell.HorizontalAlignment = 1;
             cell.BackgroundColor = new BaseColor(135, 196, 28);
             cell.PaddingTop = 10f;
@@ -140,6 +149,14 @@
             table.AddCell(cell);
 
             cell = new PdfPCell(new Phrase("Sum", font));
+            cell.Colspan = 1;
+            cell.BackgroundColor = new BaseColor(135, 196, 28);
+            cell.HorizontalAlignment = 1;
+            cell.PaddingBottom = 5f;
+            cell.PaddingLeft = 5f;
+            table.AddCell(cell);
+
+            cell = new PdfPCell(new Phrase("Date", font));
             cell.Colspan = 1;
             cell.BackgroundColor = new BaseColor(135, 196, 28);
             cell.HorizontalAlignment = 1;
