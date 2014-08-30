@@ -20,5 +20,10 @@
         public int ProductId { get; set; }
 
         public virtual Product Product { get; set; }
+
+        [ForeignKey("SalesReport")]
+        public int SalesReportId { get; set; }
+
+        public virtual SalesReport SalesReport { get; set; }
     }
 }

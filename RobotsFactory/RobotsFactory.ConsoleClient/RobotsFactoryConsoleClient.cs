@@ -21,15 +21,18 @@
 
         private static void ConnectAndLoadDataFromMsSql()
         {
+            using (var robotsFactoryContext = new RobotsFactoryContext())
+            {
+                robotsFactoryContext.Database.Initialize(true);
+                var xmlGen = new XmlReportGenerator();
+                xmlGen.GenerateXml(robotsFactoryContext);
+                //SeedDataFromMongoDB(robotsFactoryContext);
+                //ExtractZipAndReadSalesReportExcelFiles(robotsFactoryContext);
+                //ExportAggregatedSalesReportToPdf(robotsFactoryContext);
+            }
             try
             {
-                using (var robotsFactoryContext = new RobotsFactoryContext())
-                {
-                    robotsFactoryContext.Database.Initialize(true);
-                    //SeedDataFromMongoDB(robotsFactoryContext);
-                    ExtractZipAndReadSalesReportExcelFiles(robotsFactoryContext);
-                    //ExportAggregatedSalesReportToPdf(robotsFactoryContext);
-                }
+                
             }
             catch (Exception e)
             {
