@@ -28,7 +28,7 @@
                     robotsFactoryContext.Database.Initialize(true);
                     SeedDataFromMongoDB(robotsFactoryContext);
                     ExtractZipAndReadSalesReportExcelFiles(robotsFactoryContext);
-                    ExportAggregatedSalesReportToPdf(robotsFactoryContext);
+                    ExportAggregatedSalesReportToPdf(robotsFactoryContext, "20.07.2013", "21.07.2013");
                 }
             }
             catch (Exception e)
@@ -71,12 +71,12 @@
             }
         }
 
-        private static void ExportAggregatedSalesReportToPdf(RobotsFactoryContext robotsFactoryContext)
+        private static void ExportAggregatedSalesReportToPdf(RobotsFactoryContext robotsFactoryContext, string startDate, string endDate)
         {
             Console.WriteLine("3) Exporting Sales Report to PDF...\n");
 
             var salesReportToPdfFactory = new PdfExportFactoryFromMsSqlDatabase(robotsFactoryContext);
-            salesReportToPdfFactory.ExportSalesEntriesToPdf();
+            salesReportToPdfFactory.ExportSalesEntriesToPdf(startDate, endDate);
         }
     }
 }
