@@ -8,11 +8,13 @@
     using RobotsFactory.Data;
     using RobotsFactory.Data.ExcelProcessor;
     using RobotsFactory.Data.MongoDb;
-    using RobotsFactory.Data.XMLProcessor;
+    using RobotsFactory.Data.PdfProcessor;
+    using RobotsFactory.Data.XmlProcessor;
 
     public class RobotsFactoryConsoleClient
     {
         private const string SampleReportsZipFilePath = "../../../../Reports/Sales-Reports.zip";
+        private const string AggregatedSaleReportPdfPath = "../../../../Reports/Robots-Factory-Aggrerated-Sales-Report.pdf";
         private const string ExtractedReportsPath = @"../../../../Reports/Extracted_Reports";
         private const string XmlFilePath = "../../../../Reports/Vendors-Expenses.xml";
 
@@ -26,8 +28,7 @@
             using (var robotsFactoryContext = new RobotsFactoryContext())
             {
                 robotsFactoryContext.Database.Initialize(true);
-                var xmlGen = new XmlReportGenerator();
-                xmlGen.GenerateXml(robotsFactoryContext);
+                //var xmlGen = new XmlReportGenerator(robotsFactoryContext);
                 //SeedDataFromMongoDB(robotsFactoryContext);
                 //ExtractZipAndReadSalesReportExcelFiles(robotsFactoryContext);
                 //ExportAggregatedSalesReportToPdf(robotsFactoryContext);
@@ -36,7 +37,6 @@
             }
             try
             {
-                
             }
             catch (Exception e)
             {
@@ -81,7 +81,7 @@
             Console.WriteLine("3) Exporting Sales Report to PDF...\n");
 
             var salesReportToPdfFactory = new PdfExportFactoryFromMsSqlDatabase(robotsFactoryContext);
-            salesReportToPdfFactory.ExportSalesEntriesToPdf("20.07.2013", "22.07.2013");
+            salesReportToPdfFactory.ExportSalesEntriesToPdf(AggregatedSaleReportPdfPath, new DateTime(2012, 1, 1), new DateTime(2014, 1, 1));
         }
 
         private static void ReadExcelFilesAndCreateSalesReports(RobotsFactoryContext robotsFactoryContext, IEnumerable<DirectoryInfo> matchedDirectories)

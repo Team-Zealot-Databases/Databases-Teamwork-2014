@@ -2,7 +2,6 @@
 {
     using System.Linq;
     using RobotsFactory.Models;
-    using RobotsFactory.Data.XMLProcessor;
 
     public class ExpensesReportFactoryFromXmlData
     {
@@ -13,7 +12,7 @@
             this.robotsFactoryContext = robotsFactoryContext;
         }
 
-        public void CreateExpensesReport(XmlData xmlData)
+        public void CreateExpensesReport(XmlVendorExpenseEntry xmlData)
         {
             var store = this.robotsFactoryContext.Stores.FirstOrDefault(s => s.Name == xmlData.ShopName);
 
@@ -29,7 +28,7 @@
             {
                 ReportDate = xmlData.SaleDate,
                 Expense = xmlData.Expense,
-                Store = store,
+                Store = store
             };
 
             this.robotsFactoryContext.Expenses.Add(expenseReport);

@@ -21,6 +21,7 @@
         private const string AggregatedSaleReportPdfPath = "../../../../Reports/Robots-Factory-Aggrerated-Sales-Report.pdf";
         private const string ExtractedExcelReportsPath = @"../../../../Reports/Excel_Reports/";
         private const string ExtractedXmlReportsPath = @"../../../../Reports/XML_Reports/";
+        private const string XmlFilePath = "../../../../Reports/Vendors-Expenses.xml";
         private const string XmlReportName = @"xml-report.xml";
 
         private RobotsFactoryContext robotsFactoryContext;
@@ -108,6 +109,29 @@
             catch (Exception)
             {
                 this.ShowMessage("Error! Cannot export reports as XML file...");
+            }
+        }
+
+        private void OnReadAdditionalInformationFromXmlButtonClick(object sender, RoutedEventArgs e)
+        {
+            this.InitializeDatabaseConnectionIfNecessary();
+
+            try
+            {
+                var expensesFactory = new ExpensesReportFactoryFromXmlData(this.robotsFactoryContext);
+                var xmlReader = new XmlDataReader();
+                var xmlData = xmlReader.ReadXmlReportsData(XmlFilePath);
+
+                foreach (var expenseLog in xmlData)
+                {
+                    expensesFactory.CreateExpensesReport(expenseLog);
+                }
+
+                this.ShowMessage("Additional info from Xml was successfully added to MSSQL Server and MongoDb Cloud Database...");
+            }
+            catch (Exception)
+            {
+                this.ShowMessage("Error! Cannot export additional information from XML file to MSSQL Server and MongoDb...");
             }
         }
 

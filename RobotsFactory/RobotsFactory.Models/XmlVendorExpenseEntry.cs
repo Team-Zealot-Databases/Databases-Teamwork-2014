@@ -1,10 +1,10 @@
-﻿namespace RobotsFactory.Data.XMLProcessor
+﻿namespace RobotsFactory.Models
 {
     using System;
 
-    public class XmlData
+    public class XmlVendorExpenseEntry
     {
-        public XmlData(string shopName, DateTime saleDate, decimal expense)
+        public XmlVendorExpenseEntry(string shopName, DateTime saleDate, decimal expense)
         {
             this.ShopName = shopName;
             this.SaleDate = saleDate;

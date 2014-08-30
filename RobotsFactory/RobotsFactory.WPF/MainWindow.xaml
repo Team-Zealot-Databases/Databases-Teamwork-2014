@@ -15,27 +15,30 @@
                Height="400"/>
 
         <Button Content="Read data from MongoDB" 
+                ToolTip="Read data from MongoDb Cloud Database and load it in MSSQL Local Server."
                 Name="mongoDbButton"
                 HorizontalAlignment="Left"
                 HorizontalContentAlignment="Center"
-                Margin="10,99,0,0" 
+                Margin="10,105,0,0" 
                 VerticalAlignment="Top" 
                 Width="181" Height="36" Click="OnReadFromMongoDbButtonClick"/>
 
         <Button Content="Read Sales Reports From Excel" 
+                ToolTip="Extract zip file and read sales reports from Excel files for given store and date."
                 Name="readExcelReportsButton"
                 HorizontalAlignment="Left"
                 HorizontalContentAlignment="Center"
-                Margin="10,140,0,0" 
+                Margin="10,146,0,0" 
                 VerticalAlignment="Top" 
                 Width="181" 
                 Height="36" Click="OnReadSaleReportsFromExcelButtonClick"/>
 
         <Button Content="Generate Sales Reports as PDF" 
+                ToolTip="Generate sales reports from given start and end dates as Pdf file."
                 Name="generatePdfReportsButton"
                 HorizontalAlignment="Left"
                 HorizontalContentAlignment="Center"
-                Margin="10,270,0,0" 
+                Margin="10,298,0,0" 
                 VerticalAlignment="Top" 
                 Width="181" 
                 Height="36" Click="OnExportAggregatedSalesReportToPdfButtonClick"/>
@@ -51,17 +54,28 @@
                    FontFamily="Consolas" 
                    FontSize="22"/>
 
-        <DatePicker Name="startDateTimePicker" Text="05.05.2013" HorizontalAlignment="Left" Margin="10,212,0,0" VerticalAlignment="Top" Width="181"/>
-        <DatePicker Name="endDateTimePicker" Text="30.08.2014" HorizontalAlignment="Left" Margin="10,241,0,0" VerticalAlignment="Top" Width="181"/>
+        <DatePicker Name="startDateTimePicker" Text="05.05.2013" HorizontalAlignment="Left" Margin="10,240,0,0" VerticalAlignment="Top" Width="181"/>
+        <DatePicker Name="endDateTimePicker" Text="30.08.2014" HorizontalAlignment="Left" Margin="10,269,0,0" VerticalAlignment="Top" Width="181"/>
 
         <Button Content="Generate XML Report" 
-        	x:Name="generateXmlReport"
-        	HorizontalAlignment="Left"
-        	HorizontalContentAlignment="Center"
-        	Margin="10,311,0,0" 
-        	VerticalAlignment="Top" 
-        	Width="181" 
-        	Height="36" 
-            Click="OnGenerateXmlReportButtonClick"/>
+                x:Name="generateXmlReport"
+                HorizontalAlignment="Left"
+                HorizontalContentAlignment="Center"
+                Margin="10,339,0,0" 
+                VerticalAlignment="Top" 
+                Width="181" 
+                Height="36" 
+                Click="OnGenerateXmlReportButtonClick"/>
+
+        <Button Content="Read Additional Info from XML" 
+                ToolTip="Reading an additional information from xml file and load the genereted data to MongoDb Cloud Database and MSSQL Local Server."
+                x:Name="loadDataFromXmlToSqlServerAndMongo"
+                HorizontalAlignment="Left"
+                HorizontalContentAlignment="Center"
+                Margin="10,187,0,0" 
+                VerticalAlignment="Top" 
+                Width="181" 
+                Height="36" 
+                Click="OnReadAdditionalInformationFromXmlButtonClick" />
     </Grid>
 </Window>

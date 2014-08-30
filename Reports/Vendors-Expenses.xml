@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<expenses-by-month>
+  <vendor name="Boston Dynamics">
+    <expenses month="Jul-2013">12330.00</expenses>
+    <expenses month="Aug-2013">22240.00</expenses>
+  </vendor>
+  <vendor name="DJI">
+    <expenses month="Jun-2013">12110.00</expenses>
+    <expenses month="Jul-2013">232200.00</expenses>
+    <expenses month="Aug-2013">12380.00</expenses>
+  </vendor>
+  <vendor name="Honda">
+    <expenses month="Jun-2013">12120.00</expenses>
+    <expenses month="Jul-2013">1220.00</expenses>
+    <expenses month="Aug-2013">182320.00</expenses>
+  </vendor>
+  <vendor name="IntelliTrio">
+    <expenses month="Jul-2013">122320.00</expenses>
+    <expenses month="Aug-2013">1180.00</expenses>
+    <expenses month="Sep-2013">32180.00</expenses>
+  </vendor>
+  <vendor name="Physical Sciences Inc.">
+    <expenses month="Jun-2013">1210.00</expenses>
+    <expenses month="Jul-2013">12120.00</expenses>
+    <expenses month="Aug-2013">18220.00</expenses>
+    <expenses month="Sep-2013">32180.00</expenses>
+  </vendor>
+  <vendor name="Robotics Unlimited">
+    <expenses month="Jul-2013">12320.00</expenses>
+    <expenses month="Aug-2013">123280.00</expenses>
+  </vendor>
+</expenses-by-month>

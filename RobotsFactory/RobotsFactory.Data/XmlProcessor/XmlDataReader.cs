@@ -1,41 +1,41 @@
-﻿namespace RobotsFactory.Data.XMLProcessor
+﻿namespace RobotsFactory.Data.XmlProcessor
 {
     using System;
     using System.Collections.Generic;
     using System.Xml;
+    using RobotsFactory.Models;
 
     public class XmlDataReader
     {
-        public IList<XmlData> ReadXmlReportsData(string dataSourcePath)
+        public IList<XmlVendorExpenseEntry> ReadXmlReportsData(string dataSourcePath)
         {
-            XmlTextReader xmlReader = new XmlTextReader(dataSourcePath);
-            List<XmlData> xmlData = new List<XmlData>();
-            string storeName = string.Empty;
-            DateTime date = new DateTime();
+            var xmlReader = new XmlTextReader(dataSourcePath);
+            var xmlData = new List<XmlVendorExpenseEntry>();
+            var storeName = string.Empty;
+            var date = new DateTime();
 
             while (xmlReader.Read())
             {
-                switch (xmlReader.NodeType)
+                if (xmlReader.NodeType == XmlNodeType.Element)
                 {
-                    case XmlNodeType.Element:
-                        while (xmlReader.MoveToNextAttribute())
+                    while (xmlReader.MoveToNextAttribute())
+                    {
+                        if (xmlReader.Name == "name")
                         {
-                            if (xmlReader.Name == "name")
-                            {
-                                storeName = xmlReader.Value;
-                            }
-                            else if (xmlReader.Name == "month")
-                            {
-                                date = DateTime.Parse(xmlReader.Value);
-                            }
+                            storeName = xmlReader.Value;
                         }
-
-                        break;
-                    case XmlNodeType.Text:
-                        decimal expenses = decimal.Parse(xmlReader.Value.Replace('.', ','));
-                        var data = new XmlData(storeName, date, expenses);
-                        xmlData.Add(data);
-                        break;
+                        else if (xmlReader.Name == "month")
+                        {
+                            date = DateTime.Parse(xmlReader.Value);
+                        }
+                    }
+                }
+                else if (xmlReader.NodeType == XmlNodeType.Text)
+                {
+                    //decimal expenses = decimal.Parse(xmlReader.Value.Replace('.', ','));
+                    decimal expenses = decimal.Parse(xmlReader.Value);
+                    var data = new XmlVendorExpenseEntry(storeName, date, expenses);
+                    xmlData.Add(data);
                 }
             }
 
