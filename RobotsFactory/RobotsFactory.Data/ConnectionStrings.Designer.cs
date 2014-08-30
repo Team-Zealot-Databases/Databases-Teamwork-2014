@@ -25,7 +25,8 @@ namespace RobotsFactory.Data {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Provider=Microsoft.ACE.OLEDB.12.0;Extended Properties=\'Excel 12.0 xml;HDR=Yes;\';")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Provider=Microsoft.ACE.OLEDB.12.0;Extended Properties=\'Excel 8.0;HDR=Yes;IMEX=1\';" +
+            "")]
         public string ExcelConnectionString {
             get {
                 return ((string)(this["ExcelConnectionString"]));

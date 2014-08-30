@@ -49,11 +49,6 @@
                 }
             }
 
-            //foreach (var item in dataRowsAsStrings)
-            //{
-            //    Console.WriteLine(item);
-            //}
-
             return dataRowsAsStrings;
         }
  

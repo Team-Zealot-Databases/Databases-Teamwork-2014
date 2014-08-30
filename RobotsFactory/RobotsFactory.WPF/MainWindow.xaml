@@ -7,7 +7,7 @@
         Icon="Images/favicon.jpg"
         ResizeMode="NoResize"
         Closing="OnWindowFormClosing"
-        Closed="OnWindowFormClosed" ShowInTaskbar="False">
+        Closed="OnWindowFormClosed">
     <Grid>
         <Image Margin="183,44,11,27" 
                Source="Images/robot.png" 

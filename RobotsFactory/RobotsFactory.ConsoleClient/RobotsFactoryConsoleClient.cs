@@ -11,7 +11,7 @@
 
     public class RobotsFactoryConsoleClient
     {
-        private const string SampleReportsZipFilePath = "../../../../Reports/Sample-Sales-Reports.zip";
+        private const string SampleReportsZipFilePath = "../../../../Reports/Sales-Reports.zip";
         private const string ExtractedReportsPath = @"../../../../Reports/Extracted_Reports";
 
         public static void Main()

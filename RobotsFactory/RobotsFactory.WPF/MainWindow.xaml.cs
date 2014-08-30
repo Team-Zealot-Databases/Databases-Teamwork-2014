@@ -15,7 +15,7 @@
     /// </summary>
     public partial class MainWindow : Window
     {
-        private const string SampleReportsZipFilePath = "../../../../Reports/Sample-Sales-Reports.zip";
+        private const string SampleReportsZipFilePath = "../../../../Reports/Sales-Reports.zip";
         private const string ExtractedReportsPath = @"../../../../Reports/Extracted_Reports";
 
         private RobotsFactoryContext robotsFactoryContext;
