@@ -20,92 +20,91 @@
         {
             using (var db = this.robotsFactoryContext)
             {
-
                 Document doc = InitializePdfDocument();
-                PdfPTable table = InitializePdfTable(tableColumnsNumber);
-                PdfPCell cell = new PdfPCell();
-                
-                // set fonts
-                BaseFont bfTimes = BaseFont.CreateFont("../../../RobotsFactory.Data/OpenSans-Regular.ttf", BaseFont.CP1252, false);
-                Font normalFont = new Font(bfTimes, 10);
-                Font boldFont = new Font(bfTimes, 11, Font.BOLD);
-
-                SetTableTitle(table, cell, boldFont, tableColumnsNumber);
-                SetTableColumnHeaders(table, cell, normalFont);
-
-                // execute query for getting all sold items information (product name, quantity, unit price, sum)
-                var salesReportEntries =
-                    from sre in db.SalesReportEntries
-                    join pro in db.Products on sre.ProductId equals pro.ProductId
-                    join sl in db.SalesReports on sre.SalesReportEntryId equals sl.SalesReportId
-                    select new
-                    {
-                        Name = pro.Name,
-                        Quantity = sre.Quantity,
-                        UnitPrice = sre.UnitPrice,
-                        Sum = sre.Sum,
-                        Date = sl.ReportDate
-                    };
-
-
-                // fill pdf table with the data queried from the database
-                foreach (var salesEntry in salesReportEntries)
+                using (doc)
                 {
-                    cell = new PdfPCell(new Phrase(salesEntry.Name, normalFont));
-                    cell.Colspan = 1;
-                    cell.HorizontalAlignment = 1;
+                    PdfPTable table = InitializePdfTable(this.tableColumnsNumber);
+                    PdfPCell cell = new PdfPCell();
+                
+                    // set fonts
+                    BaseFont bfTimes = BaseFont.CreateFont("../../../RobotsFactory.Data/OpenSans-Regular.ttf", BaseFont.CP1252, false);
+                    Font normalFont = new Font(bfTimes, 10);
+                    Font boldFont = new Font(bfTimes, 11, Font.BOLD);
+
+                    SetTableTitle(table, cell, boldFont, this.tableColumnsNumber);
+                    this.SetTableColumnHeaders(table, cell, normalFont);
+
+                    // execute query for getting all sold items information (product name, quantity, unit price, sum)
+                    var salesReportEntries =
+                                            from sre in db.SalesReportEntries
+                                            join pro in db.Products on sre.ProductId equals pro.ProductId
+                                            join sl in db.SalesReports on sre.SalesReportEntryId equals sl.SalesReportId
+                                            select new
+                                            {
+                                                Name = pro.Name,
+                                                Quantity = sre.Quantity,
+                                                UnitPrice = sre.UnitPrice,
+                                                Sum = sre.Sum,
+                                                Date = sl.ReportDate
+                                            };
+
+                    // fill pdf table with the data queried from the database
+                    foreach (var salesEntry in salesReportEntries)
+                    {
+                        cell = new PdfPCell(new Phrase(salesEntry.Name, normalFont));
+                        cell.Colspan = 1;
+                        cell.HorizontalAlignment = 1;
+                        cell.PaddingBottom = 5f;
+                        cell.PaddingLeft = 5f;
+                        table.AddCell(cell);
+
+                        cell = new PdfPCell(new Phrase(salesEntry.Quantity.ToString(), normalFont));
+                        cell.Colspan = 1;
+                        cell.HorizontalAlignment = 1;
+                        cell.PaddingBottom = 5f;
+                        cell.PaddingLeft = 5f;
+                        table.AddCell(cell);
+
+                        cell = new PdfPCell(new Phrase(salesEntry.UnitPrice.ToString(), normalFont));
+                        cell.Colspan = 1;
+                        cell.HorizontalAlignment = 1;
+                        cell.PaddingBottom = 5f;
+                        cell.PaddingLeft = 5f;
+                        table.AddCell(cell);
+
+                        cell = new PdfPCell(new Phrase(salesEntry.Sum.ToString(), normalFont));
+                        cell.Colspan = 1;
+                        cell.HorizontalAlignment = 1;
+                        cell.PaddingBottom = 5f;
+                        cell.PaddingLeft = 5f;
+                        table.AddCell(cell);
+
+                        cell = new PdfPCell(new Phrase(salesEntry.Date.ToString("dd.MM.yyyy"), normalFont));
+                        cell.Colspan = 1;
+                        cell.HorizontalAlignment = 1;
+                        cell.PaddingBottom = 5f;
+                        cell.PaddingLeft = 5f;
+                        table.AddCell(cell);
+                    }
+
+                    var totalSum = salesReportEntries.Sum(x => x.Sum);
+                    cell = new PdfPCell(new Phrase("Total Sum: " + totalSum.ToString() + " $", boldFont));
+                    cell.Colspan = this.tableColumnsNumber - 1;
+                    cell.HorizontalAlignment = 2;
+                    cell.BackgroundColor = new BaseColor(135, 196, 28);
                     cell.PaddingBottom = 5f;
-                    cell.PaddingLeft = 5f;
+                    cell.PaddingRight = 15f;
+                    cell.BorderWidthRight = 0;
                     table.AddCell(cell);
 
-
-                    cell = new PdfPCell(new Phrase(salesEntry.Quantity.ToString(), normalFont));
+                    cell = new PdfPCell(new Phrase(""));
                     cell.Colspan = 1;
-                    cell.HorizontalAlignment = 1;
-                    cell.PaddingBottom = 5f;
-                    cell.PaddingLeft = 5f;
+                    cell.BackgroundColor = new BaseColor(135, 196, 28);
+                    cell.BorderWidthLeft = 0;
                     table.AddCell(cell);
 
-                    cell = new PdfPCell(new Phrase(salesEntry.UnitPrice.ToString(), normalFont));
-                    cell.Colspan = 1;
-                    cell.HorizontalAlignment = 1;
-                    cell.PaddingBottom = 5f;
-                    cell.PaddingLeft = 5f;
-                    table.AddCell(cell);
-
-                    cell = new PdfPCell(new Phrase(salesEntry.Sum.ToString(), normalFont));
-                    cell.Colspan = 1;
-                    cell.HorizontalAlignment = 1;
-                    cell.PaddingBottom = 5f;
-                    cell.PaddingLeft = 5f;
-                    table.AddCell(cell);
-
-                    cell = new PdfPCell(new Phrase(salesEntry.Date.ToString("dd.MM.yyyy"), normalFont));
-                    cell.Colspan = 1;
-                    cell.HorizontalAlignment = 1;
-                    cell.PaddingBottom = 5f;
-                    cell.PaddingLeft = 5f;
-                    table.AddCell(cell);
+                    doc.Add(table);
                 }
-
-                var totalSum = salesReportEntries.Sum(x => x.Sum);
-                cell = new PdfPCell(new Phrase("Total Sum: " + totalSum.ToString() + " $", boldFont));
-                cell.Colspan = tableColumnsNumber - 1;
-                cell.HorizontalAlignment = 2;
-                cell.BackgroundColor = new BaseColor(135, 196, 28);
-                cell.PaddingBottom = 5f;
-                cell.PaddingRight = 15f;
-                cell.BorderWidthRight = 0;
-                table.AddCell(cell);
-
-                cell = new PdfPCell(new Phrase(""));
-                cell.Colspan = 1;
-                cell.BackgroundColor = new BaseColor(135, 196, 28);
-                cell.BorderWidthLeft = 0;
-                table.AddCell(cell);
-
-                doc.Add(table);
-                doc.Close();
             }
         }
 
@@ -181,6 +180,5 @@
             cell.PaddingLeft = 5f;
             table.AddCell(cell);
         }
-
     }
 }

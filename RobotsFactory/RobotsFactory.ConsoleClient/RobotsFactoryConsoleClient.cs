@@ -26,9 +26,9 @@
                 using (var robotsFactoryContext = new RobotsFactoryContext())
                 {
                     robotsFactoryContext.Database.Initialize(true);
-                    SeedDataFromMongoDB(robotsFactoryContext);
+                    //SeedDataFromMongoDB(robotsFactoryContext);
                     ExtractZipAndReadSalesReportExcelFiles(robotsFactoryContext);
-                    ExportAggregatedSalesReportToPdf(robotsFactoryContext);
+                    //ExportAggregatedSalesReportToPdf(robotsFactoryContext);
                 }
             }
             catch (Exception e)
@@ -56,6 +56,14 @@
             ReadExcelFilesAndCreateSalesReports(robotsFactoryContext, matchedDirectories);
         }
  
+        private static void ExportAggregatedSalesReportToPdf(RobotsFactoryContext robotsFactoryContext)
+        {
+            Console.WriteLine("3) Exporting Sales Report to PDF...\n");
+
+            var salesReportToPdfFactory = new PdfExportFactoryFromMsSqlDatabase(robotsFactoryContext);
+            salesReportToPdfFactory.ExportSalesEntriesToPdf();
+        }
+
         private static void ReadExcelFilesAndCreateSalesReports(RobotsFactoryContext robotsFactoryContext, IEnumerable<DirectoryInfo> matchedDirectories)
         {
             var salesReportFactory = new SalesReportFactoryFromExcelData(robotsFactoryContext);
@@ -69,14 +77,6 @@
                     salesReportFactory.CreateSalesReport(excelData, dir.Name);
                 }
             }
-        }
-
-        private static void ExportAggregatedSalesReportToPdf(RobotsFactoryContext robotsFactoryContext)
-        {
-            Console.WriteLine("3) Exporting Sales Report to PDF...\n");
-
-            var salesReportToPdfFactory = new PdfExportFactoryFromMsSqlDatabase(robotsFactoryContext);
-            salesReportToPdfFactory.ExportSalesEntriesToPdf();
         }
     }
 }
