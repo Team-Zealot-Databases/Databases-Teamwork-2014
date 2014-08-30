@@ -56,6 +56,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExpensesReportFactoryFromXmlData.cs" />
     <Compile Include="MongoDb\CentralDatabaseSeeder.cs" />
     <Compile Include="ConnectionStrings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -70,6 +71,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RobotsFactoryContext.cs" />
     <Compile Include="ExcelProcessor\SalesReportFactoryFromExcelData.cs" />
+    <Compile Include="SalesReportFactoryFromExcelData.cs" />
+    <Compile Include="XmlProcessor\XmlData.cs" />
+    <Compile Include="XmlProcessor\XmlDataReader.cs" />
     <Compile Include="XmlProcessor\XmlReportGenerator.cs" />
   </ItemGroup>
   <ItemGroup>

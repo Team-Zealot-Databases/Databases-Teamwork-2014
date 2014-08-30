@@ -52,7 +52,7 @@
   <Class Name="RobotsFactory.Models.SalesReportEntry" Collapsed="true">
     <Position X="6.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>MAACAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAgAAAAAQ=</HashCode>
+      <HashCode>MAACAAAAAAAAAAAAAAAAIAAAAIAAAAACAAAAgAAAAAQ=</HashCode>
       <FileName>SalesReportEntry.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -61,6 +61,13 @@
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAEAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Store.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RobotsFactory.Models.PdfSaleReportEntry" Collapsed="true">
+    <Position X="8.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAAAAAAAIAAAQAAAAAAAABAAAAgAAAAAQ=</HashCode>
+      <FileName>PdfSaleReportEntry.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />
