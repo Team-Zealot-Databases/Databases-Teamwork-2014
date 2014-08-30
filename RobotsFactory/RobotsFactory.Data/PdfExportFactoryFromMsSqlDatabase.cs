@@ -47,6 +47,7 @@
                         Date = sl.ReportDate
                     };
 
+
                 // fill pdf table with the data queried from the database
                 foreach (var salesEntry in salesReportEntries)
                 {
@@ -86,6 +87,22 @@
                     cell.PaddingLeft = 5f;
                     table.AddCell(cell);
                 }
+
+                var totalSum = salesReportEntries.Sum(x => x.Sum);
+                cell = new PdfPCell(new Phrase("Total Sum: " + totalSum.ToString() + " $", boldFont));
+                cell.Colspan = tableColumnsNumber - 1;
+                cell.HorizontalAlignment = 2;
+                cell.BackgroundColor = new BaseColor(135, 196, 28);
+                cell.PaddingBottom = 5f;
+                cell.PaddingRight = 15f;
+                cell.BorderWidthRight = 0;
+                table.AddCell(cell);
+
+                cell = new PdfPCell(new Phrase(""));
+                cell.Colspan = 1;
+                cell.BackgroundColor = new BaseColor(135, 196, 28);
+                cell.BorderWidthLeft = 0;
+                table.AddCell(cell);
 
                 doc.Add(table);
                 doc.Close();
