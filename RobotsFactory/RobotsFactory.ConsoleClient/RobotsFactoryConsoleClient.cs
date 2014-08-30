@@ -8,11 +8,13 @@
     using RobotsFactory.Data;
     using RobotsFactory.Data.ExcelProcessor;
     using RobotsFactory.Data.MongoDb;
+    using RobotsFactory.Data.XMLProcessor;
 
     public class RobotsFactoryConsoleClient
     {
         private const string SampleReportsZipFilePath = "../../../../Reports/Sales-Reports.zip";
         private const string ExtractedReportsPath = @"../../../../Reports/Extracted_Reports";
+        private const string XmlFilePath = "../../../../Reports/Vendors-Expenses.xml";
 
         public static void Main()
         {
@@ -29,6 +31,8 @@
                 //SeedDataFromMongoDB(robotsFactoryContext);
                 //ExtractZipAndReadSalesReportExcelFiles(robotsFactoryContext);
                 //ExportAggregatedSalesReportToPdf(robotsFactoryContext);
+
+                XmlRead(robotsFactoryContext);
             }
             try
             {
@@ -39,7 +43,21 @@
                 Console.WriteLine(e.Message);
             }
         }
- 
+
+        private static void XmlRead(RobotsFactoryContext robotsFactoryContext)
+        {
+            var xmlReader = new XmlDataReader();
+            var xmlData = xmlReader.ReadXmlReportsData(XmlFilePath);
+
+            var expensesFactory = new ExpensesReportFactoryFromXmlData(robotsFactoryContext);
+
+            foreach (var item in xmlData)
+            {
+                expensesFactory.CreateExpensesReport(item);
+                Console.WriteLine(item); // displays the data (can be removed)
+            }
+        }
+
         private static void SeedDataFromMongoDB(RobotsFactoryContext robotsFactoryContext)
         {
             Console.WriteLine("1) Loading data from MongoDB Cloud Database and seed it in SQL Server...\n");

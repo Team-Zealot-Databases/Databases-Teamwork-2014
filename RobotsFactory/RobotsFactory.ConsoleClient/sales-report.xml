@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sales name="Sales Report">
+	<sale vendor="AeroVironment">
+		<summary date="20-юли-2013" total-sum="411400,00" />
+		<summary date="15-авг-2014" total-sum="1965430,00" />
+		<summary date="10-окт-2014" total-sum="411400,00" />
+	</sale>
+	<sale vendor="Boston Dynamics">
+		<summary date="20-юли-2013" total-sum="6784641,50" />
+		<summary date="21-юли-2013" total-sum="1921,78" />
+		<summary date="22-юли-2013" total-sum="1276,40" />
+		<summary date="15-авг-2014" total-sum="684920,00" />
+		<summary date="10-окт-2014" total-sum="546082,00" />
+	</sale>
+	<sale vendor="DJI">
+		<summary date="10-окт-2014" total-sum="12636,00" />
+	</sale>
+	<sale vendor="Harvard Robotics">
+		<summary date="20-юли-2013" total-sum="201840,00" />
+		<summary date="15-авг-2014" total-sum="252280,00" />
+		<summary date="10-окт-2014" total-sum="141288,00" />
+	</sale>
+	<sale vendor="Honda">
+		<summary date="20-юли-2013" total-sum="5733520,00" />
+		<summary date="21-юли-2013" total-sum="260,70" />
+		<summary date="22-юли-2013" total-sum="169,20" />
+		<summary date="15-авг-2014" total-sum="41140,00" />
+		<summary date="10-окт-2014" total-sum="298988,00" />
+	</sale>
+	<sale vendor="IntelliTrio">
+		<summary date="20-юли-2013" total-sum="77616,00" />
+		<summary date="15-авг-2014" total-sum="482050,00" />
+	</sale>
+	<sale vendor="Physical Sciences Inc.">
+		<summary date="15-авг-2014" total-sum="191840,00" />
+		<summary date="10-окт-2014" total-sum="99630,00" />
+	</sale>
+	<sale vendor="Robotics Unlimited">
+		<summary date="20-юли-2013" total-sum="169910,00" />
+		<summary date="15-авг-2014" total-sum="413600,00" />
+		<summary date="10-окт-2014" total-sum="675704,00" />
+	</sale>
+</sales>

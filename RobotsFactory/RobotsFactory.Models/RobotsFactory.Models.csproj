@@ -54,6 +54,7 @@
     <Compile Include="SalesReport.cs" />
     <Compile Include="SalesReportEntry.cs" />
     <Compile Include="Store.cs" />
+    <Compile Include="StoreExpense.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="RobotsFactory.Models_Diagram.cd" />
