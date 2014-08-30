@@ -21,23 +21,22 @@
         {
             using (var db = this.robotsFactoryContext)
             {
-
                 Document doc = InitializePdfDocument();
                 PdfPTable table = InitializePdfTable(tableColumnsNumber);
                 PdfPCell cell = new PdfPCell();
-                
+
                 // set fonts
                 BaseFont bfTimes = BaseFont.CreateFont("../../../RobotsFactory.Data/OpenSans-Regular.ttf", BaseFont.CP1252, false);
                 Font normalFont = new Font(bfTimes, 10);
                 Font boldFont = new Font(bfTimes, 11, Font.BOLD);
-                
+
                 SetTableTitle(table, cell, boldFont, tableColumnsNumber, startDateString, endDateString);
                 SetTableColumnHeaders(table, cell, normalFont);
 
                 DateTime startDate = DateTime.ParseExact(startDateString, "dd.MM.yyyy", CultureInfo.InvariantCulture);
                 DateTime endDate = DateTime.ParseExact(endDateString, "dd.MM.yyyy", CultureInfo.InvariantCulture);
 
-                // execute query for getting all sold items information (product name, quantity, unit price, sum)
+                // query for getting all sold items information (product name, quantity, unit price, sum, date)
                 var salesReportEntries =
                     from sre in db.SalesReportEntries
                     join pro in db.Products on sre.ProductId equals pro.ProductId
@@ -53,8 +52,7 @@
                         Date = sl.ReportDate
                     };
 
-
-                // fill pdf table with the data queried from the database
+                // fill pdf table body with the data queried from the database
                 foreach (var salesEntry in salesReportEntries)
                 {
                     cell = new PdfPCell(new Phrase(salesEntry.Name, normalFont));
@@ -63,7 +61,7 @@
                     cell.PaddingBottom = 5f;
                     cell.PaddingLeft = 5f;
                     table.AddCell(cell);
-                    
+
                     cell = new PdfPCell(new Phrase(salesEntry.Quantity.ToString(), normalFont));
                     cell.Colspan = 1;
                     cell.HorizontalAlignment = 1;
@@ -93,21 +91,8 @@
                     table.AddCell(cell);
                 }
 
-                var totalSum = salesReportEntries.Sum(x => x.Sum);
-                cell = new PdfPCell(new Phrase("Total Sum: $ " + totalSum.ToString(), boldFont));
-                cell.Colspan = tableColumnsNumber - 1;
-                cell.HorizontalAlignment = 2;
-                cell.BackgroundColor = new BaseColor(150, 206, 163);
-                cell.PaddingBottom = 5f;
-                cell.PaddingRight = 28f;
-                cell.BorderWidthRight = 0;
-                table.AddCell(cell);
-
-                cell = new PdfPCell(new Phrase(""));
-                cell.Colspan = 1;
-                cell.BackgroundColor = new BaseColor(150, 206, 163);
-                cell.BorderWidthLeft = 0;
-                table.AddCell(cell);
+                decimal totalSum = salesReportEntries.Sum(x => x.Sum);
+                SetTableFooter(table, cell, totalSum, boldFont, tableColumnsNumber);
 
                 doc.Add(table);
                 doc.Close();
@@ -128,15 +113,15 @@
             PdfPTable table = new PdfPTable(columnsNumber);
             table.TotalWidth = 500f;
             table.LockedWidth = true;
-            float[] widths = new float[] { 100f, 90f, 70f, 70f, 70f };
+            float[] widths = new float[] { 100f, 100, 100f, 100f, 100f };
             table.SetWidths(widths);
             return table;
         }
 
-        private static void SetTableTitle(PdfPTable table, PdfPCell cell, Font font, int tableColumnsNumber, string startDateString, 
+        private static void SetTableTitle(PdfPTable table, PdfPCell cell, Font font, int tableColumnsNumber, string startDateString,
             string endDateString)
         {
-            cell = new PdfPCell(new Phrase(string.Format("Robots Factory - Sales Report ({0} - {1})", 
+            cell = new PdfPCell(new Phrase(string.Format("Robots Factory - Sales Report ({0} - {1})",
                 startDateString, endDateString), font));
             cell.Colspan = tableColumnsNumber;
             cell.HorizontalAlignment = 1;
@@ -189,5 +174,22 @@
             table.AddCell(cell);
         }
 
+        private static void SetTableFooter(PdfPTable table, PdfPCell cell, decimal totalSum, Font font, int tableColumnsNumber)
+        {
+            cell = new PdfPCell(new Phrase("Total Sum: $ " + totalSum.ToString(), font));
+            cell.Colspan = tableColumnsNumber - 1;
+            cell.HorizontalAlignment = 2;
+            cell.BackgroundColor = new BaseColor(150, 206, 163);
+            cell.PaddingBottom = 5f;
+            cell.PaddingRight = 35f;
+            cell.BorderWidthRight = 0;
+            table.AddCell(cell);
+
+            cell = new PdfPCell(new Phrase(""));
+            cell.Colspan = 1;
+            cell.BackgroundColor = new BaseColor(150, 206, 163);
+            cell.BorderWidthLeft = 0;
+            table.AddCell(cell);
+        }
     }
 }
