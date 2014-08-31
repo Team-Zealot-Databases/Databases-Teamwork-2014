@@ -3,10 +3,11 @@
     using System;
     using System.Data.Entity;
     using System.Linq;
+    using RobotsFactory.Data.Contracts;
     using RobotsFactory.Data.Migrations;
     using RobotsFactory.Models;
 
-    public class RobotsFactoryContext : DbContext
+    public class RobotsFactoryContext : DbContext, IRobotsFactoryDbContext
     {
         const string RobotsFactoryDatabaseName = "RobotsFactory";
 
@@ -22,24 +23,34 @@
             this.Database.Connection.ConnectionString = connectionString;
         }
 
-        public DbSet<Product> Products { get; set; }
+        public IDbSet<Product> Products { get; set; }
 
-        public DbSet<ProductType> ProductTypes { get; set; }
+        public IDbSet<ProductType> ProductTypes { get; set; }
 
-        public DbSet<Manufacturer> Manufacturers { get; set; }
+        public IDbSet<Manufacturer> Manufacturers { get; set; }
 
-        public DbSet<Address> Addresses { get; set; }
+        public IDbSet<Address> Addresses { get; set; }
 
-        public DbSet<City> Cities { get; set; }
+        public IDbSet<City> Cities { get; set; }
 
-        public DbSet<Country> Countries { get; set; }
+        public IDbSet<Country> Countries { get; set; }
 
-        public DbSet<SalesReport> SalesReports { get; set; }
+        public IDbSet<SalesReport> SalesReports { get; set; }
 
-        public DbSet<SalesReportEntry> SalesReportEntries { get; set; }
+        public IDbSet<SalesReportEntry> SalesReportEntries { get; set; }
 
-        public DbSet<Store> Stores { get; set; }
+        public IDbSet<Store> Stores { get; set; }
 
-        public DbSet<StoreExpense> Expenses { get; set; }
+        public IDbSet<StoreExpense> Expenses { get; set; }
+
+        public IDbSet<T> Set<T>() where T : class
+        {
+            return base.Set<T>();
+        }
+
+        public void SaveChanges()
+        {
+            base.SaveChanges();
+        }
     }
 }

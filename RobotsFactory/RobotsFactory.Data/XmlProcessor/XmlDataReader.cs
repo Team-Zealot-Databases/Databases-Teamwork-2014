@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Xml;
-    using RobotsFactory.Models;
+    using RobotsFactory.Reports.Models;
 
     public class XmlDataReader
     {
@@ -11,7 +11,7 @@
         {
             var xmlReader = new XmlTextReader(dataSourcePath);
             var xmlData = new List<XmlVendorExpenseEntry>();
-            var storeName = string.Empty;
+            var manufacturerName = string.Empty;
             var date = new DateTime();
 
             while (xmlReader.Read())
@@ -22,7 +22,7 @@
                     {
                         if (xmlReader.Name == "name")
                         {
-                            storeName = xmlReader.Value;
+                            manufacturerName = xmlReader.Value;
                         }
                         else if (xmlReader.Name == "month")
                         {
@@ -32,9 +32,8 @@
                 }
                 else if (xmlReader.NodeType == XmlNodeType.Text)
                 {
-                    //decimal expenses = decimal.Parse(xmlReader.Value.Replace('.', ','));
-                    decimal expenses = decimal.Parse(xmlReader.Value);
-                    var data = new XmlVendorExpenseEntry(storeName, date, expenses);
+                    var expenses = decimal.Parse(xmlReader.Value);
+                    var data = new XmlVendorExpenseEntry(manufacturerName, date, expenses);
                     xmlData.Add(data);
                 }
             }

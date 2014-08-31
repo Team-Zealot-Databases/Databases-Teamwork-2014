@@ -1,4 +1,4 @@
-﻿namespace RobotsFactory.Models
+﻿namespace RobotsFactory.Reports.Models
 {
     using System;
     using System.Linq;

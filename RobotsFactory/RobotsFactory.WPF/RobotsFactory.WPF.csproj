@@ -120,6 +120,10 @@
       <Project>{ad7d540b-e116-4233-a755-b64a2ad6175b}</Project>
       <Name>RobotsFactory.Models</Name>
     </ProjectReference>
+    <ProjectReference Include="..\RobotsFactory.Reports.Models\RobotsFactory.Reports.Models.csproj">
+      <Project>{a740550a-11a0-4578-9f26-3a49e4f29e2d}</Project>
+      <Name>RobotsFactory.Reports.Models</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

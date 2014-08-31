@@ -13,9 +13,9 @@
 
         public decimal Expense { get; set; }
 
-        [ForeignKey("Store")]
-        public int StoreId { get; set; }
+        [ForeignKey("Manufacturer")]
+        public int ManufacturerId { get; set; }
 
-        public virtual Store Store { get; set; }
+        public virtual Manufacturer Manufacturer { get; set; }
     }
 }

@@ -16,5 +16,13 @@
             var matchedDirectories = dirInfo.GetDirectories().Where(d => Regex.IsMatch(d.Name, regex));
             return matchedDirectories;
         }
+
+        public static void CreateDirectoryIfNotExists(string directoryPath)
+        {
+            if (!Directory.Exists(directoryPath))
+            {
+                Directory.CreateDirectory(directoryPath);
+            }
+        }
     }
 }

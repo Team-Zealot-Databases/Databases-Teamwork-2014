@@ -7,7 +7,8 @@
     using System.Windows;
     using RobotsFactory.Common;
     using RobotsFactory.Data;
-    using RobotsFactory.Data.ExcelProcessor;
+    using RobotsFactory.Data.Contracts;
+    using RobotsFactory.Data.ExcelReader;
     using RobotsFactory.Data.MongoDb;
     using RobotsFactory.Data.PdfProcessor;
     using RobotsFactory.Data.XmlProcessor;
@@ -17,13 +18,7 @@
     /// </summary>
     public partial class MainWindow : Window
     {
-        private const string SampleReportsZipFilePath = "../../../../Reports/Sales-Reports.zip";
-        private const string AggregatedSaleReportPdfPath = "../../../../Reports/Robots-Factory-Aggrerated-Sales-Report.pdf";
-        private const string ExtractedExcelReportsPath = @"../../../../Reports/Excel_Reports/";
-        private const string ExtractedXmlReportsPath = @"../../../../Reports/XML_Reports/";
-        private const string XmlFilePath = "../../../../Reports/Vendors-Expenses.xml";
-        private const string XmlReportName = @"xml-report.xml";
-
+        private IRobotsFactoryData robotsFactoryData = new RobotsFactoryData();
         private RobotsFactoryContext robotsFactoryContext;
 
         public MainWindow()
@@ -61,9 +56,9 @@
             try
             {
                 var zipFileProcessor = new ZipFileProcessor();
-                zipFileProcessor.Extract(SampleReportsZipFilePath, ExtractedExcelReportsPath);
+                zipFileProcessor.Extract(Constants.SampleReportsZipFilePath, Constants.ExtractedExcelReportsPath);
 
-                var matchedDirectories = Utility.GetDirectoriesByPattern(ExtractedExcelReportsPath);
+                var matchedDirectories = Utility.GetDirectoriesByPattern(Constants.ExtractedExcelReportsPath);
                 this.ParseExcelDataAndExportItInSqlServer(matchedDirectories);
 
                 this.ShowMessage("Sales reports from Excel files were successfully imported to MSSQL...");
@@ -82,8 +77,8 @@
 
             try
             {
-                var salesReportToPdfFactory = new PdfExportFactoryFromMsSqlDatabase(this.robotsFactoryContext);
-                salesReportToPdfFactory.ExportSalesEntriesToPdf(AggregatedSaleReportPdfPath, startDate, endDate);
+                var salesReportToPdfFactory = new PdfExportFactoryFromMsSqlDatabase(this.robotsFactoryData);
+                salesReportToPdfFactory.ExportSalesEntriesToPdf(Constants.AggregatedSaleReportPdfPath, startDate, endDate);
 
                 this.ShowMessage("Sales Report was successfully exported to PDF...");
             }
@@ -101,8 +96,8 @@
 
             try
             {
-                var xmlGenerator = new XmlReportGenerator(this.robotsFactoryContext);
-                xmlGenerator.GenerateXml(ExtractedXmlReportsPath, XmlReportName, startDate, endDate);
+                var xmlGenerator = new XmlReportGenerator(this.robotsFactoryData);
+                xmlGenerator.CreateXmlReport(Constants.ExtractedXmlReportsPath, Constants.XmlReportName, startDate, endDate);
 
                 this.ShowMessage("Sales reports were successfully exported as XML file...");
             }
@@ -118,14 +113,17 @@
 
             try
             {
-                var expensesFactory = new ExpensesReportFactoryFromXmlData(this.robotsFactoryContext);
+                var expensesFactory = new ExpensesReportFactoryFromXmlData(this.robotsFactoryData.Manufacturers);
                 var xmlReader = new XmlDataReader();
-                var xmlData = xmlReader.ReadXmlReportsData(XmlFilePath);
+                var xmlData = xmlReader.ReadXmlReportsData(Constants.XmlFilePath);
 
                 foreach (var expenseLog in xmlData)
                 {
-                    expensesFactory.CreateExpensesReport(expenseLog);
+                    var storeExpenseReport = expensesFactory.CreateStoreExpensesReport(expenseLog);
+                    this.robotsFactoryData.Expenses.Add(storeExpenseReport);
                 }
+
+                this.robotsFactoryData.SaveChanges();
 
                 this.ShowMessage("Additional info from Xml was successfully added to MSSQL Server and MongoDb Cloud Database...");
             }
@@ -147,17 +145,20 @@
 
         private void ParseExcelDataAndExportItInSqlServer(IEnumerable<DirectoryInfo> matchedDirectories)
         {
-            var salesReportFactory = new SalesReportFactoryFromExcelData(this.robotsFactoryContext);
-            var excelDataReader = new ExcelDataReader();
+            var salesReportFactory = new SalesReportGeneratorFromExcel(this.robotsFactoryData.Stores);
+            var excelSaleReportReader = new ExcelSaleReportReader();
 
             foreach (var dir in matchedDirectories)
             {
-                foreach (var excelFile in dir.GetFiles("*.xls"))
+                foreach (var excelFile in dir.GetFiles(Constants.ExcelFileExtensionPattern))
                 {
-                    var excelData = excelDataReader.ReadSaleReportsData(excelFile.FullName);
-                    salesReportFactory.CreateSalesReport(excelData, dir.Name);
+                    var excelData = excelSaleReportReader.CreateSaleReport(excelFile.FullName, dir.Name);
+                    var salesReport = salesReportFactory.CreateSalesReport(excelData, dir.Name);
+                    this.robotsFactoryData.SalesReports.Add(salesReport);
                 }
             }
+
+            this.robotsFactoryData.SaveChanges();
         }
 
         private void ShowMessage(string text)
@@ -175,24 +176,6 @@
             this.generatePdfReportsButton.IsEnabled = !this.generatePdfReportsButton.IsEnabled;
             this.mongoDbButton.IsEnabled = !this.mongoDbButton.IsEnabled;
             this.readExcelReportsButton.IsEnabled = !this.readExcelReportsButton.IsEnabled;
-        }
-
-        private void OnWindowFormClosing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            this.CloseConnection();
-        }
-
-        private void OnWindowFormClosed(object sender, EventArgs e)
-        {
-            this.CloseConnection();
-        }
-
-        private void CloseConnection()
-        {
-            if (this.robotsFactoryContext != null)
-            {
-                this.robotsFactoryContext.Dispose();
-            }
         }
     }
 }

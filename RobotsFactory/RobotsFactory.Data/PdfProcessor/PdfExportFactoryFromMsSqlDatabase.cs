@@ -3,51 +3,71 @@
     using System;
     using System.IO;
     using System.Linq;
-    using RobotsFactory.Data;
-    using RobotsFactory.Models;
+    using RobotsFactory.Common;
+    using RobotsFactory.Data.Contracts;
+    using RobotsFactory.Reports.Models;
     using iTextSharp.text;
     using iTextSharp.text.pdf;
 
     public class PdfExportFactoryFromMsSqlDatabase
     {
-        private const string OpenSansRecularTtfPath = "../../../RobotsFactory.Data/OpenSans-Regular.ttf";
         private const string DateTimeFormat = "dd.MM.yyyy";
         private const int TableColumnsNumber = 6;
 
-        private readonly RobotsFactoryContext robotsFactoryContext;
+        private readonly IRobotsFactoryData robotsFactoryData;
 
-        public PdfExportFactoryFromMsSqlDatabase(RobotsFactoryContext robotsFactoryContext)
+        public PdfExportFactoryFromMsSqlDatabase(IRobotsFactoryData robotsFactoryData)
         {
-            this.robotsFactoryContext = robotsFactoryContext;
+            this.robotsFactoryData = robotsFactoryData;
         }
 
         public void ExportSalesEntriesToPdf(string pathToSave, DateTime startDate, DateTime endDate)
         {
-            using (var db = this.robotsFactoryContext)
+            using (var doc = this.InitializePdfDocument(pathToSave))
             {
-                using (var doc = this.InitializePdfDocument(pathToSave))
-                {
-                    var table = this.InitializePdfTable(TableColumnsNumber);
+                var table = this.InitializePdfTable(TableColumnsNumber);
 
-                    // Set fonts
-                    var bfTimes = BaseFont.CreateFont(OpenSansRecularTtfPath, BaseFont.CP1252, false);
-                    var normalFont = new Font(bfTimes, 10);
-                    var boldFont = new Font(bfTimes, 11, Font.BOLD);
+                // Set fonts
+                var bfTimes = BaseFont.CreateFont(Constants.OpenSansRecularTtfPath, BaseFont.CP1252, false);
+                var normalFont = new Font(bfTimes, 10);
+                var boldFont = new Font(bfTimes, 11, Font.BOLD);
 
-                    this.SetTableTitle(table, boldFont, TableColumnsNumber, startDate, endDate);
-                    this.SetTableColumnHeaders(table, normalFont);
+                this.SetTableTitle(table, boldFont, TableColumnsNumber, startDate, endDate);
+                this.SetTableColumnHeaders(table, normalFont);
 
-                    var salesReportEntries = this.MakeQuery(db, startDate, endDate);
-                    this.FillPdfTableBody(salesReportEntries, table, normalFont);
+                var salesReportEntries = this.GetSaleReportsFromDatabase(startDate, endDate);
+                this.FillPdfTableBody(salesReportEntries, table, normalFont);
 
-                    decimal totalSum = salesReportEntries.Sum(x => x.Sum);
-                    this.SetTableFooter(table, totalSum, boldFont, TableColumnsNumber);
+                decimal totalSum = salesReportEntries.Sum(x => x.Sum);
+                this.SetTableFooter(table, totalSum, boldFont, TableColumnsNumber);
 
-                    doc.Add(table);
-                }
+                doc.Add(table);
             }
         }
- 
+
+        /// <summary>
+        // Query for getting all sold items information (product name, quantity, unit price, sum, date)
+        /// </summary>
+        private IQueryable<PdfSaleReportEntry> GetSaleReportsFromDatabase(DateTime startDate, DateTime endDate)
+        {
+            var salesReportEntries = from sre in this.robotsFactoryData.SalesReportEntries.All()
+                                     join pro in this.robotsFactoryData.Products.All() on sre.ProductId equals pro.ProductId
+                                     join sl in this.robotsFactoryData.SalesReports.All() on sre.SalesReportId equals sl.SalesReportId
+                                     where sl.ReportDate >= startDate && sl.ReportDate <= endDate
+                                     orderby sl.ReportDate
+                                     select new PdfSaleReportEntry
+                                     {
+                                         Name = pro.Name,
+                                         Quantity = sre.Quantity,
+                                         Date = sl.ReportDate,
+                                         UnitPrice = sre.UnitPrice,
+                                         Location = sl.Store.Name,
+                                         Sum = sre.Sum
+                                     };
+
+            return salesReportEntries;
+        }
+
         /// <summary>
         // Fill pdf table body with the data queried from the database
         /// </summary>
@@ -62,29 +82,6 @@
                 this.AddTableCell(table, normalFont, null, salesEntry.Sum.ToString());
                 this.AddTableCell(table, normalFont, null, salesEntry.Date.ToString(DateTimeFormat));
             }
-        }
- 
-        /// <summary>
-        // Query for getting all sold items information (product name, quantity, unit price, sum, date)
-        /// </summary>
-        private IQueryable<PdfSaleReportEntry> MakeQuery(RobotsFactoryContext db, DateTime startDate, DateTime endDate)
-        {
-            var salesReportEntries = from sre in db.SalesReportEntries
-                                     join pro in db.Products on sre.ProductId equals pro.ProductId
-                                     join sl in db.SalesReports on sre.SalesReportId equals sl.SalesReportId
-                                     where sl.ReportDate >= startDate && sl.ReportDate <= endDate
-                                     orderby sl.ReportDate
-                                     select new PdfSaleReportEntry
-                                     {
-                                         Name = pro.Name,
-                                         Quantity = sre.Quantity,
-                                         Date = sl.ReportDate,
-                                         UnitPrice = sre.UnitPrice,
-                                         Location = sl.Store.Name,
-                                         Sum = sre.Sum
-                                     };
-
-            return salesReportEntries;
         }
 
         private Document InitializePdfDocument(string pathToSave)

@@ -56,21 +56,28 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ExpensesReportFactoryFromXmlData.cs" />
+    <Compile Include="Contracts\IDbContext.cs" />
+    <Compile Include="Contracts\IGenericRepository.cs" />
+    <Compile Include="Contracts\IRobotsFactoryDbContext.cs" />
+    <Compile Include="Contracts\IRobotsFactoryData.cs" />
+    <Compile Include="Contracts\IExcelSaleReportReader.cs" />
+    <Compile Include="RobotsFactoryData.cs" />
+    <Compile Include="XmlProcessor\ExpensesReportFactoryFromXmlData.cs" />
+    <Compile Include="Repositories\GenericRepository.cs" />
     <Compile Include="MongoDb\CentralDatabaseSeeder.cs" />
     <Compile Include="ConnectionStrings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>ConnectionStrings.settings</DependentUpon>
     </Compile>
-    <Compile Include="ExcelProcessor\ExcelDataReader.cs" />
+    <Compile Include="ExcelReader\ExcelSaleReportReader.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="MongoDb\MongoDbCloudDatabase.cs" />
     <Compile Include="MongoDb\MongoDbSeeder.cs" />
     <Compile Include="PdfProcessor\PdfExportFactoryFromMsSqlDatabase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RobotsFactoryContext.cs" />
-    <Compile Include="ExcelProcessor\SalesReportFactoryFromExcelData.cs" />
+    <Compile Include="SalesReportGeneratorFromExcel.cs" />
     <Compile Include="XmlProcessor\XmlDataReader.cs" />
     <Compile Include="XmlProcessor\XmlReportGenerator.cs" />
   </ItemGroup>
@@ -83,9 +90,17 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\RobotsFactory.Common\RobotsFactory.Common.csproj">
+      <Project>{C4A82AB1-5E0B-4A77-A02B-7165EC55A9FA}</Project>
+      <Name>RobotsFactory.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\RobotsFactory.Models\RobotsFactory.Models.csproj">
       <Project>{ad7d540b-e116-4233-a755-b64a2ad6175b}</Project>
       <Name>RobotsFactory.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RobotsFactory.Reports.Models\RobotsFactory.Reports.Models.csproj">
+      <Project>{A740550A-11A0-4578-9F26-3A49E4F29E2D}</Project>
+      <Name>RobotsFactory.Reports.Models</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

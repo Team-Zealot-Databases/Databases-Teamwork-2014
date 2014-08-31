@@ -63,25 +63,11 @@
       <FileName>Store.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="RobotsFactory.Models.PdfSaleReportEntry" Collapsed="true">
-    <Position X="8.5" Y="0.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>IAAAAAAAAAAAAAAAAAIAAAQAAAAAAAABAAAAgAAAAAQ=</HashCode>
-      <FileName>PdfSaleReportEntry.cs</FileName>
-    </TypeIdentifier>
-  </Class>
   <Class Name="RobotsFactory.Models.StoreExpense" Collapsed="true">
     <Position X="6.5" Y="2.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAQAAAAACAAAAAAAAEAAAAAAAAAAAAAAAQQAAAAA=</HashCode>
       <FileName>StoreExpense.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="RobotsFactory.Models.XmlVendorExpenseEntry" Collapsed="true">
-    <Position X="8.5" Y="1.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAACAAAEAAAAAAAAAAAAAgAAAAAAAAEAAAA=</HashCode>
-      <FileName>XmlVendorExpenseEntry.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />

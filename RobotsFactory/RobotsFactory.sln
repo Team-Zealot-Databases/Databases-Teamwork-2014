@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RobotsFactory.Common", "Rob
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RobotsFactory.WPF", "RobotsFactory.WPF\RobotsFactory.WPF.csproj", "{4CED78F8-A79A-4A0D-A12E-3DC13EDE4C10}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RobotsFactory.Reports.Models", "RobotsFactory.Reports.Models\RobotsFactory.Reports.Models.csproj", "{A740550A-11A0-4578-9F26-3A49E4F29E2D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{4CED78F8-A79A-4A0D-A12E-3DC13EDE4C10}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4CED78F8-A79A-4A0D-A12E-3DC13EDE4C10}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4CED78F8-A79A-4A0D-A12E-3DC13EDE4C10}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A740550A-11A0-4578-9F26-3A49E4F29E2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A740550A-11A0-4578-9F26-3A49E4F29E2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A740550A-11A0-4578-9F26-3A49E4F29E2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A740550A-11A0-4578-9F26-3A49E4F29E2D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

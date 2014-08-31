@@ -1,41 +1,37 @@
 ﻿namespace RobotsFactory.Data.XmlProcessor
 {
     using System;
-    using System.IO;
     using System.Linq;
     using System.Text;
     using System.Xml;
-    using RobotsFactory.Data;
+    using RobotsFactory.Common;
+    using RobotsFactory.Data.Contracts;
 
     public class XmlReportGenerator
     {
         private const string DateTimeFormatInXml = "dd-MMM-yyyy";
         private const string EncodingType = "utf-8";
 
-        private readonly RobotsFactoryContext robotsFactoryContext;
+        private readonly IRobotsFactoryData robotsFactoryData;
 
-        public XmlReportGenerator(RobotsFactoryContext robotsFactoryContext)
+        public XmlReportGenerator(IRobotsFactoryData robotsFactoryData)
         {
-            this.robotsFactoryContext = robotsFactoryContext;
+            this.robotsFactoryData = robotsFactoryData;
         }
 
-        public void GenerateXml(string pathToSave, string xmlReportName, DateTime startDate, DateTime endDate)
+        public void CreateXmlReport(string pathToSave, string xmlReportName, DateTime startDate, DateTime endDate)
         {
             var encoding = Encoding.GetEncoding(EncodingType);
-
-            if (!Directory.Exists(pathToSave))
-            {
-                Directory.CreateDirectory(pathToSave);
-            }
+            Utility.CreateDirectoryIfNotExists(pathToSave);
 
             using (var writer = new XmlTextWriter(pathToSave + xmlReportName, encoding))
             {
                 this.SetHeader(writer);
     
-                var manufacturerData = (from m in this.robotsFactoryContext.Manufacturers
-                                        join p in this.robotsFactoryContext.Products on m.ManufacturerId equals p.ManufacturerId
-                                        join s in this.robotsFactoryContext.SalesReportEntries on p.ProductId equals s.ProductId
-                                        join l in this.robotsFactoryContext.SalesReports on s.SalesReportId equals l.SalesReportId
+                var manufacturerData = (from m in this.robotsFactoryData.Manufacturers.All()
+                                        join p in this.robotsFactoryData.Products.All() on m.ManufacturerId equals p.ManufacturerId
+                                        join s in this.robotsFactoryData.SalesReportEntries.All() on p.ProductId equals s.ProductId
+                                        join l in this.robotsFactoryData.SalesReports.All() on s.SalesReportId equals l.SalesReportId
                                         where l.ReportDate >= startDate && l.ReportDate <= endDate
                                         select new
                                         {

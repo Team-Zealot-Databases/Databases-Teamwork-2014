@@ -6,17 +6,15 @@
     using System.Linq;
     using RobotsFactory.Common;
     using RobotsFactory.Data;
-    using RobotsFactory.Data.ExcelProcessor;
+    using RobotsFactory.Data.Contracts;
+    using RobotsFactory.Data.ExcelReader;
     using RobotsFactory.Data.MongoDb;
     using RobotsFactory.Data.PdfProcessor;
     using RobotsFactory.Data.XmlProcessor;
 
     public class RobotsFactoryConsoleClient
     {
-        private const string SampleReportsZipFilePath = "../../../../Reports/Sales-Reports.zip";
-        private const string AggregatedSaleReportPdfPath = "../../../../Reports/Robots-Factory-Aggrerated-Sales-Report.pdf";
-        private const string ExtractedReportsPath = @"../../../../Reports/Extracted_Reports";
-        private const string XmlFilePath = "../../../../Reports/Vendors-Expenses.xml";
+        private static readonly IRobotsFactoryData robotsFactoryData = new RobotsFactoryData();
 
         public static void Main()
         {
@@ -28,35 +26,16 @@
             using (var robotsFactoryContext = new RobotsFactoryContext())
             {
                 robotsFactoryContext.Database.Initialize(true);
-                //var xmlGen = new XmlReportGenerator(robotsFactoryContext);
-                //SeedDataFromMongoDB(robotsFactoryContext);
-                //ExtractZipAndReadSalesReportExcelFiles(robotsFactoryContext);
-                //ExportAggregatedSalesReportToPdf(robotsFactoryContext);
+                SeedDataFromMongoDB(robotsFactoryContext);
+                ExtractZipAndReadSalesReportExcelFiles();
+                ExportAggregatedSalesReportToPdf();
+                ReadXmlFileAndAddReport();
+                ExportXmlReportForManufacturersSales();
 
-                ReadXmlFileAndAddReport(robotsFactoryContext);
-            }
-            try
-            {
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
+                Console.WriteLine("-> Program finish sucessfully...\n");
             }
         }
-
-        private static void ReadXmlFileAndAddReport(RobotsFactoryContext robotsFactoryContext)
-        {
-            var expensesFactory = new ExpensesReportFactoryFromXmlData(robotsFactoryContext);
-            var xmlReader = new XmlDataReader();
-            var xmlData = xmlReader.ReadXmlReportsData(XmlFilePath);
-
-            foreach (var expenseLog in xmlData)
-            {
-                expensesFactory.CreateExpensesReport(expenseLog);
-                Console.WriteLine(expenseLog); // displays the data (can be removed)
-            }
-        }
-
+     
         private static void SeedDataFromMongoDB(RobotsFactoryContext robotsFactoryContext)
         {
             Console.WriteLine("1) Loading data from MongoDB Cloud Database and seed it in SQL Server...\n");
@@ -65,38 +44,66 @@
             mongoDbSeeder.Seed();
         }
 
-        private static void ExtractZipAndReadSalesReportExcelFiles(RobotsFactoryContext robotsFactoryContext)
+        private static void ExtractZipAndReadSalesReportExcelFiles()
         {
             Console.WriteLine("2) Extracting files from .zip and reading Excel data...\n");
 
             var zipFileProcessor = new ZipFileProcessor();
-            zipFileProcessor.Extract(SampleReportsZipFilePath, ExtractedReportsPath);
+            zipFileProcessor.Extract(Constants.SampleReportsZipFilePath, Constants.ExtractedExcelReportsPath);
 
-            var matchedDirectories = Utility.GetDirectoriesByPattern(ExtractedReportsPath);
-            ReadExcelFilesAndCreateSalesReports(robotsFactoryContext, matchedDirectories);
+            var matchedDirectories = Utility.GetDirectoriesByPattern(Constants.ExtractedExcelReportsPath);
+            ReadExcelFilesAndCreateSalesReports(matchedDirectories);
         }
  
-        private static void ExportAggregatedSalesReportToPdf(RobotsFactoryContext robotsFactoryContext)
+        private static void ExportAggregatedSalesReportToPdf()
         {
-            Console.WriteLine("3) Exporting Sales Report to PDF...\n");
+            Console.WriteLine("3) Exporting Sales Report to PDF file...\n");
 
-            var salesReportToPdfFactory = new PdfExportFactoryFromMsSqlDatabase(robotsFactoryContext);
-            salesReportToPdfFactory.ExportSalesEntriesToPdf(AggregatedSaleReportPdfPath, new DateTime(2012, 1, 1), new DateTime(2014, 1, 1));
+            var salesReportToPdfFactory = new PdfExportFactoryFromMsSqlDatabase(robotsFactoryData);
+            salesReportToPdfFactory.ExportSalesEntriesToPdf(Constants.AggregatedSaleReportPdfPath, new DateTime(2012, 1, 1), new DateTime(2014, 1, 1));
         }
 
-        private static void ReadExcelFilesAndCreateSalesReports(RobotsFactoryContext robotsFactoryContext, IEnumerable<DirectoryInfo> matchedDirectories)
+        private static void ReadXmlFileAndAddReport()
         {
-            var salesReportFactory = new SalesReportFactoryFromExcelData(robotsFactoryContext);
-            var excelDataReader = new ExcelDataReader();
+            Console.WriteLine("4) Reading additional information from XML file and import data to MSSQL Database...\n");
+
+            var expensesFactory = new ExpensesReportFactoryFromXmlData(robotsFactoryData.Manufacturers);
+            var xmlReader = new XmlDataReader();
+            var xmlData = xmlReader.ReadXmlReportsData(Constants.XmlFilePath);
+
+            foreach (var expenseLog in xmlData)
+            {
+                var storeExpenseReport = expensesFactory.CreateStoreExpensesReport(expenseLog);
+                robotsFactoryData.Expenses.Add(storeExpenseReport);
+            }
+
+            robotsFactoryData.SaveChanges();
+        }
+
+        private static void ExportXmlReportForManufacturersSales()
+        {
+            Console.WriteLine("5) Exporting XML Report...\n");
+  
+            var xmlGenerator = new XmlReportGenerator(robotsFactoryData);
+            xmlGenerator.CreateXmlReport(Constants.ExtractedXmlReportsPath, Constants.XmlReportName, new DateTime(2012, 1, 1), new DateTime(2014, 1, 1));
+        }
+
+        private static void ReadExcelFilesAndCreateSalesReports(IEnumerable<DirectoryInfo> matchedDirectories)
+        {
+            var salesReportFactory = new SalesReportGeneratorFromExcel(robotsFactoryData.Stores);
+            var excelSaleReportReader = new ExcelSaleReportReader();
 
             foreach (var dir in matchedDirectories)
             {
-                foreach (var excelFile in dir.GetFiles("*.xls"))
+                foreach (var excelFile in dir.GetFiles(Constants.ExcelFileExtensionPattern))
                 {
-                    var excelData = excelDataReader.ReadSaleReportsData(excelFile.FullName);
-                    salesReportFactory.CreateSalesReport(excelData, dir.Name);
+                    var excelData = excelSaleReportReader.CreateSaleReport(excelFile.FullName, dir.Name);
+                    var salesReport = salesReportFactory.CreateSalesReport(excelData, dir.Name);
+                    robotsFactoryData.SalesReports.Add(salesReport);
                 }
             }
+
+            robotsFactoryData.SaveChanges();
         }
     }
 }
