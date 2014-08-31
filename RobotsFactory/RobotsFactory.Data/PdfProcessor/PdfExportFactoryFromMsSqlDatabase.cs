@@ -23,7 +23,10 @@
 
         public void ExportSalesEntriesToPdf(string pathToSave, string pdfReportName, DateTime startDate, DateTime endDate)
         {
-            Utility.CreateDirectoryIfNotExists(pathToSave);
+            if (!string.IsNullOrEmpty(pdfReportName))
+            {
+                Utility.CreateDirectoryIfNotExists(pathToSave);
+            }
 
             using (var doc = this.InitializePdfDocument(pathToSave + pdfReportName))
             {

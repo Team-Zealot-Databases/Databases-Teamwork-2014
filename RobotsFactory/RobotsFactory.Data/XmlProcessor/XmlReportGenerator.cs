@@ -1,6 +1,7 @@
 ﻿namespace RobotsFactory.Data.XmlProcessor
 {
     using System;
+    using System.IO;
     using System.Linq;
     using System.Text;
     using System.Xml;
@@ -23,7 +24,11 @@
         public void CreateXmlReport(string pathToSave, string xmlReportName, DateTime startDate, DateTime endDate)
         {
             var encoding = Encoding.GetEncoding(EncodingType);
-            Utility.CreateDirectoryIfNotExists(pathToSave);
+
+            if (!string.IsNullOrEmpty(xmlReportName))
+            {
+                Utility.CreateDirectoryIfNotExists(pathToSave);
+            }
 
             using (var writer = new XmlTextWriter(pathToSave + xmlReportName, encoding))
             {

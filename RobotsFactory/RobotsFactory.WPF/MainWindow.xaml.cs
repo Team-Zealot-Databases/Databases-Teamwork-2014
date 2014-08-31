@@ -2,9 +2,11 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.IO;
     using System.Linq;
     using System.Windows;
+    using Microsoft.Win32;
     using RobotsFactory.Common;
     using RobotsFactory.Data;
     using RobotsFactory.Data.Contracts;
@@ -42,10 +44,16 @@
 
         private void OnReadSaleReportsFromExcelButtonClick(object sender, RoutedEventArgs e)
         {
+            var selectedPath = this.OpenFileDialogBox("zip");
+            if (string.IsNullOrEmpty(selectedPath))
+            {
+                return;
+            }
+
             try
             {
                 var zipFileProcessor = new ZipFileProcessor();
-                zipFileProcessor.Extract(Constants.SampleReportsZipFilePath, Constants.ExtractedExcelReportsPath);
+                zipFileProcessor.Extract(selectedPath, Constants.ExtractedExcelReportsPath);
 
                 var matchedDirectories = Utility.GetDirectoriesByPattern(Constants.ExtractedExcelReportsPath);
                 this.ParseExcelDataAndExportItInSqlServer(matchedDirectories);
@@ -60,14 +68,19 @@
 
         private void OnExportAggregatedSalesReportToPdfButtonClick(object sender, RoutedEventArgs e)
         {
+            var selectedPathAndFileName = this.SaveFileDialogBox("pdf", "Robots-Factory-Aggrerated-Sales-Report.pdf");
+            if (selectedPathAndFileName == null)
+            {
+                return;
+            }
+
             var startDate = this.GetSelectedDateOrDefault(this.startDateTimePicker.Text, DateTime.MinValue);
             var endDate = this.GetSelectedDateOrDefault(this.endDateTimePicker.Text, DateTime.Now);
 
             try
             {
                 var salesReportToPdfFactory = new PdfExportFactoryFromMsSqlDatabase(this.robotsFactoryData);
-                salesReportToPdfFactory.ExportSalesEntriesToPdf(Constants.AggregatedSaleReportPdfPath, Constants.PdfReportName, startDate, endDate);
-
+                salesReportToPdfFactory.ExportSalesEntriesToPdf(selectedPathAndFileName.Item1, string.Empty, startDate, endDate);
                 this.ShowMessage("Sales Report was successfully exported to PDF...");
             }
             catch (Exception)
@@ -78,13 +91,19 @@
 
         private void OnGenerateXmlReportButtonClick(object sender, RoutedEventArgs e)
         {
+            var selectedPathAndFileName = this.SaveFileDialogBox("xml", Constants.XmlReportName);
+            if (selectedPathAndFileName == null)
+            {
+                return;
+            }
+
             var startDate = this.GetSelectedDateOrDefault(this.startDateTimePicker.Text, DateTime.MinValue);
             var endDate = this.GetSelectedDateOrDefault(this.endDateTimePicker.Text, DateTime.Now);
 
             try
             {
                 var xmlGenerator = new XmlReportGenerator(this.robotsFactoryData);
-                xmlGenerator.CreateXmlReport(Constants.ExtractedXmlReportsPath, Constants.XmlReportName, startDate, endDate);
+                xmlGenerator.CreateXmlReport(selectedPathAndFileName.Item1, string.Empty, startDate, endDate);
 
                 this.ShowMessage("Sales reports were successfully exported as XML file...");
             }
@@ -96,6 +115,12 @@
 
         private void OnReadAdditionalInformationFromXmlButtonClick(object sender, RoutedEventArgs e)
         {
+            var selectedPath = this.OpenFileDialogBox("xml");
+            if (string.IsNullOrEmpty(selectedPath))
+            {
+                return;
+            }
+
             try
             {
                 var expensesFactory = new ExpensesReportFactoryFromXmlData(this.robotsFactoryData.Manufacturers);
@@ -116,6 +141,11 @@
             {
                 this.ShowMessage("Error! Cannot export additional information from XML file to MSSQL Server and MongoDb...");
             }
+        }
+
+        private void OnOpenReportsDirectoryButtonClick(object sender, RoutedEventArgs e)
+        {
+            Process.Start(Constants.ReportsDirectoryPath);
         }
 
         private DateTime GetSelectedDateOrDefault(string text, DateTime defaultValue)
@@ -161,6 +191,74 @@
             this.generatePdfReportsButton.IsEnabled = !this.generatePdfReportsButton.IsEnabled;
             this.mongoDbButton.IsEnabled = !this.mongoDbButton.IsEnabled;
             this.readExcelReportsButton.IsEnabled = !this.readExcelReportsButton.IsEnabled;
+        }
+ 
+        private string OpenFileDialogBox(string typeOfFileToRead)
+        {
+            var dialog = new OpenFileDialog();
+            dialog.InitialDirectory = Constants.ReportsDirectoryPath;
+            this.SetFilter(dialog, typeOfFileToRead);
+
+            var result = dialog.ShowDialog();
+            if (result == true)
+            {
+                return dialog.FileName;
+            }
+
+            return string.Empty;
+        }
+
+        private Tuple<string, string> SaveFileDialogBox(string typeOfFileToSave, string defaultFileName)
+        {
+            var dialog = new SaveFileDialog();
+            dialog.InitialDirectory = Constants.ReportsDirectoryPath;
+            this.SetFilter(dialog, typeOfFileToSave, defaultFileName);
+
+            var result = dialog.ShowDialog();
+            if (result == true)
+            {
+                return new Tuple<string, string>(dialog.FileName, dialog.SafeFileName);
+            }
+
+            return null;
+        }
+
+        private void SetFilter(FileDialog dialog, string type, string defaultFileName = null)
+        {
+            switch (type)
+            {
+                case "zip":
+                    {
+                        dialog.DefaultExt = ".zip";
+                        dialog.Filter = "Zip File (.zip)|*.zip";
+                        break;
+                    }
+
+                case "pdf":
+                    {
+                        dialog.DefaultExt = ".zip";
+                        dialog.Filter = "Pdf File (.pdf)|*.pdf";
+                        break;
+                    }
+
+                case "xml":
+                    {
+                        dialog.DefaultExt = ".zip";
+                        dialog.Filter = "XML File (.xml)|*.xml";
+                        break;
+                    }
+
+                default:
+                    {
+                        dialog.FileName = "All files (*.*)|*.*";
+                        break;
+                    }
+            }
+
+            if (!string.IsNullOrEmpty(defaultFileName))
+            {
+                dialog.FileName = defaultFileName;
+            }
         }
     }
 }
