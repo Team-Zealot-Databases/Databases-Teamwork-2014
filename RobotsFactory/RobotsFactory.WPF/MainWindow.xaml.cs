@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.IO;
     using System.Linq;
     using System.Windows;
@@ -36,9 +35,10 @@
 
                 this.ShowMessage("Data from MongoDB Cloud Database was successfully seeded in SQL Server...");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 this.ShowMessage("Error! Cannot read data from MongoDb Cloud Database...");
+                MessageBox.Show("A handled exception just occurred: " + ex.Message, "Something bad happened!", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
 
@@ -60,9 +60,10 @@
 
                 this.ShowMessage("Sales reports from Excel files were successfully imported to MSSQL...");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 this.ShowMessage("Error! Cannot extract and import sales report data from Excel files...");
+                MessageBox.Show("A handled exception just occurred: " + ex.Message, "Something bad happened!", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
 
@@ -83,9 +84,10 @@
                 salesReportToPdfFactory.ExportSalesEntriesToPdf(selectedPathAndFileName.Item1, string.Empty, startDate, endDate);
                 this.ShowMessage("Sales Report was successfully exported to PDF...");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 this.ShowMessage("Error! Cannot export sales reports to Pdf file...");
+                MessageBox.Show("A handled exception just occurred: " + ex.Message, "Something bad happened!", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
 
@@ -107,9 +109,10 @@
 
                 this.ShowMessage("Sales reports were successfully exported as XML file...");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 this.ShowMessage("Error! Cannot export reports as XML file...");
+                MessageBox.Show("A handled exception just occurred: " + ex.Message, "Something bad happened!", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
 
@@ -137,15 +140,16 @@
 
                 this.ShowMessage("Additional info from Xml was successfully added to MSSQL Server and MongoDb Cloud Database...");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 this.ShowMessage("Error! Cannot export additional information from XML file to MSSQL Server and MongoDb...");
+                MessageBox.Show("A handled exception just occurred: " + ex.Message, "Something bad happened!", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
 
         private void OnOpenReportsDirectoryButtonClick(object sender, RoutedEventArgs e)
         {
-            Process.Start(Constants.ReportsDirectoryPath);
+            Utility.OpenDirectory(Constants.ReportsDirectoryPath);
         }
 
         private DateTime GetSelectedDateOrDefault(string text, DateTime defaultValue)

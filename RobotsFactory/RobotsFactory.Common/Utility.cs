@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.IO;
     using System.Linq;
     using System.Text.RegularExpressions;
@@ -22,6 +23,14 @@
             if (!Directory.Exists(directoryPath))
             {
                 Directory.CreateDirectory(directoryPath);
+            }
+        }
+
+        public static void OpenDirectory(string directoryPath)
+        {
+            if (Directory.Exists(directoryPath))
+            {
+                Process.Start(directoryPath);
             }
         }
     }
