@@ -11,6 +11,7 @@
         public const string ExtractedXmlReportsPath = @"../../../../Reports/XML_Reports/";
         public const string ExtractedExcelReportsPath = @"../../../../Reports/Excel_Reports";
         public const string XmlFilePath = "../../../../Reports/Vendors-Expenses.xml";
+        public const string XmlFilePath2 = "../../../../Reports/Vendors-Expenses-2.xml";
         public const string XmlReportName = @"xml-report.xml";
         public const string PdfReportName = "/Robots-Factory-Aggrerated-Sales-Report.pdf";
         public const string ExcelFileExtensionPattern = "*.xls";

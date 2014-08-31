@@ -1,32 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <expenses-by-month>
-  <vendor name="Boston Dynamics">
-    <expenses month="Jul-2013">12330.00</expenses>
-    <expenses month="Aug-2013">22240.00</expenses>
+  <vendor name="Penn Engineering">
+    <expenses month="Mar-2013">12330.00</expenses>
+    <expenses month="Sep-2013">22240.00</expenses>
+    <expenses month="Jan-2014">22240.00</expenses>
+    <expenses month="Feb-2014">12380.00</expenses>
   </vendor>
-  <vendor name="DJI">
-    <expenses month="Jun-2013">12110.00</expenses>
-    <expenses month="Jul-2013">232200.00</expenses>
-    <expenses month="Aug-2013">12380.00</expenses>
+  <vendor name="AeroVironment">
+    <expenses month="Jan-2013">12110.00</expenses>
+    <expenses month="Aug-2013">232200.00</expenses>
+    <expenses month="Feb-2014">12380.00</expenses>
   </vendor>
-  <vendor name="Honda">
+  <vendor name="Google">
     <expenses month="Jun-2013">12120.00</expenses>
     <expenses month="Jul-2013">1220.00</expenses>
-    <expenses month="Aug-2013">182320.00</expenses>
+    <expenses month="Dec-2013">182320.00</expenses>
   </vendor>
-  <vendor name="IntelliTrio">
-    <expenses month="Jul-2013">122320.00</expenses>
-    <expenses month="Aug-2013">1180.00</expenses>
-    <expenses month="Sep-2013">32180.00</expenses>
+  <vendor name="Harvard Robotics">
+    <expenses month="Jan-2013">122320.00</expenses>
+    <expenses month="Oct-2013">1180.00</expenses>
+    <expenses month="May-2014">32180.00</expenses>
   </vendor>
-  <vendor name="Physical Sciences Inc.">
-    <expenses month="Jun-2013">1210.00</expenses>
+  <vendor name="Aibotix International">
+    <expenses month="Jan-2013">1210.00</expenses>
     <expenses month="Jul-2013">12120.00</expenses>
-    <expenses month="Aug-2013">18220.00</expenses>
-    <expenses month="Sep-2013">32180.00</expenses>
+    <expenses month="Sep-2013">18220.00</expenses>
+    <expenses month="Mar-2014">32180.00</expenses>
   </vendor>
   <vendor name="Robotics Unlimited">
     <expenses month="Jul-2013">12320.00</expenses>
-    <expenses month="Aug-2013">123280.00</expenses>
+    <expenses month="Jan-2014">123280.00</expenses>
   </vendor>
 </expenses-by-month>
