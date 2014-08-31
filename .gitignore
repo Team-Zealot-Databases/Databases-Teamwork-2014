@@ -9,3 +9,5 @@ RobotsFactory/RobotsFactory.Models/obj/
 bin
 packages
 /Reports/Extracted_Reports
+/Reports/Excel_Reports
+/Reports/XML_Reports

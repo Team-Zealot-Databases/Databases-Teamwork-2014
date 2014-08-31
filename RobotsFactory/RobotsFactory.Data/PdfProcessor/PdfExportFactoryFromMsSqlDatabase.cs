@@ -21,10 +21,13 @@
             this.robotsFactoryData = robotsFactoryData;
         }
 
-        public void ExportSalesEntriesToPdf(string pathToSave, DateTime startDate, DateTime endDate)
+        public void ExportSalesEntriesToPdf(string pathToSave, string pdfReportName, DateTime startDate, DateTime endDate)
         {
-            using (var doc = this.InitializePdfDocument(pathToSave))
+            Utility.CreateDirectoryIfNotExists(pathToSave);
+
+            using (var doc = this.InitializePdfDocument(pathToSave + pdfReportName))
             {
+                doc.Open();
                 var table = this.InitializePdfTable(TableColumnsNumber);
 
                 // Set fonts
@@ -84,12 +87,11 @@
             }
         }
 
-        private Document InitializePdfDocument(string pathToSave)
+        private Document InitializePdfDocument(string pdfFullPath)
         {
             var doc = new Document();
-            var file = File.Create(pathToSave);
+            var file = File.Create(pdfFullPath);
             PdfWriter.GetInstance(doc, file);
-            doc.Open();
             return doc;
         }
 

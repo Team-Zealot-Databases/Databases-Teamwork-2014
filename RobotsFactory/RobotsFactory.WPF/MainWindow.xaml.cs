@@ -66,7 +66,7 @@
             try
             {
                 var salesReportToPdfFactory = new PdfExportFactoryFromMsSqlDatabase(this.robotsFactoryData);
-                salesReportToPdfFactory.ExportSalesEntriesToPdf(Constants.AggregatedSaleReportPdfPath, startDate, endDate);
+                salesReportToPdfFactory.ExportSalesEntriesToPdf(Constants.AggregatedSaleReportPdfPath, Constants.PdfReportName, startDate, endDate);
 
                 this.ShowMessage("Sales Report was successfully exported to PDF...");
             }

@@ -38,7 +38,7 @@
                 ProductId = e.ProductId,
                 Quantity = e.Quantity,
                 UnitPrice = e.UnitPrice,
-                Sum = e.UnitPrice
+                Sum = e.Sum
             });
  
             return salesReportEntries.ToList();
