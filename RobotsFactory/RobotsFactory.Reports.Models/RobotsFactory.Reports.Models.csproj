@@ -43,6 +43,7 @@
     <Compile Include="ExcelReportEntry.cs" />
     <Compile Include="PdfSaleReportEntry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="XmlSaleReport.cs" />
     <Compile Include="XmlVendorExpenseEntry.cs" />
   </ItemGroup>
   <ItemGroup>

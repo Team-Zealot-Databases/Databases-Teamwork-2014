@@ -6,6 +6,7 @@
     using System.Xml;
     using RobotsFactory.Common;
     using RobotsFactory.Data.Contracts;
+    using RobotsFactory.Reports.Models;
 
     public class XmlReportGenerator
     {
@@ -27,38 +28,38 @@
             using (var writer = new XmlTextWriter(pathToSave + xmlReportName, encoding))
             {
                 this.SetHeader(writer);
-    
-                var manufacturerData = (from m in this.robotsFactoryData.Manufacturers.All()
-                                        join p in this.robotsFactoryData.Products.All() on m.ManufacturerId equals p.ManufacturerId
-                                        join s in this.robotsFactoryData.SalesReportEntries.All() on p.ProductId equals s.ProductId
-                                        join l in this.robotsFactoryData.SalesReports.All() on s.SalesReportId equals l.SalesReportId
-                                        where l.ReportDate >= startDate && l.ReportDate <= endDate
-                                        select new
-                                        {
-                                            Date = l.ReportDate,
-                                            Name = m.Name,
-                                            Sum = s.Sum
-                                        })
-                                          .GroupBy(a => new { a.Name, a.Date })
-                                          .GroupBy(a => new { Name = a.Key.Name })
-                                          .Select(a => new
-                                          {
-                                              Name = a.Key.Name,
-                                              Reports = a
-                                          });
+                var reportData = this.GetSaleReportsFromDatabase(startDate, endDate);
 
-                foreach (var manufacturer in manufacturerData)
+                foreach (var manufacturer in reportData.Select(a => new { Name = a.Key, Reports = a.GroupBy(b => b.ReportDate) }))
                 {
                     this.SetTitle(writer, manufacturer.Name);
 
                     foreach (var report in manufacturer.Reports)
                     {
-                        this.WriteSummaryToSale(writer, report.Key.Date, report.Sum(s => s.Sum));
+                        this.WriteSummaryToSale(writer, report.Key, report.Sum(s => s.Sum));
                     }
 
                     writer.WriteEndElement();
                 }
             }
+        }
+ 
+        private IQueryable<IGrouping<string, XmlSaleReport>> GetSaleReportsFromDatabase(DateTime startDate, DateTime endDate)
+        {
+            var reportData = (from m in this.robotsFactoryData.Manufacturers.All()
+                              join p in this.robotsFactoryData.Products.All() on m.ManufacturerId equals p.ManufacturerId
+                              join s in this.robotsFactoryData.SalesReportEntries.All() on p.ProductId equals s.ProductId
+                              join l in this.robotsFactoryData.SalesReports.All() on s.SalesReportId equals l.SalesReportId
+                              where l.ReportDate >= startDate && l.ReportDate <= endDate
+                              select new XmlSaleReport()
+                              {
+                                  ManufacturerName = m.Name,
+                                  ReportDate = l.ReportDate,
+                                  Sum = s.Sum
+                              })
+                                .GroupBy(a => a.ManufacturerName);
+
+            return reportData;
         }
  
         private void SetHeader(XmlTextWriter writer)
