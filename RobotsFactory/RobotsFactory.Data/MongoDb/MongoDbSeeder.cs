@@ -2,28 +2,28 @@
 {
     using System;
     using System.Linq;
-    using RobotsFactory.Data;
+    using RobotsFactory.Data.Contracts;
     using RobotsFactory.Models;
 
     public class MongoDbSeeder : CentralDatabaseSeeder
     {
         private readonly MongoDbCloudDatabase mongoDb;
-        private readonly RobotsFactoryContext context;
+        private readonly IRobotsFactoryData robotsFactoryData;
 
-        public MongoDbSeeder(RobotsFactoryContext context)
-            : this(context, new MongoDbCloudDatabase())
+        public MongoDbSeeder(IRobotsFactoryData robotsFactoryData)
+            : this(robotsFactoryData, new MongoDbCloudDatabase())
         {
         }
 
-        public MongoDbSeeder(RobotsFactoryContext context, MongoDbCloudDatabase mongoDb)
+        public MongoDbSeeder(IRobotsFactoryData robotsFactoryData, MongoDbCloudDatabase mongoDb)
         {
-            this.context = context;
+            this.robotsFactoryData = robotsFactoryData;
             this.mongoDb = mongoDb;
         }
 
         public override void AddCountries()
         {
-            if (this.context.Countries.Any())
+            if (this.robotsFactoryData.Countries.All().Any())
             {
                 return;
             }
@@ -32,7 +32,7 @@
 
             foreach (var country in countries)
             {
-                this.context.Countries.Add(new Country()
+                this.robotsFactoryData.Countries.Add(new Country()
                 {
                     CountryId = country["CountryId"].ToInt32(),
                     Name = country["Name"].ToString()
@@ -42,7 +42,7 @@
 
         public override void AddCities()
         {
-            if (this.context.Cities.Any())
+            if (this.robotsFactoryData.Cities.All().Any())
             {
                 return;
             }
@@ -51,7 +51,7 @@
 
             foreach (var city in cities)
             {
-                this.context.Cities.Add(new City()
+                this.robotsFactoryData.Cities.Add(new City()
                 {
                     CityId = city["CityId"].ToInt32(),
                     CountryId = city["CountryId"].ToInt32(),
@@ -62,7 +62,7 @@
 
         public override void AddAddresses()
         {
-            if (this.context.Addresses.Any())
+            if (this.robotsFactoryData.Addresses.All().Any())
             {
                 return;
             }
@@ -71,7 +71,7 @@
 
             foreach (var address in addresses)
             {
-                this.context.Addresses.Add(new Address()
+                this.robotsFactoryData.Addresses.Add(new Address()
                 {
                     AddressId = address["AddressId"].ToInt32(),
                     AddressText = address["AddressText"].ToString(),
@@ -82,7 +82,7 @@
 
         public override void AddManufacturers()
         {
-            if (this.context.Manufacturers.Any())
+            if (this.robotsFactoryData.Manufacturers.All().Any())
             {
                 return;
             }
@@ -91,7 +91,7 @@
 
             foreach (var manufacturer in manufacturers)
             {
-                this.context.Manufacturers.Add(new Manufacturer()
+                this.robotsFactoryData.Manufacturers.Add(new Manufacturer()
                 {
                     ManufacturerId = manufacturer["ManufacturerId"].ToInt32(),
                     Name = manufacturer["Name"].ToString(),
@@ -102,7 +102,7 @@
 
         public override void AddProductTypes()
         {
-            if (this.context.ProductTypes.Any())
+            if (this.robotsFactoryData.ProductTypes.All().Any())
             {
                 return;
             }
@@ -111,7 +111,7 @@
 
             foreach (var productType in productTypes)
             {
-                this.context.ProductTypes.Add(new ProductType()
+                this.robotsFactoryData.ProductTypes.Add(new ProductType()
                 {
                     ProductTypeId = productType["ProductTypeId"].ToInt32(),
                     Name = productType["Name"].ToString()
@@ -121,7 +121,7 @@
 
         public override void AddProducts()
         {
-            if (this.context.Products.Any())
+            if (this.robotsFactoryData.Products.All().Any())
             {
                 return;
             }
@@ -130,7 +130,7 @@
 
             foreach (var product in products)
             {
-                this.context.Products.Add(new Product()
+                this.robotsFactoryData.Products.Add(new Product()
                 {
                     ProductId = product["ProductId"].ToInt32(),
                     Name = product["ProductName"].ToString(),
@@ -147,7 +147,7 @@
 
         public override void SaveChanges()
         {
-            this.context.SaveChanges();
+            this.robotsFactoryData.SaveChanges();
         }
     }
 }

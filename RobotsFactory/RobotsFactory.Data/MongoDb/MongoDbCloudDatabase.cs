@@ -9,13 +9,11 @@
 
     public class MongoDbCloudDatabase
     {
-        private const string DefaultDatabaseName = "robotsfactorydata";
-
         private readonly string connectionString;
         private readonly string databaseName;
 
         public MongoDbCloudDatabase()
-            : this(ConnectionStrings.Default.MongoDbCloudDatabase, DefaultDatabaseName)
+            : this(ConnectionStrings.Default.MongoDbCloudDatabase, ConnectionStrings.Default.MongoDbDefaultDatabase)
         {
         }
 
@@ -24,22 +22,7 @@
             this.connectionString = connectionString;
             this.databaseName = databaseName;
         }
-
-        public void PrintCollectionItems(string collectionName)
-        {
-            Console.WriteLine("Loading data from MongoDB Cloud Database...\n");
-
-            var database = this.GetDatabase(this.databaseName);
-            var collection = database.GetCollection(collectionName);
-
-            foreach (var item in collection.FindAll())
-            {
-                Console.WriteLine(item);
-            }
-
-            Console.WriteLine();
-        }
-
+       
         public IEnumerable<BsonDocument> GetItemsFromCollection(string collectionName)
         {
             var database = this.GetDatabase(this.databaseName);

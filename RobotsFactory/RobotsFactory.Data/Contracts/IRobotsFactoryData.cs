@@ -24,7 +24,7 @@
 
         IGenericRepository<Store> Stores { get; }
 
-        IGenericRepository<StoreExpense> Expenses { get; }
+        IGenericRepository<ManufacturerExpense> Expenses { get; }
 
         int SaveChanges();
     }

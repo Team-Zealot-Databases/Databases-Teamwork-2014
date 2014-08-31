@@ -41,14 +41,14 @@
 
         public IDbSet<Store> Stores { get; set; }
 
-        public IDbSet<StoreExpense> Expenses { get; set; }
+        public IDbSet<ManufacturerExpense> Expenses { get; set; }
 
-        public IDbSet<T> Set<T>() where T : class
+        public new IDbSet<T> Set<T>() where T : class
         {
             return base.Set<T>();
         }
 
-        public void SaveChanges()
+        public new void SaveChanges()
         {
             base.SaveChanges();
         }

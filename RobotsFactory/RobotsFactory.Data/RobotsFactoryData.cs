@@ -95,11 +95,11 @@
             }
         }
 
-        public IGenericRepository<StoreExpense> Expenses
+        public IGenericRepository<ManufacturerExpense> Expenses
         {
             get
             {
-                return this.GetRepository<StoreExpense>();
+                return this.GetRepository<ManufacturerExpense>();
             }
         }
 

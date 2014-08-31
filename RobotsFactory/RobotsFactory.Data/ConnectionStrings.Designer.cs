@@ -41,5 +41,17 @@ namespace RobotsFactory.Data {
                 return ((string)(this["MongoDbCloudDatabase"]));
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("robotsfactorydata")]
+        public string MongoDbDefaultDatabase {
+            get {
+                return ((string)(this["MongoDbDefaultDatabase"]));
+            }
+            set {
+                this["MongoDbDefaultDatabase"] = value;
+            }
+        }
     }
 }

@@ -25,6 +25,6 @@
 
         IDbSet<Store> Stores { get; set; }
 
-        IDbSet<StoreExpense> Expenses { get; set; }
+        IDbSet<ManufacturerExpense> Expenses { get; set; }
     }
 }

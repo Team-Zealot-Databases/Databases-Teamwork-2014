@@ -19,26 +19,17 @@
     public partial class MainWindow : Window
     {
         private IRobotsFactoryData robotsFactoryData = new RobotsFactoryData();
-        private RobotsFactoryContext robotsFactoryContext;
 
         public MainWindow()
         {
             this.InitializeComponent();
         }
  
-        private void InitializeDatabaseConnectionIfNecessary()
-        {
-            this.robotsFactoryContext = new RobotsFactoryContext();
-            this.robotsFactoryContext.Database.Initialize(true);
-        }
-
         private void OnReadFromMongoDbButtonClick(object sender, RoutedEventArgs e)
         {
-            this.InitializeDatabaseConnectionIfNecessary();
-
             try
             {
-                var mongoDbSeeder = new MongoDbSeeder(this.robotsFactoryContext);
+                var mongoDbSeeder = new MongoDbSeeder(this.robotsFactoryData);
                 mongoDbSeeder.Seed();
 
                 this.ShowMessage("Data from MongoDB Cloud Database was successfully seeded in SQL Server...");
@@ -51,8 +42,6 @@
 
         private void OnReadSaleReportsFromExcelButtonClick(object sender, RoutedEventArgs e)
         {
-            this.InitializeDatabaseConnectionIfNecessary();
-
             try
             {
                 var zipFileProcessor = new ZipFileProcessor();
@@ -71,7 +60,6 @@
 
         private void OnExportAggregatedSalesReportToPdfButtonClick(object sender, RoutedEventArgs e)
         {
-            this.InitializeDatabaseConnectionIfNecessary();
             var startDate = this.GetSelectedDateOrDefault(this.startDateTimePicker.Text, DateTime.MinValue);
             var endDate = this.GetSelectedDateOrDefault(this.endDateTimePicker.Text, DateTime.Now);
 
@@ -90,7 +78,6 @@
 
         private void OnGenerateXmlReportButtonClick(object sender, RoutedEventArgs e)
         {
-            this.InitializeDatabaseConnectionIfNecessary();
             var startDate = this.GetSelectedDateOrDefault(this.startDateTimePicker.Text, DateTime.MinValue);
             var endDate = this.GetSelectedDateOrDefault(this.endDateTimePicker.Text, DateTime.Now);
 
@@ -109,8 +96,6 @@
 
         private void OnReadAdditionalInformationFromXmlButtonClick(object sender, RoutedEventArgs e)
         {
-            this.InitializeDatabaseConnectionIfNecessary();
-
             try
             {
                 var expensesFactory = new ExpensesReportFactoryFromXmlData(this.robotsFactoryData.Manufacturers);

@@ -14,13 +14,13 @@
             this.manufacturerRepository = manufacturerRepository;
         }
 
-        public StoreExpense CreateStoreExpensesReport(XmlVendorExpenseEntry xmlVendorExpenseEntry)
+        public ManufacturerExpense CreateStoreExpensesReport(XmlVendorExpenseEntry xmlVendorExpenseEntry)
         {
             var manufacturer = this.manufacturerRepository
                                    .All()
                                    .FirstOrDefault(s => s.Name == xmlVendorExpenseEntry.ManufacturerName);
 
-            var expenseReport = new StoreExpense()
+            var expenseReport = new ManufacturerExpense()
             {
                 ReportDate = xmlVendorExpenseEntry.SaleDate,
                 Expense = xmlVendorExpenseEntry.Expense,

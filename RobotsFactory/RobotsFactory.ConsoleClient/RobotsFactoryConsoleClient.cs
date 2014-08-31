@@ -18,29 +18,20 @@
 
         public static void Main()
         {
-            ConnectAndLoadDataFromMsSql();
-        }
+            SeedDataFromMongoDB();
+            ExtractZipAndReadSalesReportExcelFiles();
+            ExportAggregatedSalesReportToPdf();
+            ReadXmlFileAndAddReport();
+            ExportXmlReportForManufacturersSales();
 
-        private static void ConnectAndLoadDataFromMsSql()
-        {
-            using (var robotsFactoryContext = new RobotsFactoryContext())
-            {
-                robotsFactoryContext.Database.Initialize(true);
-                SeedDataFromMongoDB(robotsFactoryContext);
-                ExtractZipAndReadSalesReportExcelFiles();
-                ExportAggregatedSalesReportToPdf();
-                ReadXmlFileAndAddReport();
-                ExportXmlReportForManufacturersSales();
-
-                Console.WriteLine("-> Program finish sucessfully...\n");
-            }
+            Console.WriteLine("-> Program finish sucessfully...\n");
         }
      
-        private static void SeedDataFromMongoDB(RobotsFactoryContext robotsFactoryContext)
+        private static void SeedDataFromMongoDB()
         {
             Console.WriteLine("1) Loading data from MongoDB Cloud Database and seed it in SQL Server...\n");
 
-            var mongoDbSeeder = new MongoDbSeeder(robotsFactoryContext);
+            var mongoDbSeeder = new MongoDbSeeder(robotsFactoryData);
             mongoDbSeeder.Seed();
         }
 
