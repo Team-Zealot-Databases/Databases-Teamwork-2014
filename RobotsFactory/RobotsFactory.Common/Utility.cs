@@ -6,6 +6,7 @@
     using System.IO;
     using System.Linq;
     using System.Text.RegularExpressions;
+    using Microsoft.Win32;
 
     public static class Utility
     {
@@ -31,6 +32,54 @@
             if (Directory.Exists(directoryPath))
             {
                 Process.Start(directoryPath);
+            }
+        }
+
+        public static DateTime GetSelectedDateOrDefault(string text, DateTime defaultValue)
+        {
+            if (string.IsNullOrEmpty(text))
+            {
+                return defaultValue;
+            }
+
+            return DateTime.Parse(text);
+        }
+
+        public static void SetFileDialogFilter(FileDialog dialog, string type, string defaultFileName = null)
+        {
+            switch (type)
+            {
+                case "zip":
+                    {
+                        dialog.DefaultExt = ".zip";
+                        dialog.Filter = "Zip File (.zip)|*.zip";
+                        break;
+                    }
+
+                case "pdf":
+                    {
+                        dialog.DefaultExt = ".zip";
+                        dialog.Filter = "Pdf File (.pdf)|*.pdf";
+                        break;
+                    }
+
+                case "xml":
+                    {
+                        dialog.DefaultExt = ".zip";
+                        dialog.Filter = "XML File (.xml)|*.xml";
+                        break;
+                    }
+
+                default:
+                    {
+                        dialog.FileName = "All files (*.*)|*.*";
+                        break;
+                    }
+            }
+
+            if (!string.IsNullOrEmpty(defaultFileName))
+            {
+                dialog.FileName = defaultFileName;
             }
         }
     }

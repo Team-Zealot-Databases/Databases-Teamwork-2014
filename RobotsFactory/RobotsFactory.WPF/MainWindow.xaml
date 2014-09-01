@@ -5,7 +5,8 @@
         Height="500" 
         Width="600" 
         Icon="Images/favicon.jpg"
-        ResizeMode="NoResize">
+        ResizeMode="NoResize"
+        Loaded="OnWindowFormLoaded">
     <Grid>
         <Image Margin="183,44,11,27" 
                Source="Images/robot.png" 
