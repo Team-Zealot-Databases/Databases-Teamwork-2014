@@ -124,6 +124,10 @@
       <Project>{ad7d540b-e116-4233-a755-b64a2ad6175b}</Project>
       <Name>RobotsFactory.Models</Name>
     </ProjectReference>
+    <ProjectReference Include="..\RobotsFactory.MongoDb\RobotsFactory.MongoDb.csproj">
+      <Project>{c0772b65-5c8a-4bb6-a28f-0de2afa178fa}</Project>
+      <Name>RobotsFactory.MongoDb</Name>
+    </ProjectReference>
     <ProjectReference Include="..\RobotsFactory.Reports.Models\RobotsFactory.Reports.Models.csproj">
       <Project>{a740550a-11a0-4578-9f26-3a49e4f29e2d}</Project>
       <Name>RobotsFactory.Reports.Models</Name>

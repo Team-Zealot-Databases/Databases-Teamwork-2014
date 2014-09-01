@@ -24,7 +24,7 @@
             {
                 ReportDate = xmlVendorExpenseEntry.SaleDate,
                 Expense = xmlVendorExpenseEntry.Expense,
-                Manufacturer = manufacturer
+                ManufacturerId = manufacturer.ManufacturerId
             };
 
             return expenseReport;

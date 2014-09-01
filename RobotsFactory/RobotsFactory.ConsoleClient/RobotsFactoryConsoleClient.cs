@@ -8,7 +8,6 @@
     using RobotsFactory.Data;
     using RobotsFactory.Data.Contracts;
     using RobotsFactory.Data.ExcelReader;
-    using RobotsFactory.Data.MongoDb;
     using RobotsFactory.Data.PdfProcessor;
     using RobotsFactory.Data.XmlProcessor;
 
@@ -17,7 +16,7 @@
         private static readonly IRobotsFactoryData robotsFactoryData = new RobotsFactoryData();
 
         public static void Main()
-        {
+        { 
             SeedDataFromMongoDB();
             ExtractZipAndReadSalesReportExcelFiles();
             ExportAggregatedSalesReportToPdf();

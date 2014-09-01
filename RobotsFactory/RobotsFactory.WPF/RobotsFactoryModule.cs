@@ -9,7 +9,6 @@
     using RobotsFactory.Data;
     using RobotsFactory.Data.Contracts;
     using RobotsFactory.Data.ExcelReader;
-    using RobotsFactory.Data.MongoDb;
     using RobotsFactory.Data.PdfProcessor;
     using RobotsFactory.Data.XmlProcessor;
     using RobotsFactory.WPF.Contracts;

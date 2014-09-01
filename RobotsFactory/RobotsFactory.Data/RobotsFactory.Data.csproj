@@ -61,10 +61,10 @@
     <Compile Include="Contracts\IRobotsFactoryDbContext.cs" />
     <Compile Include="Contracts\IRobotsFactoryData.cs" />
     <Compile Include="Contracts\IExcelSaleReportReader.cs" />
+    <Compile Include="MongoDbSeeder.cs" />
     <Compile Include="RobotsFactoryData.cs" />
     <Compile Include="XmlProcessor\ExpensesReportFactoryFromXmlData.cs" />
     <Compile Include="Repositories\GenericRepository.cs" />
-    <Compile Include="MongoDb\CentralDatabaseSeeder.cs" />
     <Compile Include="ConnectionStrings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
@@ -72,8 +72,6 @@
     </Compile>
     <Compile Include="ExcelReader\ExcelSaleReportReader.cs" />
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="MongoDb\MongoDbCloudDatabase.cs" />
-    <Compile Include="MongoDb\MongoDbSeeder.cs" />
     <Compile Include="PdfProcessor\PdfExportFactoryFromMsSqlDatabase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RobotsFactoryContext.cs" />
@@ -97,6 +95,10 @@
     <ProjectReference Include="..\RobotsFactory.Models\RobotsFactory.Models.csproj">
       <Project>{ad7d540b-e116-4233-a755-b64a2ad6175b}</Project>
       <Name>RobotsFactory.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RobotsFactory.MongoDb\RobotsFactory.MongoDb.csproj">
+      <Project>{C0772B65-5C8A-4BB6-A28F-0DE2AFA178FA}</Project>
+      <Name>RobotsFactory.MongoDb</Name>
     </ProjectReference>
     <ProjectReference Include="..\RobotsFactory.Reports.Models\RobotsFactory.Reports.Models.csproj">
       <Project>{A740550A-11A0-4578-9F26-3A49E4F29E2D}</Project>
