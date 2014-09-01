@@ -4,19 +4,12 @@
     using System.Linq;
     using RobotsFactory.Data.Contracts;
     using RobotsFactory.Models;
-    using RobotsFactory.MongoDb;
     using RobotsFactory.MongoDb.Contracts;
-    using RobotsFactory.MongoDb.Mapping;
 
     public class MongoDbSeeder
     {
         private readonly IMongoDbContext mongoDb;
         private readonly IRobotsFactoryData robotsFactoryData;
-
-        public MongoDbSeeder(IRobotsFactoryData robotsFactoryData)
-            : this(robotsFactoryData, new MongoDbContext(ConnectionStrings.Default.MongoDbCloudDatabase, ConnectionStrings.Default.MongoDbDefaultDatabase))
-        {
-        }
 
         public MongoDbSeeder(IRobotsFactoryData robotsFactoryData, IMongoDbContext mongoDb)
         {
@@ -41,10 +34,8 @@
             {
                 return;
             }
-
-            var countries = this.mongoDb.GetCollection<CountryMap>("Countries").FindAll();
             
-            foreach (var country in countries)
+            foreach (var country in this.mongoDb.Countries.FindAll())
             {
                 this.robotsFactoryData.Countries.Add(new Country()
                 {
@@ -61,9 +52,7 @@
                 return;
             }
 
-            var cities = this.mongoDb.GetCollection<CityMap>("Cities").FindAll();
-
-            foreach (var city in cities)
+            foreach (var city in this.mongoDb.Cities.FindAll())
             {
                 this.robotsFactoryData.Cities.Add(new City()
                 {
@@ -81,9 +70,7 @@
                 return;
             }
 
-            var addresses = this.mongoDb.GetCollection<AddressMap>("Addresses").FindAll();
-
-            foreach (var address in addresses)
+            foreach (var address in this.mongoDb.Addresses.FindAll())
             {
                 this.robotsFactoryData.Addresses.Add(new Address()
                 {
@@ -101,9 +88,7 @@
                 return;
             }
 
-            var manufacturers = this.mongoDb.GetCollection<ManufacturerMap>("Manufacturers").FindAll();
-
-            foreach (var manufacturer in manufacturers)
+            foreach (var manufacturer in this.mongoDb.Manufacturers.FindAll())
             {
                 this.robotsFactoryData.Manufacturers.Add(new Manufacturer()
                 {
@@ -121,9 +106,7 @@
                 return;
             }
 
-            var productTypes = this.mongoDb.GetCollection<ProductTypeMap>("ProductTypes").FindAll();
-
-            foreach (var productType in productTypes)
+            foreach (var productType in this.mongoDb.ProductTypes.FindAll())
             {
                 this.robotsFactoryData.ProductTypes.Add(new ProductType()
                 {
@@ -140,9 +123,7 @@
                 return;
             }
 
-            var products = this.mongoDb.GetCollection<ProductMap>("Products").FindAll();
-
-            foreach (var product in products)
+            foreach (var product in this.mongoDb.Products.FindAll())
             {
                 this.robotsFactoryData.Products.Add(new Product()
                 {

@@ -48,6 +48,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConnectionStrings.Designer.cs">
+      <DependentUpon>ConnectionStrings.settings</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
     <Compile Include="Contracts\IMongoDbContext.cs" />
     <Compile Include="Mapping\AddressMap.cs" />
     <Compile Include="Mapping\CityMap.cs" />
@@ -61,6 +66,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="ConnectionStrings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>ConnectionStrings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\RobotsFactory.Models\RobotsFactory.Models.csproj">
+      <Project>{AD7D540B-E116-4233-A755-B64A2AD6175B}</Project>
+      <Name>RobotsFactory.Models</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

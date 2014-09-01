@@ -40,15 +40,19 @@
     <Reference Include="itextsharp">
       <HintPath>..\packages\iTextSharp.5.5.2\lib\itextsharp.dll</HintPath>
     </Reference>
-    <Reference Include="MongoDB.Bson">
+    <Reference Include="MongoDB.Bson, Version=1.9.2.235, Culture=neutral, PublicKeyToken=f686731cfb9cc103, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\mongocsharpdriver.1.9.2\lib\net35\MongoDB.Bson.dll</HintPath>
     </Reference>
-    <Reference Include="MongoDB.Driver">
+    <Reference Include="MongoDB.Driver, Version=1.9.2.235, Culture=neutral, PublicKeyToken=f686731cfb9cc103, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\mongocsharpdriver.1.9.2\lib\net35\MongoDB.Driver.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -58,11 +62,13 @@
   <ItemGroup>
     <Compile Include="Contracts\IDbContext.cs" />
     <Compile Include="Contracts\IGenericRepository.cs" />
+    <Compile Include="Contracts\ILogger.cs" />
     <Compile Include="Contracts\IRobotsFactoryDbContext.cs" />
     <Compile Include="Contracts\IRobotsFactoryData.cs" />
     <Compile Include="Contracts\IExcelSaleReportReader.cs" />
     <Compile Include="MongoDbSeeder.cs" />
     <Compile Include="RobotsFactoryData.cs" />
+    <Compile Include="RobotsFactoryModule.cs" />
     <Compile Include="XmlProcessor\ExpensesReportFactoryFromXmlData.cs" />
     <Compile Include="Repositories\GenericRepository.cs" />
     <Compile Include="ConnectionStrings.Designer.cs">

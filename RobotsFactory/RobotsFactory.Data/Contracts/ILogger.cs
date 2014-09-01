@@ -1,4 +1,4 @@
-﻿namespace RobotsFactory.WPF.Contracts
+﻿namespace RobotsFactory.Data.Contracts
 {
     using System;
     using System.Linq;

@@ -1,0 +1,12 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="RobotsFactory.MongoDb" GeneratedClassName="ConnectionStrings">
+  <Profiles />
+  <Settings>
+    <Setting Name="MongoDbCloudDatabase" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">mongodb://zealot:telerik@ds063879.mongolab.com:63879/robotsfactorydata</Value>
+    </Setting>
+    <Setting Name="MongoDbDefaultDatabase" Type="System.String" Scope="User">
+      <Value Profile="(Default)">robotsfactorydata</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
