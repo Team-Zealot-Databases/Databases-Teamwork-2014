@@ -1,0 +1,5 @@
+C:\Users\Ivaylo\Dropbox\Ivo\IT\TAcademy\2013 (DB Teamwork)\RobotsFactory\RobotsFactory.Reports.Models\bin\Debug\RobotsFactory.Reports.Models.dll
+C:\Users\Ivaylo\Dropbox\Ivo\IT\TAcademy\2013 (DB Teamwork)\RobotsFactory\RobotsFactory.Reports.Models\bin\Debug\RobotsFactory.Reports.Models.pdb
+C:\Users\Ivaylo\Dropbox\Ivo\IT\TAcademy\2013 (DB Teamwork)\RobotsFactory\RobotsFactory.Reports.Models\obj\Debug\RobotsFactory.Reports.Models.csprojResolveAssemblyReference.cache
+C:\Users\Ivaylo\Dropbox\Ivo\IT\TAcademy\2013 (DB Teamwork)\RobotsFactory\RobotsFactory.Reports.Models\obj\Debug\RobotsFactory.Reports.Models.dll
+C:\Users\Ivaylo\Dropbox\Ivo\IT\TAcademy\2013 (DB Teamwork)\RobotsFactory\RobotsFactory.Reports.Models\obj\Debug\RobotsFactory.Reports.Models.pdb
