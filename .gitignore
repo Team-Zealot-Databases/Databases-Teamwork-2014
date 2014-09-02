@@ -2,6 +2,7 @@
 /RobotsFactory/RobotsFactory.jmconfig
 /RobotsFactory/*.suo
 RobotsFactory/RobotsFactory.WPF/obj/
+RobotsFactory/RobotsFactory.WPF/obj/Debug/
 RobotsFactory/RobotsFactory.Reports.Models/obj/Debug/
 RobotsFactory/RobotsFactory.Common/obj/
 RobotsFactory/RobotsFactory.ConsoleClient/bin/
@@ -14,3 +15,4 @@ packages
 /Reports/Excel_Reports
 /Reports/XML_Reports
 PDF_Reports
+obj

@@ -4,16 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{5471BB68-E377-43E2-96A6-8182B6802758}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{C0772B65-5C8A-4BB6-A28F-0DE2AFA178FA}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>RobotsFactory.ConsoleClient</RootNamespace>
-    <AssemblyName>RobotsFactory.ConsoleClient</AssemblyName>
+    <RootNamespace>RobotsFactory.MongoDb</RootNamespace>
+    <AssemblyName>RobotsFactory.MongoDb</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,7 +22,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -35,19 +33,13 @@
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
-    <Reference Include="EntityFramework.SqlServer">
-      <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
-    </Reference>
-    <Reference Include="MongoDB.Bson, Version=1.9.2.235, Culture=neutral, PublicKeyToken=f686731cfb9cc103, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="MongoDB.Bson">
       <HintPath>..\packages\mongocsharpdriver.1.9.2\lib\net35\MongoDB.Bson.dll</HintPath>
     </Reference>
-    <Reference Include="MongoDB.Driver, Version=1.9.2.235, Culture=neutral, PublicKeyToken=f686731cfb9cc103, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="MongoDB.Driver">
       <HintPath>..\packages\mongocsharpdriver.1.9.2\lib\net35\MongoDB.Driver.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -56,34 +48,33 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConsoleLogger.cs" />
-    <Compile Include="RobotsFactoryConsoleClient.cs" />
+    <Compile Include="ConnectionStrings.Designer.cs">
+      <DependentUpon>ConnectionStrings.settings</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Contracts\IMongoDbContext.cs" />
+    <Compile Include="Mapping\AddressMap.cs" />
+    <Compile Include="Mapping\CityMap.cs" />
+    <Compile Include="Mapping\CountryMap.cs" />
+    <Compile Include="Mapping\ManufacturerExpenseMap.cs" />
+    <Compile Include="Mapping\ManufacturerMap.cs" />
+    <Compile Include="Mapping\ProductMap.cs" />
+    <Compile Include="Mapping\ProductTypeMap.cs" />
+    <Compile Include="MongoDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-    <None Include="packages.config" />
+    <None Include="app.config" />
+    <None Include="ConnectionStrings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>ConnectionStrings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\RobotsFactory.Common\RobotsFactory.Common.csproj">
-      <Project>{c4a82ab1-5e0b-4a77-a02b-7165ec55a9fa}</Project>
-      <Name>RobotsFactory.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\RobotsFactory.Data\RobotsFactory.Data.csproj">
-      <Project>{d78c1531-3c04-40b0-b657-7c448ccebd22}</Project>
-      <Name>RobotsFactory.Data</Name>
-    </ProjectReference>
     <ProjectReference Include="..\RobotsFactory.Models\RobotsFactory.Models.csproj">
-      <Project>{ad7d540b-e116-4233-a755-b64a2ad6175b}</Project>
+      <Project>{AD7D540B-E116-4233-A755-B64A2AD6175B}</Project>
       <Name>RobotsFactory.Models</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\RobotsFactory.MongoDb\RobotsFactory.MongoDb.csproj">
-      <Project>{c0772b65-5c8a-4bb6-a28f-0de2afa178fa}</Project>
-      <Name>RobotsFactory.MongoDb</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\RobotsFactory.Reports.Models\RobotsFactory.Reports.Models.csproj">
-      <Project>{a740550a-11a0-4578-9f26-3a49e4f29e2d}</Project>
-      <Name>RobotsFactory.Reports.Models</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

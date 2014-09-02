@@ -3,7 +3,7 @@
     using System;
     using System.Linq;
     using System.Windows.Controls;
-    using RobotsFactory.WPF.Contracts;
+    using RobotsFactory.Data.Contracts;
 
     public class WpfLogger : ILogger
     {

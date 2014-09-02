@@ -7,14 +7,12 @@
     using RobotsFactory.Common;
     using RobotsFactory.Data;
     using RobotsFactory.Data.Contracts;
-    using RobotsFactory.WPF.Contracts;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
-        private IRobotsFactoryData robotsFactoryData = new RobotsFactoryData();
         private RobotsFactoryModule robotsFactoryModule;
         private ILogger logger;
 
@@ -51,7 +49,7 @@
                 var startDate = Utility.GetSelectedDateOrDefault(this.startDateTimePicker.Text, DateTime.MinValue);
                 var endDate = Utility.GetSelectedDateOrDefault(this.endDateTimePicker.Text, DateTime.Now);
 
-                this.robotsFactoryModule.ExportAggregatedSalesReportToPdf(selectedPathAndFileName, startDate, endDate);
+                this.robotsFactoryModule.ExportAggregatedSalesReportToPdf(Tuple.Create(selectedPathAndFileName.Item1, string.Empty), startDate, endDate);
             }
         }
 
@@ -63,7 +61,7 @@
                 var startDate = Utility.GetSelectedDateOrDefault(this.startDateTimePicker.Text, DateTime.MinValue);
                 var endDate = Utility.GetSelectedDateOrDefault(this.endDateTimePicker.Text, DateTime.Now);
 
-                this.robotsFactoryModule.GenerateXmlReport(selectedPathAndFileName, startDate, endDate);
+                this.robotsFactoryModule.GenerateXmlReport(Tuple.Create(selectedPathAndFileName.Item1, string.Empty), startDate, endDate);
             }
         }
 
