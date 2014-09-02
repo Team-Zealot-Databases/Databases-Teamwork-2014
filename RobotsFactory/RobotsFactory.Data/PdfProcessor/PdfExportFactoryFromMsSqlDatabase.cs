@@ -12,7 +12,7 @@
     public class PdfExportFactoryFromMsSqlDatabase
     {
         private const string DateTimeFormat = "dd.MM.yyyy";
-        private const int TableColumnsNumber = 6;
+        private const int TableColumnsNumber = 5;
 
         private readonly IRobotsFactoryData robotsFactoryData;
 
@@ -39,7 +39,7 @@
                 var boldFont = new Font(bfTimes, 11, Font.BOLD);
 
                 this.SetTableTitle(table, boldFont, TableColumnsNumber, startDate, endDate);
-                this.SetTableColumnHeaders(table, normalFont);
+                //this.SetTableColumnHeaders(table, normalFont);
 
                 var salesReportEntries = this.GetSaleReportsFromDatabase(startDate, endDate);
                 this.FillPdfTableBody(salesReportEntries, table, normalFont);
@@ -79,14 +79,22 @@
         /// </summary>
         private void FillPdfTableBody(IQueryable<PdfSaleReportEntry> salesReportEntries, PdfPTable table, Font normalFont)
         {
+            DateTime currentDate = DateTime.MinValue;
+
             foreach (var salesEntry in salesReportEntries)
             {
+                if (currentDate != salesEntry.Date)
+                {
+                    this.AddDateCell(table, normalFont, TableColumnsNumber, new BaseColor(189, 215, 238), salesEntry.Date);
+                    this.SetTableColumnHeaders(table, normalFont);
+                }
+                currentDate = salesEntry.Date;
+
                 this.AddTableCell(table, normalFont, null, salesEntry.Name);
                 this.AddTableCell(table, normalFont, null, salesEntry.Quantity.ToString());
                 this.AddTableCell(table, normalFont, null, salesEntry.UnitPrice.ToString());
                 this.AddTableCell(table, normalFont, null, salesEntry.Location);
                 this.AddTableCell(table, normalFont, null, salesEntry.Sum.ToString());
-                this.AddTableCell(table, normalFont, null, salesEntry.Date.ToString(DateTimeFormat));
             }
         }
 
@@ -103,7 +111,7 @@
             var table = new PdfPTable(columnsNumber);
             table.TotalWidth = 500f;
             table.LockedWidth = true;
-            float[] widths = new float[] { 100f, 100, 100f, 100f, 100f, 100f };
+            float[] widths = new float[] { 120f, 120, 120f, 120f, 120f };
             table.SetWidths(widths);
             return table;
         }
@@ -148,7 +156,6 @@
             this.AddTableCell(table, font, baseColor, "Unit Price");
             this.AddTableCell(table, font, baseColor, "Location");
             this.AddTableCell(table, font, baseColor, "Sum");
-            this.AddTableCell(table, font, baseColor, "Date");
         }
 
         private void AddTableCell(PdfPTable table, Font font, BaseColor baseColor, string phraseName)
@@ -157,6 +164,19 @@
             cell.Colspan = 1;
             cell.HorizontalAlignment = 1;
             cell.BackgroundColor = baseColor;
+            cell.PaddingBottom = 5f;
+            cell.PaddingLeft = 5f;
+            table.AddCell(cell);
+        }
+
+        private void AddDateCell(PdfPTable table, Font font, int tableColumnsNumber, BaseColor backgroundColor, DateTime date)
+        {
+            var cell = new PdfPCell(new Phrase(string.Format("Date: {0}",
+                date.ToString(DateTimeFormat)), font));
+
+            cell.Colspan = tableColumnsNumber;
+            cell.HorizontalAlignment = 0;
+            cell.BackgroundColor = backgroundColor;
             cell.PaddingBottom = 5f;
             cell.PaddingLeft = 5f;
             table.AddCell(cell);
