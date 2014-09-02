@@ -1,7 +1,8 @@
 /RobotsFactory/RobotsFactory.v12.suo
 /RobotsFactory/RobotsFactory.jmconfig
 /RobotsFactory/*.suo
-/RobotsFactory/RobotsFactory.WPF/obj/
+RobotsFactory/RobotsFactory.WPF/obj/
+RobotsFactory/RobotsFactory.Reports.Models/obj/Debug/
 RobotsFactory/RobotsFactory.Common/obj/
 RobotsFactory/RobotsFactory.ConsoleClient/bin/
 RobotsFactory/RobotsFactory.ConsoleClient/obj/
