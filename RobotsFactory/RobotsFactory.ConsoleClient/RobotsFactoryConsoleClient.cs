@@ -30,19 +30,19 @@
             //ExportXmlReportForManufacturersSales();
             //Console.WriteLine("-> Program finish sucessfully...\n");
 
-            //var robotsFactoryMySqlContext = new RobotsFactoryMySqlContext();
+            var robotsFactoryMySqlContext = new RobotsFactoryMySqlContext();
 
-            //robotsFactoryMySqlContext.Add(new JsonReport()
-            //{
-            //    JsonContent = DateTime.Now.ToString(),
-            //});
+            robotsFactoryMySqlContext.Add(new JsonReport()
+            {
+                JsonContent = DateTime.Now.ToString(),
+            });
 
-            //robotsFactoryMySqlContext.SaveChanges();
+            robotsFactoryMySqlContext.SaveChanges();
 
-            //foreach (var jsonReport in robotsFactoryMySqlContext.JsonReports)
-            //{
-            //    Console.WriteLine("{0} | {1}", jsonReport.ReportId, jsonReport.JsonContent);
-            //}
+            foreach (var jsonReport in robotsFactoryMySqlContext.JsonReports)
+            {
+                Console.WriteLine("{0} | {1}", jsonReport.ReportId, jsonReport.JsonContent);
+            }
 
             var sqliteDbContext = new SQLiteDbContext();
             sqliteDbContext.Countries.Add(new Country()
