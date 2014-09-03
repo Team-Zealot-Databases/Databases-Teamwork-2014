@@ -3,13 +3,15 @@
     using System;
     using System.IO;
     using System.Linq;
-    using System.Text;
+    using Newtonsoft.Json;
     using RobotsFactory.Common;
     using RobotsFactory.MySQL;
     using RobotsFactory.Reports.Models;
 
     public class JsonReportsFactoryFromMsSqlDatabase
     {
+        private const string JsonFormat = ".json";
+
         private readonly IQueryable<JsonProductsReportEntry> productsReportsEntries;
         private readonly RobotsFactoryMySqlContext robotsFactoryMySqlContext = new RobotsFactoryMySqlContext();
 
@@ -24,7 +26,7 @@
 
             foreach (JsonProductsReportEntry productReport in this.productsReportsEntries)
             {
-                string fileName = (productReport.ProductId + ".json").ToString();
+                string fileName = (productReport.ProductId + JsonFormat).ToString();
                 string singleProductReport = this.CreateJsonReportForSinleProduct(productReport);
 
                 using (StreamWriter jsonReportFile = new StreamWriter(string.Format("{0}\\{1}", pathToSave, fileName), true))
@@ -51,17 +53,8 @@
 
         private string CreateJsonReportForSinleProduct(JsonProductsReportEntry singleProduct)
         {
-            StringBuilder sb = new StringBuilder();
-            string indentation = new String(' ', Constants.IndentSymbolsNumber);
-            sb.Append("{").AppendLine();
-            sb.Append(indentation).AppendFormat("\"product-id\": {0},", singleProduct.ProductId).AppendLine();
-            sb.Append(indentation).AppendFormat("\"product-name\": \"{0}\",", singleProduct.ProductName).AppendLine();
-            sb.Append(indentation).AppendFormat("\"total-quantity-sold\": {0},", singleProduct.TotalQuantitySold).AppendLine();
-            sb.Append(indentation).AppendFormat("\"total-income\": {0}", singleProduct.TotalIncome).AppendLine();
-            sb.Append("}");
-
-            string singleProductJson = sb.ToString();
-            return singleProductJson;
+            var serializedProductReportEntry = JsonConvert.SerializeObject(singleProduct);
+            return serializedProductReportEntry;
         }
     }
 }

@@ -2,9 +2,11 @@
 {
     using System;
     using System.Linq;
+    using Newtonsoft.Json;
     using RobotsFactory.Common;
     using RobotsFactory.Data;
     using RobotsFactory.Data.Contracts;
+    using RobotsFactory.Reports.Models;
 
     public class RobotsFactoryConsoleClient
     {
