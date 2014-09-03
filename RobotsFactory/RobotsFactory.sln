@@ -20,6 +20,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{AEFDE239-CC51-41CE-A8BB-DB67885086E4}"
 	ProjectSection(SolutionItems) = preProject
 		..\Documentation\TeamZealot.pptx = ..\Documentation\TeamZealot.pptx
+		..\Documentation\TeamZealotDark.pptx = ..\Documentation\TeamZealotDark.pptx
 	EndProjectSection
 EndProject
 Global
