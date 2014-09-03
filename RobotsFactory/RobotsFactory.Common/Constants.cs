@@ -16,6 +16,9 @@
         public const string PdfReportName = "/Robots-Factory-Aggrerated-Sales-Report.pdf";
         public const string ExcelFileExtensionPattern = "*.xls";
         public const string OpenSansRecularTtfPath = "../../../RobotsFactory.Data/OpenSans-Regular.ttf";
+        public const string JsonProductsReportsPath = "../../../../Reports/Json-Reports";
+        public const string DatabaseName = "RobotsFactory";
+        public const int IndentSymbolsNumber = 4;
 
         public static string ReportsDirectoryPath
         {
