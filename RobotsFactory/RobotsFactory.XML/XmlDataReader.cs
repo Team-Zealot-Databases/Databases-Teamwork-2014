@@ -1,4 +1,4 @@
-﻿namespace RobotsFactory.Data.XmlProcessor
+﻿namespace RobotsFactory.XML
 {
     using System;
     using System.Collections.Generic;

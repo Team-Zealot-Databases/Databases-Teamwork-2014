@@ -1,16 +1,22 @@
-﻿namespace RobotsFactory.Data.ExcelReader
+﻿namespace RobotsFactory.Excel
 {
     using System;
     using System.Collections.Generic;
     using System.Data;
     using System.Data.OleDb;
     using System.Linq;
-    using RobotsFactory.Data;
-    using RobotsFactory.Data.Contracts;
+    using RobotsFactory.Excel.Contracts;
     using RobotsFactory.Reports.Models;
 
     public class ExcelSaleReportReader : IExcelSaleReportReader
     {
+        private readonly string connectionString;
+
+        public ExcelSaleReportReader(string connectionString)
+        {
+            this.connectionString = connectionString;
+        }
+
         public ExcelReport CreateSaleReport(string dataSourcePath, string reportDateTime)
         {
             var excelReport = new ExcelReport();
@@ -82,7 +88,7 @@
  
         private string GetFullConnectionString(string dataSourcePath)
         {
-            var fullConnectionString = ConnectionStrings.Default.ExcelConnectionString + "Data Source=" + dataSourcePath;
+            var fullConnectionString = this.connectionString + "Data Source=" + dataSourcePath;
             return fullConnectionString;
         }
  

@@ -1,4 +1,4 @@
-﻿namespace RobotsFactory.Data.XmlProcessor
+﻿namespace RobotsFactory.Data.ReportProcessors
 {
     using System.Linq;
     using RobotsFactory.Data.Contracts;

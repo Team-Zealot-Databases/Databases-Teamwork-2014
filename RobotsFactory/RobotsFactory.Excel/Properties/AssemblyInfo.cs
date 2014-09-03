@@ -4,11 +4,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("RobotsFactory.SQLite")]
+[assembly: AssemblyTitle("RobotsFactory.Excel")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("RobotsFactory.SQLite")]
+[assembly: AssemblyProduct("RobotsFactory.Excel")]
 [assembly: AssemblyCopyright("Copyright ©  2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -19,7 +19,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("2029c555-3084-4d43-9be3-d2435a0bf529")]
+[assembly: Guid("e1ca261c-cf1c-4208-8f8c-e3dfc8d65671")]
 
 // Version information for an assembly consists of the following four values:
 //

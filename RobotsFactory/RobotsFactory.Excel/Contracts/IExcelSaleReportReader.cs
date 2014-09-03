@@ -1,4 +1,4 @@
-namespace RobotsFactory.Data.Contracts
+namespace RobotsFactory.Excel.Contracts
 {
     using RobotsFactory.Reports.Models;
 

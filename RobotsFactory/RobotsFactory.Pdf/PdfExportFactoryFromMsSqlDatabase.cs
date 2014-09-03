@@ -1,10 +1,9 @@
-﻿namespace RobotsFactory.Data.PdfProcessor
+﻿namespace RobotsFactory.Pdf
 {
     using System;
     using System.IO;
     using System.Linq;
     using RobotsFactory.Common;
-    using RobotsFactory.Data.Contracts;
     using RobotsFactory.Reports.Models;
     using iTextSharp.text;
     using iTextSharp.text.pdf;
@@ -14,11 +13,11 @@
         private const string DateTimeFormat = "dd.MM.yyyy";
         private const int TableColumnsNumber = 5;
 
-        private readonly IRobotsFactoryData robotsFactoryData;
+        private readonly IQueryable<PdfSaleReportEntry> salesReportEntries;
 
-        public PdfExportFactoryFromMsSqlDatabase(IRobotsFactoryData robotsFactoryData)
+        public PdfExportFactoryFromMsSqlDatabase(IQueryable<PdfSaleReportEntry> salesReportEntries)
         {
-            this.robotsFactoryData = robotsFactoryData;
+            this.salesReportEntries = salesReportEntries;
         }
 
         public void ExportSalesEntriesToPdf(string pathToSave, string pdfReportName, DateTime startDate, DateTime endDate)
@@ -39,39 +38,14 @@
                 var boldFont = new Font(bfTimes, 11, Font.BOLD);
 
                 this.SetTableTitle(table, boldFont, TableColumnsNumber, startDate, endDate);
-                //this.SetTableColumnHeaders(table, normalFont);
 
-                var salesReportEntries = this.GetSaleReportsFromDatabase(startDate, endDate);
-                this.FillPdfTableBody(salesReportEntries, table, normalFont);
+                this.FillPdfTableBody(this.salesReportEntries, table, normalFont);
 
-                decimal totalSum = salesReportEntries.Sum(x => x.Sum);
+                decimal totalSum = this.salesReportEntries.Sum(x => x.Sum);
                 this.SetTableFooter(table, totalSum, boldFont, TableColumnsNumber);
 
                 doc.Add(table);
             }
-        }
-
-        /// <summary>
-        // Query for getting all sold items information (product name, quantity, unit price, sum, date)
-        /// </summary>
-        private IQueryable<PdfSaleReportEntry> GetSaleReportsFromDatabase(DateTime startDate, DateTime endDate)
-        {
-            var salesReportEntries = from sre in this.robotsFactoryData.SalesReportEntries.All()
-                                     join pro in this.robotsFactoryData.Products.All() on sre.ProductId equals pro.ProductId
-                                     join sl in this.robotsFactoryData.SalesReports.All() on sre.SalesReportId equals sl.SalesReportId
-                                     where sl.ReportDate >= startDate && sl.ReportDate <= endDate
-                                     orderby sl.ReportDate
-                                     select new PdfSaleReportEntry
-                                     {
-                                         Name = pro.Name,
-                                         Quantity = sre.Quantity,
-                                         Date = sl.ReportDate,
-                                         UnitPrice = sre.UnitPrice,
-                                         Location = sl.Store.Name,
-                                         Sum = sre.Sum
-                                     };
-
-            return salesReportEntries;
         }
 
         /// <summary>

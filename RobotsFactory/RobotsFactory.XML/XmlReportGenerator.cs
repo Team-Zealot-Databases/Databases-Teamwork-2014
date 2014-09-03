@@ -1,11 +1,10 @@
-﻿namespace RobotsFactory.Data.XmlProcessor
+﻿namespace RobotsFactory.XML
 {
     using System;
     using System.Linq;
     using System.Text;
     using System.Xml;
     using RobotsFactory.Common;
-    using RobotsFactory.Data.Contracts;
     using RobotsFactory.Reports.Models;
 
     public class XmlReportGenerator
@@ -13,11 +12,11 @@
         private const string DateTimeFormatInXml = "dd-MMM-yyyy";
         private const string EncodingType = "utf-8";
 
-        private readonly IRobotsFactoryData robotsFactoryData;
+        private readonly IQueryable<IGrouping<string, XmlSaleReport>> saleReportsData;
 
-        public XmlReportGenerator(IRobotsFactoryData robotsFactoryData)
+        public XmlReportGenerator(IQueryable<XmlSaleReport> saleReportsData)
         {
-            this.robotsFactoryData = robotsFactoryData;
+            this.saleReportsData = saleReportsData.GroupBy(m => m.ManufacturerName);
         }
 
         public void CreateXmlReport(string pathToSave, string xmlReportName, DateTime startDate, DateTime endDate)
@@ -32,9 +31,8 @@
             using (var writer = new XmlTextWriter(pathToSave + xmlReportName, encoding))
             {
                 this.SetHeader(writer);
-                var reportData = this.GetSaleReportsFromDatabase(startDate, endDate);
 
-                foreach (var manufacturer in reportData.Select(a => new { Name = a.Key, Reports = a.GroupBy(b => b.ReportDate) }))
+                foreach (var manufacturer in this.saleReportsData.Select(a => new { Name = a.Key, Reports = a.GroupBy(b => b.ReportDate) }))
                 {
                     this.SetTitle(writer, manufacturer.Name);
 
@@ -46,24 +44,6 @@
                     writer.WriteEndElement();
                 }
             }
-        }
- 
-        private IQueryable<IGrouping<string, XmlSaleReport>> GetSaleReportsFromDatabase(DateTime startDate, DateTime endDate)
-        {
-            var reportData = (from m in this.robotsFactoryData.Manufacturers.All()
-                              join p in this.robotsFactoryData.Products.All() on m.ManufacturerId equals p.ManufacturerId
-                              join s in this.robotsFactoryData.SalesReportEntries.All() on p.ProductId equals s.ProductId
-                              join l in this.robotsFactoryData.SalesReports.All() on s.SalesReportId equals l.SalesReportId
-                              where l.ReportDate >= startDate && l.ReportDate <= endDate
-                              select new XmlSaleReport()
-                              {
-                                  ManufacturerName = m.Name,
-                                  ReportDate = l.ReportDate,
-                                  Sum = s.Sum
-                              })
-                                .GroupBy(a => a.ManufacturerName);
-
-            return reportData;
         }
  
         private void SetHeader(XmlTextWriter writer)
