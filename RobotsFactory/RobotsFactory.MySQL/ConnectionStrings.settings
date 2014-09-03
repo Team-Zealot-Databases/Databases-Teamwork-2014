@@ -1,0 +1,9 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="RobotsFactory.MySQL" GeneratedClassName="ConnectionStrings">
+  <Profiles />
+  <Settings>
+    <Setting Name="MySqlConnectionString" Type="System.String" Scope="User">
+      <Value Profile="(Default)">server=db4free.net;userid=zealot;password=telerik;database=robotsfactory;</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

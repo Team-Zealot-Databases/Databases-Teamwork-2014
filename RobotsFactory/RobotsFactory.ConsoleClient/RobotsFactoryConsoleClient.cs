@@ -5,6 +5,7 @@
     using RobotsFactory.Common;
     using RobotsFactory.Data;
     using RobotsFactory.Data.Contracts;
+    using RobotsFactory.MySQL;
 
     public class RobotsFactoryConsoleClient
     {
@@ -18,15 +19,30 @@
 
         public static void Main()
         {
-            InitializeComponent();
+            //InitializeComponent();
 
-            SeedDataFromMongoDB();
-            ExtractZipAndReadSalesReportExcelFiles();
-            ExportAggregatedSalesReportToPdf();
-            ReadXmlFileAndAddReport();
-            ExportXmlReportForManufacturersSales();
+            //SeedDataFromMongoDB();
+            //ExtractZipAndReadSalesReportExcelFiles();
+            //ExportAggregatedSalesReportToPdf();
+            //ReadXmlFileAndAddReport();
+            //ExportXmlReportForManufacturersSales();
 
-            Console.WriteLine("-> Program finish sucessfully...\n");
+            //Console.WriteLine("-> Program finish sucessfully...\n");
+
+            var robotsFactoryMySqlContext = new RobotsFactoryMySqlContext();
+
+            robotsFactoryMySqlContext.Add(new JsonReport()
+            {
+                JsonContent = DateTime.Now.ToString(),
+                JsonFileName = DateTime.Now.ToString()
+            });
+
+            robotsFactoryMySqlContext.SaveChanges();
+
+            foreach (var jsonReport in robotsFactoryMySqlContext.JsonReports)
+            {
+                Console.WriteLine("{0} | {1} | {2}", jsonReport.ReportId, jsonReport.JsonContent, jsonReport.JsonFileName);
+            }
         }
      
         private static void SeedDataFromMongoDB()
