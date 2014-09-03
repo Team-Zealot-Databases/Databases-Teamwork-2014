@@ -7,6 +7,7 @@
     using RobotsFactory.Common;
     using RobotsFactory.Data.Contracts;
     using RobotsFactory.Data.ExcelReader;
+    using RobotsFactory.Data.JsonProcessor;
     using RobotsFactory.Data.PdfProcessor;
     using RobotsFactory.Data.XmlProcessor;
     using RobotsFactory.MongoDb;
@@ -137,6 +138,34 @@
             }
 
             this.robotsFactoryData.SaveChanges();
+        }
+
+        public void GenerateJsonReportsAndSaveThemToDisk(string folderPath)
+        {
+            try
+            {
+                var productReportsToJsonFactory = new JsonReportsFactoryFromMsSqlDatabase(this.robotsFactoryData);
+                productReportsToJsonFactory.SaveJsonProductsReportsToDisk(folderPath);
+                this.logger.ShowMessage("Json reports were successfully saved to disk...");
+            }
+            catch (Exception)
+            {
+                this.logger.ShowMessage("Error! Cannot export JSON reports or save them to disk...");
+            }
+        }
+
+        public void GenerateJsonReportsAndExportThemToMySql()
+        {
+            try
+            {
+                var productReportsToJsonFactory = new JsonReportsFactoryFromMsSqlDatabase(this.robotsFactoryData);
+                productReportsToJsonFactory.ExportJsonProductsReportsToMySqlDatabase();
+                this.logger.ShowMessage("Json reports were successfully exported to MySql database...");
+            }
+            catch (Exception)
+            {
+                this.logger.ShowMessage("Error! Cannot export JSON reports to MySQL Database...");
+            }
         }
     }
 }

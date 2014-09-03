@@ -109,5 +109,12 @@
 
             return null;
         }
+
+        private void OnGenerateJsonReportsButtonClick(object sender, RoutedEventArgs e)
+        {
+            string pathToFolder = Constants.JsonProductsReportsPath;
+            this.robotsFactoryModule.GenerateJsonReportsAndSaveThemToDisk(pathToFolder);
+            //this.robotsFactoryModule.GenerateJsonReportsAndExportThemToMySql();
+        }
     }
 }

@@ -76,12 +76,21 @@
                 Width="181" 
                 Height="36" 
                 Click="OnReadAdditionalInformationFromXmlButtonClick" />
-        
+
         <Button Content="Open Reports Directory" 
                 HorizontalAlignment="Left" 
                 Margin="10,67,0,0"
                 VerticalAlignment="Top"
                 Width="181"
                 Height="23" Click="OnOpenReportsDirectoryButtonClick"/>
+        
+        <Button Content="Genrerate JSON Reports" 
+                HorizontalAlignment="Left" 
+                Margin="10,380,0,0" 
+                VerticalAlignment="Top" 
+                Width="181" 
+                RenderTransformOrigin="-2.6,-1.7" 
+                Height="36" 
+                Click="OnGenerateJsonReportsButtonClick"/>
     </Grid>
 </Window>
