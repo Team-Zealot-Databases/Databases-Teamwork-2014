@@ -6,6 +6,7 @@
     using RobotsFactory.Data;
     using RobotsFactory.Data.Contracts;
     using RobotsFactory.MySQL;
+    using RobotsFactory.SQLite;
 
     public class RobotsFactoryConsoleClient
     {
@@ -20,24 +21,41 @@
         public static void Main()
         {
             //InitializeComponent();
+
             //SeedDataFromMongoDB();
             //ExtractZipAndReadSalesReportExcelFiles();
             //ExportAggregatedSalesReportToPdf();
             //ReadXmlFileAndAddReport();
+
             //ExportXmlReportForManufacturersSales();
             //Console.WriteLine("-> Program finish sucessfully...\n");
-            var robotsFactoryMySqlContext = new RobotsFactoryMySqlContext();
 
-            robotsFactoryMySqlContext.Add(new JsonReport()
+            //var robotsFactoryMySqlContext = new RobotsFactoryMySqlContext();
+
+            //robotsFactoryMySqlContext.Add(new JsonReport()
+            //{
+            //    JsonContent = DateTime.Now.ToString(),
+            //});
+
+            //robotsFactoryMySqlContext.SaveChanges();
+
+            //foreach (var jsonReport in robotsFactoryMySqlContext.JsonReports)
+            //{
+            //    Console.WriteLine("{0} | {1}", jsonReport.ReportId, jsonReport.JsonContent);
+            //}
+
+            var sqliteDbContext = new SQLiteDbContext();
+            sqliteDbContext.Countries.Add(new Country()
             {
-                JsonContent = DateTime.Now.ToString(),
+                Name = DateTime.Now.ToString(),
+                TaxRate = 123.123m
             });
 
-            robotsFactoryMySqlContext.SaveChanges();
+            sqliteDbContext.SaveChanges();
 
-            foreach (var jsonReport in robotsFactoryMySqlContext.JsonReports)
+            foreach (var country in sqliteDbContext.Countries)
             {
-                Console.WriteLine("{0} | {1}", jsonReport.ReportId, jsonReport.JsonContent);
+                Console.WriteLine("{0} | {1} | {2}", country.CountryId, country.Name, country.TaxRate);
             }
         }
      
