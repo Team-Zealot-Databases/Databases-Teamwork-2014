@@ -16,7 +16,6 @@ namespace RobotsFactory.MySQL
             productConfiguration.MapType(x => new
             {
                 ReportId = x.ReportId,
-                JsonFileName = x.JsonFileName,
                 JsonContent = x.JsonContent
             }).ToTable(JsonReportsTableName);
 

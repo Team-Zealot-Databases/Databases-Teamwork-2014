@@ -8,7 +8,5 @@ namespace RobotsFactory.MySQL
         public int ReportId { get; set; }
 
         public string JsonContent { get; set; }
-
-        public string JsonFileName { get; set; }
     }
 }
