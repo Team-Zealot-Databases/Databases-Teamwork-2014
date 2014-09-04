@@ -2,15 +2,16 @@
 {
     using System;
     using System.Linq;
+    using Newtonsoft.Json;
     using RobotsFactory.Common;
     using RobotsFactory.Data;
     using RobotsFactory.Data.Contracts;
-
+    using RobotsFactory.Reports.Models;
+    using RobotsFactory.Excel;
     public class RobotsFactoryConsoleClient
     {
         private static readonly DateTime reportStartDate = new DateTime(2012, 1, 1);
         private static readonly DateTime reportEndDate = new DateTime(2014, 1, 1);
-        private static readonly Tuple<string, string> excelFileInfo = Tuple.Create(Constants.ExtractedExcelReportsPath, Constants.ExcelReportName);
         private static readonly Tuple<string, string> pdfFileInfo = Tuple.Create(Constants.AggregatedSaleReportPdfPath, Constants.PdfReportName);
         private static readonly Tuple<string, string> xmlReportFileInfo = Tuple.Create(Constants.ExtractedXmlReportsPath, Constants.XmlReportName);
 
@@ -33,6 +34,11 @@
             WriteFromMySqlAndSQLiteToExcel();
 
             Console.WriteLine("-> Program finish sucessfully...\n");
+        }
+
+        private static void WriteFromMySqlAndSQLiteToExcel()
+        {
+            robotsFactoryModule.WriteReportToExcel();
         }
      
         private static void SeedDataFromMongoDB()
@@ -58,11 +64,6 @@
         private static void ExportXmlReportForManufacturersSales()
         {
             robotsFactoryModule.GenerateXmlReport(xmlReportFileInfo, reportStartDate, reportEndDate);
-        }
-
-        private static void WriteFromMySqlAndSQLiteToExcel()
-        {
-            robotsFactoryModule.WriteReportToExcel(excelFileInfo);
         }
 
         private static void InitializeComponent()

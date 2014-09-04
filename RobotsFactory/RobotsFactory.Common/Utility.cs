@@ -56,13 +56,6 @@
                         break;
                     }
 
-                case "xlsx":
-                    {
-                        dialog.DefaultExt = ".xlsx";
-                        dialog.Filter = "Excel File (.xlsx)|*.xlsx";
-                        break;
-                    }
-
                 case "pdf":
                     {
                         dialog.DefaultExt = ".zip";

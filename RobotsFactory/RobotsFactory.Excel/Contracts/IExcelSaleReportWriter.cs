@@ -2,6 +2,6 @@
 {
     public interface IExcelSaleReportWriter
     {
-        void GenerateExcelReport(string pathToSave, string excelReportName);
+        void GenerateExcelReport(string path);
     }
 }
