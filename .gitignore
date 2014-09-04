@@ -23,5 +23,7 @@ Release
 /RobotsFactory/RobotsFactory.MongoDb/bin
 /RobotsFactory/RobotsFactory.Reports.Models/bin
 /RobotsFactory/RobotsFactory.WPF/bin
+/RobotsFactory/RobotsFactory.MySQL/bin/
 /Reports/Robots-Factory-Aggrerated-Sales-Report.pdf
 /RobotsFactory/RobotsFactory.SQLite/bin
+/Reports/Json-Reports/
