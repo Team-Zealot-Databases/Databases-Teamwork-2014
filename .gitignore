@@ -27,3 +27,7 @@ Release
 /Reports/Robots-Factory-Aggrerated-Sales-Report.pdf
 /RobotsFactory/RobotsFactory.SQLite/bin
 /Reports/Json-Reports/
+/RobotsFactory/RobotsFactory.Excel/bin
+/RobotsFactory/RobotsFactory.Json/bin
+/RobotsFactory/RobotsFactory.XML/bin
+/RobotsFactory/RobotsFactory.Pdf/bin
