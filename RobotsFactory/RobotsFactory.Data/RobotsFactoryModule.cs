@@ -6,24 +6,28 @@
     using System.Linq;
     using RobotsFactory.Common;
     using RobotsFactory.Data.Contracts;
-    using RobotsFactory.Data.ExcelReader;
-    using RobotsFactory.Data.JsonProcessor;
-    using RobotsFactory.Data.PdfProcessor;
-    using RobotsFactory.Data.XmlProcessor;
+    using RobotsFactory.Data.ReportProcessors;
+    using RobotsFactory.Excel;
+    using RobotsFactory.Json;
     using RobotsFactory.MongoDb;
     using RobotsFactory.MongoDb.Contracts;
     using RobotsFactory.MongoDb.Mapping;
+    using RobotsFactory.Pdf;
     using RobotsFactory.Reports.Models;
+    using RobotsFactory.XML;
 
     public class RobotsFactoryModule
     {
         private readonly IRobotsFactoryData robotsFactoryData = new RobotsFactoryData();
         private readonly IMongoDbContext mongoDbContext = new MongoDbContext();
+        private readonly ReportQueries reportQueries;
         private readonly ILogger logger;
+
 
         public RobotsFactoryModule(ILogger logger)
         {
             this.logger = logger;
+            this.reportQueries = new ReportQueries(this.robotsFactoryData);
         }
 
         public void ReadFromMongoDb()
@@ -80,7 +84,8 @@
         {
             try
             {
-                var salesReportToPdfFactory = new PdfExportFactoryFromMsSqlDatabase(this.robotsFactoryData);
+                var pdfData = this.reportQueries.GetPdfSaleReportsFromDatabase(startDate, endDate);
+                var salesReportToPdfFactory = new PdfExportFactoryFromMsSqlDatabase(pdfData);
                 salesReportToPdfFactory.ExportSalesEntriesToPdf(selectedPathAndFileName.Item1, selectedPathAndFileName.Item2, startDate, endDate);
                 this.logger.ShowMessage("Sales Report was successfully exported to PDF...");
             }
@@ -94,7 +99,8 @@
         {
             try
             {
-                var xmlGenerator = new XmlReportGenerator(this.robotsFactoryData);
+                var xmlData = this.reportQueries.GetXmlSaleReportsFromDatabase(startDate, endDate);
+                var xmlGenerator = new XmlReportGenerator(xmlData);
                 xmlGenerator.CreateXmlReport(selectedPathAndFileName.Item1, selectedPathAndFileName.Item2, startDate, endDate);
 
                 this.logger.ShowMessage("Sales reports were successfully exported as XML file...");
@@ -102,6 +108,50 @@
             catch (Exception)
             {
                 this.logger.ShowMessage("Error! Cannot export reports as XML file...");
+            }
+        }
+
+        public void GenerateJsonReportsAndSaveThemToDisk(string folderPath)
+        {
+            try
+            {
+                var jsonProductsReportsEntries = this.reportQueries.GetJsonProductsReportsFromDatabase();
+                var productReportsToJsonFactory = new JsonReportsFactoryFromMsSqlDatabase(jsonProductsReportsEntries);
+                productReportsToJsonFactory.SaveJsonProductsReportsToDisk(folderPath);
+                this.logger.ShowMessage("Json reports were successfully saved to disk...");
+            }
+            catch (Exception)
+            {
+                this.logger.ShowMessage("Error! Cannot export JSON reports or save them to disk...");
+            }
+        }
+
+        public void GenerateJsonReportsAndExportThemToMySql()
+        {
+            try
+            {
+                var jsonProductsReportsEntries = this.reportQueries.GetJsonProductsReportsFromDatabase();
+                var productReportsToJsonFactory = new JsonReportsFactoryFromMsSqlDatabase(jsonProductsReportsEntries);
+                productReportsToJsonFactory.ExportJsonProductsReportsToMySqlDatabase();
+                this.logger.ShowMessage("Json reports were successfully exported to MySql database...");
+            }
+            catch (Exception)
+            {
+                this.logger.ShowMessage("Error! Cannot export JSON reports to MySQL Database...");
+            }
+        }
+
+        public void WriteReportToExcel()
+        {
+            try
+            {
+                var repo = new ExcelSaleReportWriter();
+                repo.GenerateExcelReport(Constants.ExtractedExcelReportsPath);
+                this.logger.ShowMessage("Excel Report successfully created..");
+            }
+            catch (Exception)
+            {
+                this.logger.ShowMessage("Error! Cannot create Excel report...");
             }
         }
 
@@ -125,7 +175,7 @@
         private void ParseExcelDataAndExportItInSqlServer(IEnumerable<DirectoryInfo> matchedDirectories)
         {
             var salesReportFactory = new SalesReportGeneratorFromExcel(this.robotsFactoryData.Stores);
-            var excelSaleReportReader = new ExcelSaleReportReader();
+            var excelSaleReportReader = new ExcelSaleReportReader(ConnectionStrings.Default.ExcelConnectionString);
 
             foreach (var dir in matchedDirectories)
             {
@@ -138,34 +188,6 @@
             }
 
             this.robotsFactoryData.SaveChanges();
-        }
-
-        public void GenerateJsonReportsAndSaveThemToDisk(string folderPath)
-        {
-            try
-            {
-                var productReportsToJsonFactory = new JsonReportsFactoryFromMsSqlDatabase(this.robotsFactoryData);
-                productReportsToJsonFactory.SaveJsonProductsReportsToDisk(folderPath);
-                this.logger.ShowMessage("Json reports were successfully saved to disk...");
-            }
-            catch (Exception)
-            {
-                this.logger.ShowMessage("Error! Cannot export JSON reports or save them to disk...");
-            }
-        }
-
-        public void GenerateJsonReportsAndExportThemToMySql()
-        {
-            try
-            {
-                var productReportsToJsonFactory = new JsonReportsFactoryFromMsSqlDatabase(this.robotsFactoryData);
-                productReportsToJsonFactory.ExportJsonProductsReportsToMySqlDatabase();
-                this.logger.ShowMessage("Json reports were successfully exported to MySql database...");
-            }
-            catch (Exception)
-            {
-                this.logger.ShowMessage("Error! Cannot export JSON reports to MySQL Database...");
-            }
         }
     }
 }

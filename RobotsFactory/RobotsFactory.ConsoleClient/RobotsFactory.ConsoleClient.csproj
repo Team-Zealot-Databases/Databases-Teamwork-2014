@@ -47,6 +47,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\mongocsharpdriver.1.9.2\lib\net35\MongoDB.Driver.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -98,6 +102,10 @@
       <Project>{d78c1531-3c04-40b0-b657-7c448ccebd22}</Project>
       <Name>RobotsFactory.Data</Name>
     </ProjectReference>
+    <ProjectReference Include="..\RobotsFactory.Excel\RobotsFactory.Excel.csproj">
+      <Project>{b380518c-174e-463d-9152-350fe485e71a}</Project>
+      <Name>RobotsFactory.Excel</Name>
+    </ProjectReference>
     <ProjectReference Include="..\RobotsFactory.Models\RobotsFactory.Models.csproj">
       <Project>{ad7d540b-e116-4233-a755-b64a2ad6175b}</Project>
       <Name>RobotsFactory.Models</Name>
@@ -120,12 +128,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="x64\SQLite.Interop.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="x86\SQLite.Interop.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="x64\SQLite.Interop.dll" />
+    <Content Include="x86\SQLite.Interop.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="OpenAccessNuget.targets" />

@@ -9,9 +9,8 @@
         public SQLiteDbContext()
             : base("RobotsFactorySqlite")
         {
-            //this.Database.Connection.ConnectionString = @"Data Source=..\..\CountryTaxesDb.sqlite";
         }
 
-        public DbSet<Country> Countries { get; set; }
+        public DbSet<Item> Items { get; set; }
     }
 }

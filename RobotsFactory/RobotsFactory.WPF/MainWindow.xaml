@@ -18,7 +18,7 @@
                 Name="mongoDbButton"
                 HorizontalAlignment="Left"
                 HorizontalContentAlignment="Center"
-                Margin="10,105,0,0" 
+                Margin="10,98,0,0" 
                 VerticalAlignment="Top" 
                 Width="181" Height="36" Click="OnReadFromMongoDbButtonClick"/>
 
@@ -27,7 +27,7 @@
                 Name="readExcelReportsButton"
                 HorizontalAlignment="Left"
                 HorizontalContentAlignment="Center"
-                Margin="10,146,0,0" 
+                Margin="10,139,0,0" 
                 VerticalAlignment="Top" 
                 Width="181" 
                 Height="36" Click="OnReadSaleReportsFromExcelButtonClick"/>
@@ -37,7 +37,7 @@
                 Name="generatePdfReportsButton"
                 HorizontalAlignment="Left"
                 HorizontalContentAlignment="Center"
-                Margin="10,298,0,0" 
+                Margin="10,320,0,0" 
                 VerticalAlignment="Top" 
                 Width="181" 
                 Height="36" Click="OnExportAggregatedSalesReportToPdfButtonClick"/>
@@ -53,14 +53,14 @@
                    FontFamily="Consolas" 
                    FontSize="22"/>
 
-        <DatePicker Name="startDateTimePicker" Text="05.05.2013" HorizontalAlignment="Left" Margin="10,240,0,0" VerticalAlignment="Top" Width="181"/>
-        <DatePicker Name="endDateTimePicker" Text="30.08.2014" HorizontalAlignment="Left" Margin="10,269,0,0" VerticalAlignment="Top" Width="181"/>
+        <DatePicker Name="startDateTimePicker" Text="05.05.2013" HorizontalAlignment="Left" Margin="10,262,0,0" VerticalAlignment="Top" Width="181"/>
+        <DatePicker Name="endDateTimePicker" Text="30.08.2014" HorizontalAlignment="Left" Margin="10,291,0,0" VerticalAlignment="Top" Width="181"/>
 
         <Button Content="Generate XML Report" 
                 x:Name="generateXmlReport"
                 HorizontalAlignment="Left"
                 HorizontalContentAlignment="Center"
-                Margin="10,339,0,0" 
+                Margin="10,361,0,0" 
                 VerticalAlignment="Top" 
                 Width="181" 
                 Height="36" 
@@ -71,7 +71,7 @@
                 x:Name="loadDataFromXmlToSqlServerAndMongo"
                 HorizontalAlignment="Left"
                 HorizontalContentAlignment="Center"
-                Margin="10,187,0,0" 
+                Margin="10,180,0,0" 
                 VerticalAlignment="Top" 
                 Width="181" 
                 Height="36" 
@@ -79,18 +79,27 @@
 
         <Button Content="Open Reports Directory" 
                 HorizontalAlignment="Left" 
-                Margin="10,67,0,0"
+                Margin="10,70,0,0"
                 VerticalAlignment="Top"
                 Width="181"
                 Height="23" Click="OnOpenReportsDirectoryButtonClick"/>
-        
-        <Button Content="Genrerate JSON Reports" 
+
+        <Button Content="Generate JSON Reports" 
                 HorizontalAlignment="Left" 
-                Margin="10,380,0,0" 
+                Margin="10,402,0,0" 
                 VerticalAlignment="Top" 
                 Width="181" 
                 RenderTransformOrigin="-2.6,-1.7" 
                 Height="36" 
                 Click="OnGenerateJsonReportsButtonClick"/>
+
+        <Button Content="Import JSON Reports to MySQL" 
+                HorizontalAlignment="Left" 
+                Margin="10,221,0,0" 
+                VerticalAlignment="Top" 
+                Width="181" 
+                RenderTransformOrigin="-2.6,-1.7" 
+                Height="36" 
+                Click="OnImportJsonReportsToMySqlButtonClick"/>
     </Grid>
 </Window>

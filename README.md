@@ -6,7 +6,7 @@
 
 ## Contributors:
 * Martin Nikolov ([@ flextry](https://github.com/flextry))
-* Ianko Vanov ([@ IankoVanov](https://github.com/IankoVanov))
+* Ianko Vanov ([@ IankoVanov](https://github.com/IVanov-TA))
 * Todor Vyagov ([@ TodorVyagov](https://github.com/TodorVyagov))
 * Krum Tuikenov ([@ digitalbeas7](https://github.com/digitalbeas7))
 * Ivaylo Botusharov ([@ encounter12](https://github.com/encounter12))

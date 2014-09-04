@@ -114,7 +114,11 @@
         {
             string pathToFolder = Constants.JsonProductsReportsPath;
             this.robotsFactoryModule.GenerateJsonReportsAndSaveThemToDisk(pathToFolder);
-            //this.robotsFactoryModule.GenerateJsonReportsAndExportThemToMySql();
+        }
+
+        private void OnImportJsonReportsToMySqlButtonClick(object sender, RoutedEventArgs e)
+        {
+            this.robotsFactoryModule.GenerateJsonReportsAndExportThemToMySql();
         }
     }
 }
