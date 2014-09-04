@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sales name="Sales Report">
+	<sale vendor="AeroVironment">
+		<summary date="20-Jul-2013" total-sum="164560.00" />
+		<summary date="15-Aug-2014" total-sum="786172.00" />
+	</sale>
+	<sale vendor="Boston Dynamics">
+		<summary date="20-Jul-2013" total-sum="14936.75" />
+		<summary date="21-Jul-2013" total-sum="4804.45" />
+		<summary date="22-Jul-2013" total-sum="3191.00" />
+		<summary date="15-Aug-2014" total-sum="273968.00" />
+	</sale>
+	<sale vendor="Harvard Robotics">
+		<summary date="20-Jul-2013" total-sum="80736.00" />
+		<summary date="15-Aug-2014" total-sum="100912.00" />
+	</sale>
+	<sale vendor="Honda">
+		<summary date="20-Jul-2013" total-sum="80384.00" />
+		<summary date="21-Jul-2013" total-sum="651.75" />
+		<summary date="22-Jul-2013" total-sum="423.00" />
+		<summary date="15-Aug-2014" total-sum="16456.00" />
+	</sale>
+	<sale vendor="IntelliTrio">
+		<summary date="20-Jul-2013" total-sum="22176.00" />
+		<summary date="15-Aug-2014" total-sum="192820.00" />
+	</sale>
+	<sale vendor="Physical Sciences Inc.">
+		<summary date="15-Aug-2014" total-sum="76736.00" />
+	</sale>
+	<sale vendor="Robotics Unlimited">
+		<summary date="20-Jul-2013" total-sum="61980.00" />
+		<summary date="15-Aug-2014" total-sum="165440.00" />
+	</sale>
+</sales>
