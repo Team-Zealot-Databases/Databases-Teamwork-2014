@@ -23,7 +23,6 @@
         private readonly ReportQueries reportQueries;
         private readonly ILogger logger;
 
-
         public RobotsFactoryModule(ILogger logger)
         {
             this.logger = logger;
@@ -141,12 +140,14 @@
             }
         }
 
-        public void WriteReportToExcel()
+        public void WriteReportToExcel(Tuple<string, string> selectedPathAndFileName)
         {
+            var repo = new ExcelSaleReportWriter();
+            repo.GenerateExcelReport(selectedPathAndFileName.Item1, selectedPathAndFileName.Item2);
             try
             {
-                var repo = new ExcelSaleReportWriter();
-                repo.GenerateExcelReport(Constants.ExtractedExcelReportsPath);
+            
+
                 this.logger.ShowMessage("Excel Report successfully created..");
             }
             catch (Exception)
