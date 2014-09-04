@@ -71,7 +71,15 @@
             if (!string.IsNullOrEmpty(selectedPath))
             {
                 this.robotsFactoryModule.ReadAdditionalInformation(selectedPath);
-                return;
+            }
+        }
+
+        private void OnGenerateExcelReportButtonClick(object sender, RoutedEventArgs e)
+        {
+            var selectedPathAndFileName = this.SaveFileDialogBox("xlsx", Constants.ExcelReportName);
+            if (selectedPathAndFileName != null)
+            {
+                this.robotsFactoryModule.WriteReportToExcel(Tuple.Create(selectedPathAndFileName.Item1, string.Empty));
             }
         }
 

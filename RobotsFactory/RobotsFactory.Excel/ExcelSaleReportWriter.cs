@@ -1,19 +1,17 @@
 ﻿namespace RobotsFactory.Excel
 {
     using System;
+    using System.Drawing;
     using System.IO;
     using System.Linq;
-    using System.Drawing;
-
-    using OfficeOpenXml;
     using Newtonsoft.Json;
+    using OfficeOpenXml;
     using OfficeOpenXml.Style;
-
-    using RobotsFactory.MySQL;
-    using RobotsFactory.SQLite;
     using RobotsFactory.Common;
-    using RobotsFactory.Reports.Models;
     using RobotsFactory.Excel.Contracts;
+    using RobotsFactory.MySQL;
+    using RobotsFactory.Reports.Models;
+    using RobotsFactory.SQLite;
 
     public class ExcelSaleReportWriter : IExcelSaleReportWriter
     {
@@ -24,10 +22,10 @@
         private const int TotalExpensesColumn = 6;
         private const int RevenueColumn = 7;
 
-        private int bodyRowPosition = 3;
+        private readonly RobotsFactoryMySqlContext robotFactoryMysql;
+        private readonly SQLiteDbContext robotsFactorySqlite;
 
-        private RobotsFactoryMySqlContext robotFactoryMysql;
-        private SQLiteDbContext robotsFactorySqlite;
+        private int bodyRowPosition = 3;
 
         public ExcelSaleReportWriter()
         {
@@ -35,21 +33,21 @@
             this.robotsFactorySqlite = new SQLiteDbContext();
         }
 
-        public void GenerateExcelReport(string path)
+        public void GenerateExcelReport(string pathToSave, string excelReportName)
         {
-            var fileName = "/Report" + DateTime.Now.ToString("yyyy-MM-dd--hh-mm-ss") + ".xlsx";
+            if (!string.IsNullOrEmpty(excelReportName))
+            {
+                Utility.CreateDirectoryIfNotExists(pathToSave);
+            }
 
-            Utility.CreateDirectoryIfNotExists(path);
-
-            var filePath = new FileInfo(path + fileName);
+            var filePath = new FileInfo(pathToSave + excelReportName);
 
             using (var package = new ExcelPackage(filePath))
             {
                 ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("Net Revenue");
 
-                GenerateExcelHeadDocument(worksheet);
-
-                GenerateExcelBodyDocument(worksheet);
+                this.GenerateExcelHeadDocument(worksheet);
+                this.GenerateExcelBodyDocument(worksheet);
 
                 worksheet.Column(2).AutoFit();
                 worksheet.Column(3).AutoFit();
@@ -68,38 +66,38 @@
             {
                 var currentEntity = JsonConvert.DeserializeObject<JsonProductsReportEntry>(jsonReport.JsonContent);
                 this.bodyRowPosition++;
-                FillCurrentRowWithData(worksheet, currentEntity);
-                StyleCurrentExcelRow(this.bodyRowPosition, worksheet);
+                this.FillCurrentRowWithData(worksheet, currentEntity);
+                this.StyleCurrentExcelRow(this.bodyRowPosition, worksheet);
             }
         }
 
         private void FillCurrentRowWithData(ExcelWorksheet worksheet, JsonProductsReportEntry currentEntity)
         {
-            var productName = (string)currentEntity.ProductName;
+            var productName = currentEntity.ProductName;
             var quantity = currentEntity.TotalQuantitySold;
-            var totalIncome = (decimal)currentEntity.TotalIncome;
-            var expensePerItem = GetItemExpense(currentEntity);
+            var totalIncome = currentEntity.TotalIncome;
+            var expensePerItem = this.GetItemExpense(currentEntity);
             var totalExpenses = quantity * expensePerItem;
             var revenue = totalIncome - totalExpenses;
 
             worksheet.Cells[this.bodyRowPosition, ProductNameColumn].Value = productName;
             worksheet.Cells[this.bodyRowPosition, QuantityColumn].Value = quantity;
-            worksheet.Cells[this.bodyRowPosition, TotalIncomeColumn].Value = totalIncome;
-            worksheet.Cells[this.bodyRowPosition, ExpensePerItemColumn].Value = expensePerItem;
-            worksheet.Cells[this.bodyRowPosition, TotalExpensesColumn].Value = totalExpenses;
+            worksheet.Cells[this.bodyRowPosition, TotalIncomeColumn].Value = totalIncome.ToCurrency();
+            worksheet.Cells[this.bodyRowPosition, ExpensePerItemColumn].Value = expensePerItem.ToCurrency();
+            worksheet.Cells[this.bodyRowPosition, TotalExpensesColumn].Value = totalExpenses.ToCurrency();
             worksheet.Cells[this.bodyRowPosition, RevenueColumn].Value = revenue;
         }
 
         private decimal GetItemExpense(JsonProductsReportEntry currentEntity)
         {
             var itemExpense = this.robotsFactorySqlite.Items.Where(i => i.Name == currentEntity.ProductName)
-                                                            .Select(i => new
-                                                            {
-                                                                Expense = i.Expense
-                                                            })
-                                                            .First();
+                                  .Select(i => new
+                                  {
+                                      Expense = i.Expense
+                                  })
+                                  .First();
 
-            return (decimal)itemExpense.Expense;
+            return itemExpense.Expense;
         }
 
         private void StyleCurrentExcelRow(int currentRow, ExcelWorksheet worksheet)
@@ -116,7 +114,6 @@
                 rowRange.Style.Border.Right.Style = ExcelBorderStyle.Thin;
                 rowRange.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
             }
-
         }
 
         private void GenerateExcelHeadDocument(ExcelWorksheet worksheet)
