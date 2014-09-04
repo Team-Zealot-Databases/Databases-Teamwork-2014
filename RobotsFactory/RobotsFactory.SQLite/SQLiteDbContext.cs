@@ -11,6 +11,6 @@
         {
         }
 
-        public DbSet<Country> Countries { get; set; }
+        public DbSet<Item> Items { get; set; }
     }
 }

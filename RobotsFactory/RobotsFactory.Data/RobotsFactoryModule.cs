@@ -141,6 +141,20 @@
             }
         }
 
+        public void WriteReportToExcel()
+        {
+            try
+            {
+                var repo = new ExcelSaleReportWriter();
+                repo.GenerateExcelReport(Constants.ExtractedExcelReportsPath);
+                this.logger.ShowMessage("Excel Report successfully created..");
+            }
+            catch (Exception)
+            {
+                this.logger.ShowMessage("Error! Cannot create Excel report...");
+            }
+        }
+
         private void AddExpensesReportsDataToMSSqlAndMongoDb(IList<XmlVendorExpenseEntry> xmlData, ExpensesReportFactoryFromXmlData expensesFactory)
         {
             foreach (var expenseLog in xmlData)

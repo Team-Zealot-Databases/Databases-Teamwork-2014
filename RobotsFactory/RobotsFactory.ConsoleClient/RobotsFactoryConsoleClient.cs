@@ -7,7 +7,7 @@
     using RobotsFactory.Data;
     using RobotsFactory.Data.Contracts;
     using RobotsFactory.Reports.Models;
-
+    using RobotsFactory.Excel;
     public class RobotsFactoryConsoleClient
     {
         private static readonly DateTime reportStartDate = new DateTime(2012, 1, 1);
@@ -31,8 +31,14 @@
 
             robotsFactoryModule.GenerateJsonReportsAndExportThemToMySql();
             robotsFactoryModule.GenerateJsonReportsAndSaveThemToDisk(Constants.JsonProductsReportsPath);
+            WriteFromMySqlAndSQLiteToExcel();
 
             Console.WriteLine("-> Program finish sucessfully...\n");
+        }
+
+        private static void WriteFromMySqlAndSQLiteToExcel()
+        {
+            robotsFactoryModule.WriteReportToExcel();
         }
      
         private static void SeedDataFromMongoDB()

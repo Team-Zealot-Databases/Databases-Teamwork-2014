@@ -102,6 +102,10 @@
       <Project>{d78c1531-3c04-40b0-b657-7c448ccebd22}</Project>
       <Name>RobotsFactory.Data</Name>
     </ProjectReference>
+    <ProjectReference Include="..\RobotsFactory.Excel\RobotsFactory.Excel.csproj">
+      <Project>{b380518c-174e-463d-9152-350fe485e71a}</Project>
+      <Name>RobotsFactory.Excel</Name>
+    </ProjectReference>
     <ProjectReference Include="..\RobotsFactory.Models\RobotsFactory.Models.csproj">
       <Project>{ad7d540b-e116-4233-a755-b64a2ad6175b}</Project>
       <Name>RobotsFactory.Models</Name>
